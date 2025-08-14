@@ -20,7 +20,7 @@
 		</div>
 		<div class="section-box">
 			<strong class="sub-title">우측</strong>
-			<div class="d-flex gap-40 align-items-center">
+			<div class="d-flex gap-40 align-items-start">
 				<label class="form-label">설명문구</label>
 				<textarea class="form-control"></textarea>
 			</div>
@@ -34,38 +34,142 @@
 		<button class="btn btn-primary lh-1" type="submit">수정</button>
 	</div>
 	<div class="card-body p-0">
-		<div class="section-box">
+		<div class="section-box">			
+			<div class="d-flex gap-40 align-items-center w-100">
+				<label class="form-label">노출상태</label>
+				<div class="d-flex gap-40 w-100">
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+					  <label class="form-check-label" for="exampleRadios1">
+					    노출
+					  </label>
+					</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option1" checked>
+					  <label class="form-check-label" for="exampleRadios2">
+					   미노출
+					  </label>
+					</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option1" disabled>
+					  <label class="form-check-label" for="exampleRadios3">
+					   미노출
+					  </label>
+					</div>
+				</div>
+			</div>
+			<div class="d-flex gap-40 align-items-center w-100">
+				<label class="form-label">노출상태</label>
+				<select class="form-select w-100">
+					<option>1</option>
+					<option>2</option>
+					<option>3</option>
+				</select>
+			</div>			
+		</div>
+	</div>
+</form>
+
+<form class="card">
+	<div class="card-body p-0">
+		<div class="section-box p-4 border-0">
+			<div class="d-flex gap-40 align-items-center w-100">
+				<label class="form-label">검색</label>
+				<div class="d-flex column-gap-2 w-100">
+					<select class="form-select">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+					<input type="text" class="form-control" name="" placeholder="검색어를 입력하세요.">
+				</div>
+			</div>
+			<div class="d-flex gap-40 align-items-center w-100">
+				<label class="form-label">카테고리</label>
+				<div class="d-flex column-gap-2 w-100">
+					<select class="form-select">
+						<option>카테고리 1차</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+					<select class="form-select">
+						<option>카테고리 2차</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+				</div>
+			</div>
 			<div class="d-flex gap-40 align-items-center">
-				<div class="d-flex gap-40 align-items-center w-100">
-					<label class="form-label">노출상태</label>
-					<div class="d-flex gap-40 w-100">
-						<div class="form-check">
-						  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-						  <label class="form-check-label" for="exampleRadios1">
-						    노출
-						  </label>
-						</div>
-						<div class="form-check">
-						  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option1" checked>
-						  <label class="form-check-label" for="exampleRadios2">
-						   미노출
-						  </label>
-						</div>
-						<div class="form-check">
-						  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option1" disabled>
-						  <label class="form-check-label" for="exampleRadios3">
-						   미노출
-						  </label>
-						</div>
+				<label class="form-label">상태</label>
+				<div class="d-flex gap-20">
+					<div class="form-check checkbox">
+					  <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+					  <label class="form-check-label" for="defaultCheck1">전체</label>
+					</div>
+					<div class="form-check checkbox">
+					  <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+					  <label class="form-check-label" for="defaultCheck2">미답변</label>
+					</div>
+					<div class="form-check checkbox">
+					  <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+					  <label class="form-check-label" for="defaultCheck3">답변완료</label>
 					</div>
 				</div>
-				<div class="d-flex gap-40 align-items-center w-100">
-					<label class="form-label">노출상태</label>
-					<div class="d-flex gap-20 w-100">
-						<input type="text" class="form-control" name="">
-						<input type="text" class="form-control" name="">
-					</div>
+			</div>
+			<div class="d-flex justify-content-end column-gap-2">
+				<button class="btn btn-outline-secondary btn-sm" type="button">초기화</button>
+				<button class="btn btn-primary btn-sm" type="submit">검색</button>
+			</div>
+		</div>
+	</div>
+</form>
+<form class="card">
+	<div class="card-body p-0">
+		<div class="section-box p-4 border-0">
+			<div class="d-flex gap-40">
+				<label class="form-label">검색</label>
+				<div class="d-flex column-gap-2 w-100">
+					<select class="form-select">
+						<option>카테고리 1차</option>
+						<option>2</option>
+						<option>3</option>
+					</select>
+					<input type="text" class="form-control" placeholder="검색어를 입력하세요." name="">
 				</div>
+			</div>
+			<div class="d-flex gap-40">
+				<label class="form-label">등급</label>
+				<div class="d-flex gap-20">
+				<?php  
+				$arr = ["전체","signature","pRIMe","미분류"];
+				foreach ($arr as $key => $value) { ?>
+					<div class="form-check checkbox">
+					  <input class="form-check-input" type="checkbox" value="" id="abc<?= $key ?>">
+					  <label class="form-check-label text-uppercase" for="abc<?= $key ?>"><?= $value ?></label>
+					</div>
+				<?php
+				}
+				?>
+				</div>
+			</div>
+			<div class="d-flex gap-40">
+				<label class="form-label">유형</label>
+				<div class="d-flex gap-20">
+				<?php  
+				$arr = ["전체","Wellness","Event invitation","미분류"];
+				foreach ($arr as $key => $value) { ?>
+					<div class="form-check checkbox">
+					  <input class="form-check-input" type="checkbox" value="" id="def<?= $key ?>">
+					  <label class="form-check-label text-uppercase" for="def<?= $key ?>"><?= $value ?></label>
+					</div>
+				<?php
+				}
+				?>
+				</div>
+			</div>
+			<div class="d-flex justify-content-end column-gap-2">
+				<button class="btn btn-outline-secondary btn-sm" type="button">초기화</button>
+				<button class="btn btn-primary btn-sm" type="submit">검색</button>
 			</div>
 		</div>
 	</div>
