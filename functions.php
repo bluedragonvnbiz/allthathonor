@@ -16,16 +16,23 @@ function pv_styles() {
     wp_enqueue_script('jquery');
     wp_register_style( 'bootstrap-style',  THEME_URL.'/assets/lib/bootstrap.min.css', 'all' );
     wp_enqueue_style( 'bootstrap-style' );
-    wp_register_style( 'swiper-style',  THEME_URL.'/assets/lib/swiper-bundle.min.css', 'all' );
-    wp_enqueue_style( 'swiper-style' );
+
+    if(is_page("management")){
+        wp_register_style( 'management-style', THEME_URL. '/assets/css/management.css', 'all',"2.15" );
+        wp_enqueue_style( 'management-style' );
+    }else{
+        wp_register_style( 'swiper-style',  THEME_URL.'/assets/lib/swiper-bundle.min.css', 'all' );
+        wp_enqueue_style( 'swiper-style' );  
+        wp_register_style( 'cus-style', THEME_URL. '/assets/global-css.css', 'all',"2.15" );
+        wp_enqueue_style( 'cus-style' );
+        wp_register_script('swiper-script', THEME_URL. '/assets/lib/wiper-bundle.min.js', array(),false, true);
+        wp_enqueue_script('swiper-script');
+    }
+    
     wp_register_style( 'wp-style', THEME_URL. '/style.css', 'all',"4" );
     wp_enqueue_style( 'wp-style' );
-    wp_register_style( 'cus-style', THEME_URL. '/assets/global-css.css', 'all',"2.15" );
-    wp_enqueue_style( 'cus-style' );
-
-    wp_register_script('swiper-script', THEME_URL. '/assets/lib/wiper-bundle.min.js', array(),false, true);
-    wp_enqueue_script('swiper-script');
     wp_register_script('tanpv-js', THEME_URL . '/assets/global-script.js', array(), "1.7", true);
+
     wp_localize_script('tanpv-js', 'define', 
         array(
             'ajax_url' => admin_url('admin-ajax.php')
