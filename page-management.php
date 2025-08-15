@@ -43,6 +43,7 @@ get_header("admin"); ?>
 			<?php  
 			get_template_part("components/table","list");
 			get_template_part("components/form");
+			get_template_part("components/infor");
 			?>
 		</div>
 	<?php  
