@@ -20,6 +20,8 @@ function pv_styles() {
     if(is_page("management")){
         wp_register_style( 'management-style', THEME_URL. '/assets/css/management.css', 'all',"2.15" );
         wp_enqueue_style( 'management-style' );
+        wp_register_script('management-script', THEME_URL. '/assets/js/management.js', array(),false, true);
+        wp_enqueue_script('management-script');
     }else{
         wp_register_style( 'swiper-style',  THEME_URL.'/assets/lib/swiper-bundle.min.css', 'all' );
         wp_enqueue_style( 'swiper-style' );  

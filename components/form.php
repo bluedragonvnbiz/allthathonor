@@ -174,3 +174,65 @@
 		</div>
 	</div>
 </form>
+
+<form class="card">
+	<div class="card-header d-flex align-items-center justify-content-between">
+		<strong class="title">상품 내용</strong>
+		<button class="btn btn-primary lh-1" type="submit">수정</button>
+	</div>
+	<div class="card-body p-0">
+		<div class="section-box">
+			<div class="d-flex gap-40">
+				<div class="d-flex column-gap-30 w-100 align-items-center">
+				 	<label class="form-label">노출상태</label>
+				 	<div class="d-flex column-gap-20">
+				 		<div class="form-check">
+						  <input class="form-check-input" type="radio" name="example1" id="aas1" value="option1" checked="">
+						  <label class="form-check-label" for="aas1">
+						    노출
+						  </label>
+						</div>
+						<div class="form-check">
+						  <input class="form-check-input" type="radio" name="example1" id="aas2" value="option1" checked="">
+						  <label class="form-check-label" for="aas2">
+						   미노출
+						  </label>
+						</div>
+				 	</div>
+				</div>
+				<div class="d-flex column-gap-30 w-100 align-items-center">
+					<label class="form-label">메인 이미지</label>
+					<div class="upload-box w-100">
+						<input type="text" class="form-control file-name" readonly placeholder="파일을 선택해주세요.">
+						<label class="btn btn-primary">
+							파일 선택
+							<input type="file" class="d-none select-file" name="" accept=".pdf, .jpg, .jpeg, .png, .heic">
+						</label>
+					</div>
+				</div>
+			</div>		
+		</div>
+		<div class="section-box">
+			<div class="d-flex gap-40">
+				<div class="d-flex column-gap-30 align-items-center w-100">
+					<label class="form-label">상품명</label>
+					<input type="text" class="form-control" name="" placeholder="내용을 입력해주세요.">
+				</div>
+				<div class="d-flex column-gap-30 align-items-center w-100">
+					<label class="form-label">상품명(영문)</label>
+					<input type="text" class="form-control" name="" placeholder="내용을 입력해주세요.">
+				</div>
+			</div>			
+		</div>
+		<div class="section-box">
+			<div class="d-flex column-gap-30">
+				<label class="form-label">요약 설명</label>
+				<textarea class="form-control" placeholder="내용을 입력해주세요."></textarea>
+			</div>
+		</div>
+		<div class="section-box d-block">
+			<label class="form-label mb-3">상세 설명</label>
+			<textarea class="form-control" style="min-height: 300px;" placeholder="내용을 입력해주세요."></textarea>
+		</div>
+	</div>
+</form>
