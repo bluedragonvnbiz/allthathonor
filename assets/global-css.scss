@@ -16,6 +16,8 @@ a{text-decoration: none;}
 .lp-308{letter-spacing: 3.08px}
 .lh-27{line-height: 27px;}
 .lh-14{line-height: 14px;}
+.mb-32{margin-bottom: 32px;}
+.mb-64{margin-bottom: 64px;}
 .bg-gold{background-color: #C19B76}
 .bg-black{background-color: #1C1C1C !important}
 body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var(--text-color);font-size: 14px}
@@ -121,6 +123,13 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		a{font-size: 16px;line-height: 15.68px;letter-spacing: -0.31px;color: white;}
 	}
 }
+.title-box{min-height: 320px;background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/bg-inquiry.jpg) no-repeat center; background-size: cover;
+	.title{font-size: 80px;line-height: 80.5px;color: white;font-weight: 400}
+}
+.inquiry-wp{column-gap: 64px;
+	.map-wp{min-width: 508px}
+}
+
 @media only screen and (min-width: 993px) and (max-width: 1200px) {
 
 }// end @media
