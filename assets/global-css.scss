@@ -24,9 +24,29 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 .container {
     max-width: calc(1200px + var(--bs-gutter-x));
 }
-.btn{padding: 11px 23px;color: white;font-weight: 700;font-size: 11px;line-height: 15px;letter-spacing: 2px;text-transform: uppercase;border-radius: 0}
+.btn{padding: 11px 23px;color: white;font-weight: 700;font-size: 11px;line-height: 15px;letter-spacing: 2px;text-transform: uppercase;border-radius: 0;
+	&.btn-lg{padding: 18px 35px;font-size: 16px;}
+}
 .btn-primary{background-color: #C19B76 !important;border-color: #C19B76 !important}
 .btn-outline-primary{color: #C19B76 !important;border-color: #C19B76 !important;background-color: white !important;}
+.form-control{box-shadow: none !important;border-color: #EEEEEE !important;height: 53px;background-color: #F8F8F8;border-radius: 0}
+.form-label{color: #878787;font-size: 14px;line-height: 14px;letter-spacing: 1.68px;margin-bottom: 13px;}
+.form-check{padding-left: 0;display: flex;align-items: center;column-gap: 13px;margin-bottom: 0;
+	.form-check-input{float: none;margin-left: 0;opacity: 1 !important;margin-top: 0;}
+	.form-check-label{font-size: 16px;line-height: 14px;letter-spacing: 1.68px;opacity: 1 !important;color: #1C1C1C;cursor: pointer;}
+}
+.form-check-input{width: 24px;height: 24px; box-shadow: none !important;cursor: pointer;border-width: 1px;border-color: #EEEEEE;
+	&[type=checkbox]{border-width: 1px;border-radius: 4px;background-size: 15px;
+		&:checked{
+			background-color: #C19B76;border-color: #C19B76;
+			background-image: url('data:image/svg+xml,<svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.99977 6.7803L1.68644 4.46696C1.56179 4.34231 1.39272 4.27228 1.21644 4.27228C1.04015 4.27228 0.87109 4.34231 0.746438 4.46696C0.621786 4.59161 0.551758 4.76068 0.551758 4.93696C0.551758 5.02425 0.56895 5.11068 0.602354 5.19132C0.635757 5.27197 0.684717 5.34524 0.746438 5.40696L3.53311 8.19363C3.79311 8.45363 4.21311 8.45363 4.47311 8.19363L11.5264 1.1403C11.6511 1.01564 11.7211 0.84658 11.7211 0.670296C11.7211 0.494012 11.6511 0.324948 11.5264 0.200296C11.4018 0.075644 11.2327 0.00561523 11.0564 0.00561523C10.8802 0.00561523 10.7111 0.075644 10.5864 0.200296L3.99977 6.7803Z" fill="white"/></svg>');
+			&:disabled{background-color: #EEEEEE;border-color: #EEEEEE}
+		}
+		&:focus{border-color: #EEEEEE;
+			&:checked{border-color: #C19B76;}
+		}
+	}
+}
 .main-header{background-color: #1C1C1C;
 	.main-nav ul{display: flex;align-items: center;column-gap: 48px;
 		a{color: white;letter-spacing: -0.31px;font-size: 16px;
@@ -129,7 +149,20 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 .inquiry-wp{column-gap: 64px;
 	.map-wp{min-width: 508px}
 }
-
+#map{width: 100%;min-height: 345px;
+	.leaflet-control-container{display: none;}
+	.leaflet-popup-content-wrapper{border-radius: 4px;}
+	.leaflet-popup-content{font-weight: 500;margin: 5px 15px 4px 10px;font-family: 'Spoqa Han Sans Neo', 'sans-serif';text-decoration: underline;}	
+}
+.contact-infor{
+	p{color: #878787;font-size: 16px;line-height: 20px;letter-spacing: 2px;text-transform: uppercase;
+		span{color: #1C1C1C}
+		&.line-bottom{position: relative;font-size: 13px;padding-bottom: 18px;
+			&:before{content: "";display: block;height: 1px;width: 20px;background-color: #878787;position: absolute;left: 0;bottom: 8px;}
+		}
+	}
+	.phone-number{font-weight: 500;font-size: 30px;line-height: 30px;letter-spacing: 2px;}
+}
 @media only screen and (min-width: 993px) and (max-width: 1200px) {
 
 }// end @media
