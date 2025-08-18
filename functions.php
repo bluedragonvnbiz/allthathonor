@@ -31,6 +31,8 @@ function pv_styles() {
         wp_enqueue_script('swiper-script');
     }
     
+    wp_register_script('bs-script', THEME_URL. '/assets/lib/bootstrap.min.js', array(),false, true);
+    wp_enqueue_script('bs-script');
     wp_register_style( 'wp-style', THEME_URL. '/style.css', 'all',"4" );
     wp_enqueue_style( 'wp-style' );
     wp_register_script('tanpv-js', THEME_URL . '/assets/global-script.js', array(), "1.7", true);
