@@ -1,6 +1,6 @@
 <footer class="main-footer">
 	<div class="container">
-		<div class="d-flex justify-content-between">
+		<div class="d-flex justify-content-between flex-column flex-md-row column-gap-3">
 			<div class="box d-flex flex-column row-gap-3">
 				<img src="<?= THEME_URL."/assets/images/logo-text.svg" ?>" alt="All that Honors Club" style="max-width: 225px;">
 				<p class="mb-0">상호 : 올댓아너스클럽 <span class="line"></span> 대표자 : 김용순</p>

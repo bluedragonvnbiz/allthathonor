@@ -2,7 +2,7 @@
 get_header(); ?>
 <section class="home-section mem-r-1 home-r1">
 	<div class="container">
-		<div class="d-flex">
+		<div class="d-xl-flex">
 			<div class="left d-flex align-items-center justify-content-center w-100">
 				<div class="box align-items-center d-flex flex-column text-center">
 					<p class="mb-0 text-uppercase">our membership</p>
@@ -12,7 +12,7 @@ get_header(); ?>
 					</p>
 				</div>
 			</div>		
-			<div class="right d-flex column-gap-4">
+			<div class="right d-md-flex column-gap-4">
 				<div class="item">
 					<p class="title">SIGNATURE</p>
 					<p class="description mb-2">전 여정 엄선된 맞춤형 서비스를 제공</p>
@@ -134,11 +134,11 @@ function render_tab($prefix,$tab_content_0,$tab_content_1){
 	$tab = $nav = "";	 	
   	$tab_content_2 = $tab_content_3 = $tab_content_4 = "";
   	$arr = [
-		["icon-tab-1.svg","혜택 요약"],
-		["icon-tab-2.svg","Travel Care"],
-		["icon-tab-3.svg","special benefit"],
-		["icon-tab-4.svg","lifestyle care"],
-		["icon-tab-5.svg","welcome gift"]
+		["icon-tab-1.svg","혜택 <br class='d-lg-none'>요약"],
+		["icon-tab-2.svg","Travel <br class='d-lg-none'>Care"],
+		["icon-tab-3.svg","special <br class='d-lg-none'>benefit"],
+		["icon-tab-4.svg","lifestyle <br class='d-lg-none'>care"],
+		["icon-tab-5.svg","welcome <br class='d-lg-none'>gift"]
 	];
 	foreach ($arr as $key => $value) {
 		if($key == 0){
@@ -231,6 +231,11 @@ function render_tab($prefix,$tab_content_0,$tab_content_1){
 		<div class="text-center"><a href="#" class="btn btn-dark btn-lg fw-medium">Contact</a></div>
 	</div>
 </section>
+<script>
+	jQuery(document).ready(function($){
+		$("nav.main-nav li:nth-child(2) a").addClass("active");
+	})
+</script>
 <?php
 get_footer(); 
 ?>

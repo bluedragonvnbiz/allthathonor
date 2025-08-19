@@ -8,8 +8,8 @@ get_header(); ?>
 	</div>
 </div>
 <section class="home-section container home-r1">
-	<div class="d-flex">
-		<div class="left d-flex align-items-center justify-content-end w-100">
+	<div class="d-lg-flex" style="column-gap:120px">
+		<div class="left d-flex align-items-center justify-content-center justify-content-lg-end w-100">
 			<div class="box align-items-center d-flex flex-column">
 				<p class="mb-0 text-uppercase">our membership</p>
 				<strong class="text-nowrap fw-normal">The Heritage Travel Club</strong>
@@ -30,7 +30,7 @@ get_header(); ?>
 		</div>
 	</div>
 </section>
-<section class="home-r2 d-flex">
+<section class="home-r2 d-lg-flex">
 	<div class="left flex-shrink-0">
 	<?php  
 	for ($i=1; $i < 5; $i++) { ?>
@@ -46,7 +46,7 @@ get_header(); ?>
 				<h4 class="fw-normal mb-0 text-white">All That <span>Honors Club</span></h4>
 				<p class="mb-0 fw-medium lp-168 lh-27">올댓아너스클럽은 국내 최초의 투어 컨시어지 전문 기업으로 <br>국내 고객과 해외 관광객을 대상으로 좀 더 편리하고 품격 높은 맞춤형 여행을 제공합니다.</p>
 			</div>
-			<div class="bottom d-flex column-gap-35">
+			<div class="bottom d-flex gap-35 flex-lg-row flex-column">
 				<div class="w-100">
 					<p class="mb-2 lp-168 text-white">Our Aspiration</p>
 					<p class="mb-0 lp-168 fw-light lh-27">올댓아너스클럽은 고객과 함께 사회적 가치를 실현하며, 성과를 선하게 환원하는 신뢰받는 기업으로 성장할 것을 약속드립니다.</p>
@@ -65,7 +65,7 @@ get_header(); ?>
 			<p class="sub-title">our Service</p>
 			<h3 class="title">Our Services</h3>
 		</div>
-		<div class="products">
+		<div class="products flex-column flex-md-row">
 			<div class="item">
 				<div class="product">
 					<img src="<?= THEME_URL."/assets/images/demo/product-1.jpg" ?>" alt="">
@@ -121,7 +121,7 @@ get_header(); ?>
 			<h3 class="title">Benefit/Voucher</h3>
 		</div>
 		<div class="content-box">
-			<div class="row-item d-flex">
+			<div class="row-item d-flex flex-column flex-md-row">
 				<div class="w-50 d-flex align-items-center justify-content-center bg-white">
 					<div class="text-box">
 						<p class="title">wellness</p>
@@ -146,7 +146,7 @@ get_header(); ?>
 				</div>
 				<img src="<?= THEME_URL."/assets/images/demo/voucher-1.jpg" ?>" class="w-50 object-fit-cover">
 			</div>
-			<div class="row-item d-flex">
+			<div class="row-item d-flex flex-column-reverse flex-md-row">
 				<img src="<?= THEME_URL."/assets/images/demo/voucher-2.jpg" ?>" class="w-50 object-fit-cover">
 				<div class="w-50 d-flex align-items-center justify-content-center bg-white">
 					<div class="text-box">
@@ -206,6 +206,7 @@ get_header(); ?>
 		        currentIndex++;
 		        if (currentIndex > totalSlides) currentIndex = 1;
 		    }
+		    
 		    $image.removeClass(function (index, className) {
 		        return (className.match(/(^|\s)type-\d+/g) || []).join(' ');
 		    });

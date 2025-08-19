@@ -6,7 +6,7 @@ get_header(); ?>
 </div>
 <section class="home-section">
 	<div class="container">
-		<d class="d-flex inquiry-wp">
+		<d class="d-lg-flex inquiry-wp">
 			<form class="form w-100">
 				<div class="mb-32">
 					<label class="form-label">문의 유형</label>
@@ -77,7 +77,7 @@ get_header(); ?>
     marker.addTo(map);
 
 	jQuery(document).ready(function ($) {
-	  
+	  	$("nav.main-nav li:nth-child(3) a").addClass("active");
 	     var $form = $("form");
 	     function checkRequired() {
 	    	let $submit = $form.find('button[type="submit"]');

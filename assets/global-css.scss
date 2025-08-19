@@ -15,7 +15,7 @@ a{text-decoration: none;}
 .fs-14{font-size: 14px;}
 .ff-gilda{font-family: "Gilda Display", "serif";} 
 .row-gap-35{row-gap: 35px}
-.column-gap-35{column-gap: 35px}
+.gap-35{gap: 35px}
 .lp-168{letter-spacing: 1.68px}
 .lp-308{letter-spacing: 3.08px}
 .lh-27{line-height: 27px;}
@@ -90,14 +90,14 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 	}
 	.gallery{min-width: 571px;min-height: 537px;
 		.images{
-			img{position: absolute;-webkit-transition: all .5s; transition: all .5s;
-				&:first-child{z-index: 3;
+			img{position: absolute;-webkit-transition: all .5s; transition: all .5s;object-fit: cover;
+				&:first-child{z-index: 3;width: 315px;aspect-ratio: 315 / 401;
 					@include translate3d(255px, 80px, 0px);
 				}
-				&:nth-child(2){z-index: 2;
+				&:nth-child(2){z-index: 2;width: 346px;aspect-ratio: 346 / 401;
 					@include translate3d(54px, 0px, 0px);
 				}
-				&:nth-child(3){z-index: 1;
+				&:nth-child(3){z-index: 1;width: 405px;aspect-ratio: 405 / 272;
 					@include translate3d(0, 250px, 0px);
 				}
 			}
@@ -152,14 +152,14 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 					&:before{content: "";display: block;width: 30px;height: 1px;background-color: #878787;position: absolute;left: 0;bottom: 12px}
 				}
 				.title{font-family: var(--font-secondary);font-weight: 400;font-size: 25px;line-height: 25px;margin-bottom: 12px;}
-				.description{color: #878787;margin-bottom: 12px;font-size: 15.68px;line-height: 30.67px;letter-spacing: 0.68%;}
+				.description{color: #878787;margin-bottom: 12px;font-size: 15.68px;line-height: 30.67px;letter-spacing: 0.0068em;}
 			}
 		}
 		.more-infor{padding: 32px 40px;text-align: center;
 			.title{margin-bottom: 0;padding-bottom: 25px;font-family: var(--font-secondary);font-weight: 400;font-size: 25px;line-height: 25px;position: relative;
 				&:before{content: "";display: block;width: 30px;height: 1px;background-color: white;position: absolute;left: 50%;bottom: 12px;transform: translateX(-50%);}
 			}
-			.description{margin-bottom: 0;font-size: 15.68px;line-height: 30.67px;letter-spacing: 0.68%;}
+			.description{margin-bottom: 0;font-size: 15.68px;line-height: 30.67px;letter-spacing: 0.0068em;}
 		}
 	}
 }
@@ -319,26 +319,221 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		.note-box ul{background-color: rgba(255, 255, 255, 0.05);}
 	}
 }
-@media only screen and (min-width: 993px) and (max-width: 1200px) {
 
-}// end @media
 
 @media only screen and (max-width: 1200px) {
-
+	.mem-r-1 .left .box{margin-bottom: 32px}
 }//end 1200
 
-
+@media only screen and (min-width: 768px) and (max-width: 993px) {
+	.card-infor{column-gap: 32px;
+		>img{max-width: 40%}
+	}
+}// end @media
 @media only screen and (max-width: 992px) {
-    
+	body{font-size: 8px;}
+	.mb-64{margin-bottom: 60px;}
+	.row-gap-35{row-gap: 30px}
+	.lh-27{line-height: 14px}
+	.container{--bs-gutter-x:2rem}
+    .main-header{padding-top: 15px !important;padding-bottom: 15px !important;
+    	img{height: 25px;}
+    	.main-nav{display: none;
+    		ul{flex-direction: column;row-gap: 12px;padding-top: 8px;padding-bottom: 8px;align-items: end;}
+    	}
+    }
+    .home-banner{padding: 60px 20px;
+    	.text-box{row-gap: 10px;
+    		span{font-size: 6px;}
+    		strong{font-size: 25px;line-height: 40px}
+    	}
+    }
+    .home-section{padding-top: 60px;padding-bottom: 60px;
+    	.title-box{
+    		.sub-title{margin-bottom: 10px}
+    		.title{font-size: 25px;line-height: 40px}
+    	}
+    }
+    .home-r1{
+    	.left{margin-bottom: 30px;
+	    	.box{row-gap: 10px;
+		    	strong{font-size: 25px;line-height: 40px;}
+		    	p{line-height: 15px;}
+		    	a.btn-primary{margin-top: 20px;}
+		    }
+	    }
+	    .gallery{min-height: 321px;min-width: inherit;
+	    	.images{width: 358px;margin: 0 auto;
+				img{
+					&:first-child{width: 180px;
+						@include translate3d(175px, 40px, 0px);
+					}
+					&:nth-child(2){width: 180px;
+						@include translate3d(54px, 0px, 0px);
+					}
+					&:nth-child(3){width: 250px;
+						@include translate3d(0, 140px, 0px);
+					}
+				}
+				&.type-2{
+					img{
+						&:first-child{
+							@include translate3d(135px, 0px, 0px);
+						}
+						&:nth-child(2){
+							@include translate3d(0px, 60px, 0px);
+						}
+						&:nth-child(3){
+							@include translate3d(100px, 155px, 0px);
+						}
+					}
+				}
+				&.type-3{
+					img{
+						&:first-child{
+							@include translate3d(0px, 75px, 0px);
+						}
+						&:nth-child(2){
+							@include translate3d(172px, 80px, 0px);
+						}
+						&:nth-child(3){
+							@include translate3d(54px, 0px, 0px);
+						}
+					}
+				}
+			}
+	    } 
+    }
+    .home-r2{
+    	.left{width: 100%;aspect-ratio: 357 / 245}
+    	.right{padding: 60px 1rem;
+    		.box h4{font-size: 25px;line-height: 40px;}
+    		.top{row-gap: 10px}
+    	}
+    }
+    .home-r3{
+    	.products{row-gap: 30px;
+    		.product{
+    			.infor{padding: 16px;
+    				.cat{font-size: 8px;}
+    				.title{font-size: 16px;}
+    				.description{font-size: 10px;line-height: 15px}
+    			}
+    		}
+    		.more-infor{padding: 16px;
+    			.title{font-size: 16px;}
+    			.description{font-size: 10px;line-height: 15px;}
+    		}   
+    		.item{
+    			
+    		}		
+    	}
+    }
+    .home-r4 .text-box{
+    	.title{font-size: 8px;margin-bottom: 30px}
+    	.slide-title{font-size: 20px;line-height: 20px;margin-bottom: 30px}
+    	.slide-description{font-size: 10px;line-height: 15px;margin-bottom: 30px;}
+    	.swiper{margin-bottom: 30px}
+    }
+    .page-title-box{min-height: 160px;
+    	.title{font-size: 25px}
+    }
+
+    .card-infor{margin-bottom: 60px;
+    	.text{font-size: 12px;
+    		>span{margin-bottom: 10px !important}
+    		.card-name{font-size: 40px;line-height: 60px;margin-bottom: 10px !important}
+    		>p.mb-32{margin-bottom: 20px !important;font-size: 14px;}
+    		hr.mb-32{margin-bottom: 30px;}
+    		ul{row-gap: 0 !important}
+    	}
+    }
+    .card-detail .nav-tabs{margin-bottom: 30px;
+    	.nav-item .nav-link{row-gap: 10px;padding: 16px 5px;
+    		span{font-weight: 500;font-size: 12px;line-height: 15px}
+    		svg{height: 25px;width: auto;}
+    	}
+    }
+    .card-detail .tab-pane .item{padding: 16px;column-gap: 16px;
+    	.left{min-width: 80px;font-size: 14px;line-height: 20px}
+    	.right{padding-left: 16px;row-gap: 10px;
+    		strong{font-size: 12px}
+    		p{font-size: 12px;margin-bottom: 0px}
+    		ul{padding-left: 16px;
+    			li{font-size: 12px}
+    		}
+    	}
+    }
+    .card-detail{
+    	.note-box{
+    		.title{font-size: 18px;margin-bottom: 30px}
+    		ul{padding: 32px 32px 32px 42px;
+    			li{font-size: 12px;line-height: 20px;}
+    		}
+    	}
+    }
+    .inquiry-wp{
+	 	.form{margin-bottom: 120px;}
+	 }
 }//end 992
 
-@media only screen and (min-width: 768px) {
 
-}
-@media only screen and (max-width: 768px) {
-
+@media only screen and (max-width: 767px) {
+	.home-r3{
+		.products{
+			.item{
+				&:nth-child(2){flex-direction:column-reverse}
+			}		
+		}
+	}
+	.home-r4{
+		.row-item{
+			.w-50{width: 100% !important}
+			img{aspect-ratio: 343 / 317}
+		}
+		.text-box{max-width: 100%;padding: 32px 16px;}
+	}
+	.main-footer{padding: 30px 4px;
+		p{font-size: 8px;letter-spacing: 1.68px}
+		a{font-size: 9px;letter-spacing: 1.68px}
+		.container{
+			>.d-flex{row-gap: 30px}
+			.box{row-gap: 5px !important;
+				&:last-child{
+					p.text-white{font-size: 9.5px}
+					strong{font-size: 17px;}
+				}
+			}
+		}
+	}
+	.bottom-nav ul a{font-size: 10px;}
 } // end 768px
 
 @media only screen and (max-width: 576px) {
- 
+ .page-title-box{background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/bg-inquiry-mobile.jpg) no-repeat center;background-size: cover;}
+ .inquiry-wp{
+ 	.map-wp{min-width: inherit;}
+ }
+
+ .mem-r-1{
+ 	.left .box{row-gap: 10px;
+	 	strong{font-size: 25px;line-height: 40px;}
+	 	p{max-width: 100%;line-height: 14px;}
+	}
+	.right{
+		.item{width: 100%;
+			&:first-child{margin-bottom: 32px;}
+			.group-action-btn .btn{width: 100%}
+			.title{font-size: 25px;margin-bottom: 10px}
+			.description{font-size: 12px;}
+			>ul{row-gap: 10px !important;
+				li{
+					strong{font-size: 14px;margin-bottom: 5px;}
+					p{font-size: 10px}
+				}
+			}
+		}
+	}
+ }
+ .card-infor{flex-direction: column;row-gap: 30px}
 }//end 576px
