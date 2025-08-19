@@ -22,7 +22,11 @@ get_header(); ?>
 			</div>
 		</div>
 		<div class="gallery flex-shrink-0">
-			<img src="<?= THEME_URL."/assets/images/demo/Frame-17.jpg" ?>" alt="All that Honors Club">
+			<div class="images position-relative type-1">
+				<img id="first" src="<?= THEME_URL."/assets/images/demo/home-1.jpg" ?>" alt="">				
+				<img id="second" src="<?= THEME_URL."/assets/images/demo/home-2.jpg" ?>" alt="">				
+				<img id="third" src="<?= THEME_URL."/assets/images/demo/home-3.jpg" ?>" alt="">				
+			</div>	
 		</div>
 	</div>
 </section>
@@ -187,6 +191,26 @@ get_header(); ?>
 	        });
 
 	    });
+
+	    var currentIndex = 1;
+		var totalSlides = 3;
+		var autoPlayDelay = 3000; 
+		var reverse = true; // true = cung chieu, false = nguoc chieu
+		var $image = $(".gallery .images");
+
+		setInterval(function(){
+		    if (reverse) {
+		        currentIndex--;
+		        if (currentIndex < 1) currentIndex = totalSlides;
+		    } else {
+		        currentIndex++;
+		        if (currentIndex > totalSlides) currentIndex = 1;
+		    }
+		    $image.removeClass(function (index, className) {
+		        return (className.match(/(^|\s)type-\d+/g) || []).join(' ');
+		    });
+		    $image.addClass("type-" + currentIndex);
+		}, autoPlayDelay);
 	});//end ready
 </script>
 <?php

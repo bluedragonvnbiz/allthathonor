@@ -1,7 +1,7 @@
 <?php 
 get_header(); ?>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-<div class="title-box px-3 d-flex align-items-center justify-content-center">
+<div class="page-title-box px-3 d-flex align-items-center justify-content-center">
 	<h1 class="mb-0 title">고객 문의</h1>
 </div>
 <section class="home-section">

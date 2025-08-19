@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');
 @import url('https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css');
-
+@mixin translate3d($x, $y, $z) {
+  -webkit-transform: translate3d($x, $y, $z);
+  transform: translate3d($x, $y, $z);
+}
 :root{
 	--text-color:#1C1C1C;
 	--bs-link-color-rgb:28,28,28;
@@ -85,6 +88,47 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		}
 		strong{font-family: var(--font-secondary);font-size: 45px;line-height: 55px;}
 	}
+	.gallery{min-width: 571px;min-height: 537px;
+		.images{
+			img{position: absolute;-webkit-transition: all .5s; transition: all .5s;
+				&:first-child{z-index: 3;
+					@include translate3d(255px, 80px, 0px);
+				}
+				&:nth-child(2){z-index: 2;
+					@include translate3d(54px, 0px, 0px);
+				}
+				&:nth-child(3){z-index: 1;
+					@include translate3d(0, 250px, 0px);
+				}
+			}
+			&.type-2{
+				img{
+					&:first-child{z-index: 2;
+						@include translate3d(135px, 0px, 0px);
+					}
+					&:nth-child(2){z-index: 1;
+						@include translate3d(0px, 121px, 0px);
+					}
+					&:nth-child(3){z-index: 3;
+						@include translate3d(165px, 200px, 0px);
+					}
+				}
+			}
+			&.type-3{
+				img{
+					&:first-child{z-index: 1;
+						@include translate3d(0px, 121px, 0px);
+					}
+					&:nth-child(2){z-index: 3;
+						@include translate3d(255px, 80px, 0px);
+					}
+					&:nth-child(3){z-index: 2;
+						@include translate3d(54px, 0px, 0px);
+					}
+				}
+			}
+		}
+	}
 }
 .home-r2{background-color: #1C1C1C;color: #EEEEEE;
 	.left{width: 48%;display: flex;flex-wrap: wrap;
@@ -147,7 +191,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		a{font-size: 16px;line-height: 15.68px;letter-spacing: -0.31px;color: white;}
 	}
 }
-.title-box{min-height: 320px;background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/bg-inquiry.jpg) no-repeat center; background-size: cover;
+.page-title-box{min-height: 320px;background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/bg-inquiry.jpg) no-repeat center; background-size: cover;
 	.title{font-size: 80px;line-height: 80.5px;color: white;font-weight: 400}
 }
 .inquiry-wp{column-gap: 64px;
