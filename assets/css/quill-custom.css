@@ -1,0 +1,47 @@
+/* Custom Quill.js Editor Styling - Match TinyMCE Design */
+
+/* Main container - no border */
+.ql-container.ql-snow {
+    border: none !important;
+    background: #fff !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+}
+
+/* Toolbar styling - white background with only bottom border */
+.ql-toolbar.ql-snow {
+    border: none !important;
+    border-bottom: 1px solid #ddd !important;
+    background: #fff !important;
+    padding: 8px 12px !important;
+}
+
+/* Editor content area - white background, no border */
+.ql-editor {
+    min-height: 200px !important;
+    padding: 16px !important;
+    background: #fff !important;
+    border: none !important;
+}
+
+/* Placeholder text */
+.ql-editor.ql-blank::before {
+    color: #6c757d !important;
+    font-style: italic !important;
+    font-size: 14px !important;
+}
+
+/* Submit button validation styles */
+.product-form button[type="submit"]:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+}
+
+.product-form button[type="submit"]:not(:disabled) {
+    opacity: 1 !important;
+    cursor: pointer !important;
+}
+
