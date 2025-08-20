@@ -15,7 +15,7 @@ if ( is_user_logged_in() ) {
     <div class="login-form-container">
         <div class="logo-section">
             <div class="logo">
-                <img src="<?php echo THEME_URL; ?>/assets/images/logo-black.svg" alt="HONORS CLUB" class="logo-image">
+                <img src="<?php echo THEME_URL; ?>/assets/images/logo-admin.svg" alt="HONORS CLUB" class="logo-image">
             </div>
         </div>
         
