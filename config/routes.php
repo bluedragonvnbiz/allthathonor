@@ -1,0 +1,29 @@
+<?php
+/**
+ * Routes Configuration
+ * Using wp_route() helper function for fluent route definition
+ */
+// Define routes using wp_route() helper
+
+// Home page
+wp_route('home')->action('index@HomeController')->register();
+
+// Inquiry pages
+wp_route('inquiry')->action('index@InquiryController')->register();
+
+// Membership pages
+wp_route('membership')->action('index@MembershipController')->register();
+
+// Auth pages
+wp_route('login')->action('login@AccountController')->register();
+
+// Section management page
+wp_route('management')->action('index@ManagementController')->admin()->register();
+wp_route('management/edit')->action('edit@ManagementController')->admin()->register();
+
+// Product management page
+wp_route('product')->action('index@ProductController')->admin()->register();
+wp_route('product/add')->action('add@ProductController')->admin()->register();
+wp_route('product/edit')->action('edit@ProductController')->admin()->register();
+wp_route('product/view')->action('view@ProductController')->admin()->register();
+
