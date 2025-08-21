@@ -44,10 +44,18 @@ if ($exposureStatus === 'expose'): ?>
 						</div>
 					</div>
 				</div>
-				<img src="<?= THEME_URL."/assets/images/demo/voucher-1.jpg" ?>" class="w-50 object-fit-cover">
+				<?php if (!empty($contentInfo['content_voucher_1_image'])): ?>
+					<img src="<?= $contentInfo['content_voucher_1_image'] ?>" class="w-50 object-fit-cover">
+				<?php else: ?>
+					<img src="<?= THEME_URL."/assets/images/demo/voucher-1.jpg" ?>" class="w-50 object-fit-cover">
+				<?php endif; ?>
 			</div>
 			<div class="row-item d-flex flex-column-reverse flex-md-row">
-				<img src="<?= THEME_URL."/assets/images/demo/voucher-2.jpg" ?>" class="w-50 object-fit-cover">
+				<?php if (!empty($contentInfo['content_voucher_2_image'])): ?>
+					<img src="<?= $contentInfo['content_voucher_2_image'] ?>" class="w-50 object-fit-cover">
+				<?php else: ?>
+					<img src="<?= THEME_URL."/assets/images/demo/voucher-2.jpg" ?>" class="w-50 object-fit-cover">
+				<?php endif; ?>
 				<div class="w-50 d-flex align-items-center justify-content-center bg-white">
 					<div class="text-box">
 						<p class="title">Event Invitation</p>
