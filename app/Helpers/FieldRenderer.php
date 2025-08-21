@@ -20,7 +20,15 @@ class FieldRenderer {
      */
     public function renderSection($sectionConfig, $sectionData = [], $sectionKey = '') {
         $html = '';
-        
+        $oneSubmit = isset($sectionConfig['one_submit']) && $sectionConfig['one_submit'];
+        if ($oneSubmit) {
+            $html .= '<style>
+                .section-form .card-header .btn[type="submit"] {
+                    display: none !important;
+                }
+            </style>';
+        }
+
         // Render Section Info block
         if (isset($sectionConfig['section_info'])) {
             $html .= $this->renderFormBlock($sectionConfig['section_info'], $sectionData, 'section', $sectionKey . '_section_info');
@@ -29,6 +37,16 @@ class FieldRenderer {
         // Render Content Info block
         if (isset($sectionConfig['content_info'])) {
             $html .= $this->renderFormBlock($sectionConfig['content_info'], $sectionData, 'content', $sectionKey . '_content_info');
+        }
+
+        if ($oneSubmit) {
+            $html .= '<div class="card-footer d-flex justify-content-end mb-4">';
+            if($sectionData['id']) {
+                $html .= '<input type="hidden" name="voucher_id" value="' . $sectionData['id'] . '">';
+            }
+            $html .= '<button type="submit" class="btn btn-primary btn-submit-voucher">저장</button>';
+            $html .= '</div>';
+            $html .= '</form>';
         }
         
         return $html;
@@ -306,6 +324,9 @@ class FieldRenderer {
                 return $this->renderDisplayText($field, $value, $name, $isTwoColumnLayout);
             case 'html':
                 return $this->renderHtml($field, $value, $name, $isTwoColumnLayout);
+            case (preg_match('/^search_/', $field['type']) ? $field['type'] : null):
+                $id_value = $data[$type . '_info'][$name . '_id'] ?? '';
+                return $this->renderSearch($field, $value, $name, $isTwoColumnLayout, $id_value);
             case 'editor':
                 return $this->renderRichTextEditor($field, $value, $name, $isTwoColumnLayout);
             case 'field_group':
@@ -463,7 +484,18 @@ class FieldRenderer {
             <div class="d-flex gap-20">';
         
         foreach ($field['options'] as $optionValue => $optionLabel) {
-            $checked = in_array($optionValue, (array)$value) ? 'checked' : '';
+            // Handle comma-separated string values for checkbox arrays
+            $checked = '';
+            if (!empty($value)) {
+                if (is_string($value) && strpos($value, ',') !== false) {
+                    // Split comma-separated string into array
+                    $valueArray = array_map('trim', explode(',', $value));
+                    $checked = in_array($optionValue, $valueArray) ? 'checked' : '';
+                } else {
+                    $checked = in_array($optionValue, (array)$value) ? 'checked' : '';
+                }
+            }
+            
             $disabled = '';
             
             // Check if field is disabled (for view mode)
@@ -599,6 +631,7 @@ class FieldRenderer {
             case 'text':
             case 'text_group':
             case 'textarea':
+            case (preg_match('/^search_/', $field['type']) ? $field['type'] : null):
             case 'select':
             case 'image':
             case 'editor':
@@ -700,6 +733,29 @@ class FieldRenderer {
             }
 
             return '<div class="d-flex gap-40">' . $content . '</div>';            
+        }
+        
+        return $content;
+    }
+    
+    /**
+     * Render search field with AJAX functionality
+     */
+    private function renderSearch($field, $value, $name, $isTwoColumnLayout = false, $id_value = '') {
+        $placeholder = isset($field['placeholder']) ? $field['placeholder'] : '검색어를 입력하세요...';
+        $gap = isset($field['gap']) ? $field['gap'] : 'gap-40';
+
+        
+        $content = '<label class="form-label">' . $field['label'] . '</label>
+            <div class="search-container w-100">
+                <input type="text" class="form-control search-input" search-type="' . $field['type'] . '" name="' . $name . '" 
+                       value="' . htmlspecialchars($value) . '" placeholder="' . $placeholder . '" autocomplete="off">
+                <input type="hidden" name="' . $name . '_id" value="' . htmlspecialchars($id_value) . '" title="' . htmlspecialchars($value) . '">
+                <div class="search-results" style="display: none;"></div>
+            </div>';
+
+        if (!$isTwoColumnLayout) {
+            return '<div class="d-flex ' . $gap . ' align-items-center">' . $content . '</div>';
         }
         
         return $content;

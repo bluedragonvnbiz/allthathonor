@@ -74,11 +74,13 @@ class SectionDatabase {
 
     /**
      * Drop table on theme deactivation
+     * Note: We don't actually drop the table to preserve data
      */
     public static function dropTable() {
-        global $wpdb;
-        $table_name = $wpdb->prefix . self::$table_name;
-        $wpdb->query("DROP TABLE IF EXISTS $table_name");
+        // Do nothing - preserve section data when switching themes
+        // global $wpdb;
+        // $table_name = $wpdb->prefix . self::$table_name;
+        // $wpdb->query("DROP TABLE IF EXISTS $table_name");
     }
 
     /**

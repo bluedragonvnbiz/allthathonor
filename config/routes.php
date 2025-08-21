@@ -27,3 +27,9 @@ wp_route('product/add')->action('add@ProductController')->admin()->register();
 wp_route('product/edit')->action('edit@ProductController')->admin()->register();
 wp_route('product/view')->action('view@ProductController')->admin()->register();
 
+// Voucher management page
+wp_route('voucher')->action('index@VoucherController')->admin()->register();
+wp_route('voucher/add')->action('add@VoucherController')->admin()->register();
+wp_route('voucher/edit')->action('edit@VoucherController')->admin()->register();
+wp_route('voucher/view')->action('view@VoucherController')->admin()->register();
+

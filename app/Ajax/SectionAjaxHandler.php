@@ -33,10 +33,7 @@ class SectionAjaxHandler {
         $parsed = $this->parseSectionKey($fullSectionKey);
         $sectionKey = $parsed['section'];
         $formType = !empty($blockType) ? $blockType : $parsed['form_type']; // Use block type if available
-        
-        // Debug: Log the parameters
-        error_log("AJAX Debug - fullSectionKey: {$fullSectionKey}, blockType: {$blockType}, formType: {$formType}");
-        
+  
         // Get all POST data except action, nonce, section, section_page, block
         $data = [];
         foreach ($_POST as $key => $value) {

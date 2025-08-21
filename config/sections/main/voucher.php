@@ -79,7 +79,7 @@ return [
                     ],
                     [
                         'key' => 'voucher_1_title',
-                        'type' => 'text',
+                        'type' => 'search_name_voucher:voucher',
                         'label' => '연결 혜택/바우처',
                         'full_width' => true,
                         'default' => 'Healthcare and DNA'
@@ -110,7 +110,7 @@ return [
                     ],
                     [
                         'key' => 'voucher_2_title',
-                        'type' => 'text',
+                        'type' => 'search_name_voucher:event_invitation',
                         'label' => '연결 혜택/바우처',
                         'full_width' => true,
                         'default' => 'VIP INVITATION'

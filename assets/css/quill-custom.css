@@ -33,14 +33,14 @@
 }
 
 /* Submit button validation styles */
-.product-form button[type="submit"]:disabled {
+.card-footer button[type="submit"]:disabled {
     opacity: 0.5 !important;
     cursor: not-allowed !important;
     background-color: #6c757d !important;
     border-color: #6c757d !important;
 }
 
-.product-form button[type="submit"]:not(:disabled) {
+.card-footer button[type="submit"]:not(:disabled) {
     opacity: 1 !important;
     cursor: pointer !important;
 }
