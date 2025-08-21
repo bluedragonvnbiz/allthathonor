@@ -61,12 +61,14 @@ class ManagementController extends BaseController {
 
         // Register CSS files for management page
         $this->view->addCSS([
-            'pages/management'
+            'pages/management',
+            'search-field'
         ]);
 
         // Register JS files for management page
         $this->view->addJS([
-            'section-form'
+            'section-form',
+            'search-field'
         ]);
         
         // Enqueue WordPress Media Library

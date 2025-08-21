@@ -15,8 +15,7 @@ class ProductAjaxHandler {
         add_action('wp_ajax_nopriv_delete_product', [$this, 'deleteProduct']);
         add_action('wp_ajax_get_product', [$this, 'getProduct']);
         add_action('wp_ajax_nopriv_get_product', [$this, 'getProduct']);
-        add_action('wp_ajax_get_attachment_id_by_url', [$this, 'getAttachmentIdByUrl']);
-        add_action('wp_ajax_nopriv_get_attachment_id_by_url', [$this, 'getAttachmentIdByUrl']);
+
     }
     
     /**
@@ -161,40 +160,7 @@ class ProductAjaxHandler {
         }
     }
     
-    /**
-     * Handle get attachment ID by URL AJAX request
-     */
-    public function getAttachmentIdByUrl() {
-        // Verify nonce for security
-        if (!wp_verify_nonce($_POST['nonce'], 'product_nonce')) {
-            wp_send_json_error(['message' => 'Security check failed']);
-            return;
-        }
-        
-        $url = sanitize_url($_POST['url']);
-        
-        if (!$url) {
-            wp_send_json_error(['message' => 'URL is required']);
-            return;
-        }
-        
-        global $wpdb;
-        
-        $attachment_id = $wpdb->get_var($wpdb->prepare(
-            "SELECT ID FROM $wpdb->posts WHERE guid = %s AND post_type = 'attachment'",
-            $url
-        ));
-        
-        if ($attachment_id) {
-            wp_send_json_success([
-                'attachment_id' => (int) $attachment_id
-            ]);
-        } else {
-            wp_send_json_error([
-                'message' => 'Attachment not found'
-            ]);
-        }
-    }
+
     
     /**
      * Sanitize product data

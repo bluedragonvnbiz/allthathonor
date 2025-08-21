@@ -6,4 +6,5 @@ return array (
   'ManagementController' => '/app/Controllers/ManagementController.php',
   'MembershipController' => '/app/Controllers/MembershipController.php',
   'ProductController' => '/app/Controllers/ProductController.php',
+  'VoucherController' => '/app/Controllers/VoucherController.php',
 );

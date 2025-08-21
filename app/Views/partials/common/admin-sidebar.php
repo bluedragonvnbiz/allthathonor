@@ -50,7 +50,7 @@ $adminMenus = [
                 'active_patterns' => ['/membership', '/membership/']
             ],
             [
-                'url' => '#',
+                'url' => '/voucher',
                 'icon' => 'icon-admin-menu-6.svg',
                 'text' => '혜택/바우처 관리',
                 'active_patterns' => ['/voucher', '/benefits']
