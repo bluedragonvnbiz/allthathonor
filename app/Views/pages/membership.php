@@ -73,7 +73,9 @@
 <section class="home-section bg-gold">
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
-			<img src="<?= THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
+			<div class="left">
+				<img src="<?= THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
+			</div>
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
 				<p class="card-name mb-3">Signature</p>
@@ -269,7 +271,7 @@
 <section class="home-section">
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
-			<img src="<?= THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club">
+			<div class="left"><img src="<?= THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club"></div>
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
 				<p class="card-name mb-3">Prime</p>

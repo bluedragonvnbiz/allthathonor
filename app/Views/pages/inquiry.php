@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-<div class="page-title-box px-3 d-flex align-items-center justify-content-center" style="background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(<?php echo THEME_URL; ?>/assets/images/bg-inquiry.jpg) no-repeat center;">
+<div class="page-title-box px-3 d-flex align-items-center justify-content-center">
 	<h1 class="mb-0 title">고객 문의</h1>
 </div>
 <section class="home-section">
@@ -26,7 +26,7 @@
 					</div>					
 				</div>
 				<div class="mb-32">
-					<label class="form-label">법인명 **없을 경우 이름 작성**</label>
+					<label class="form-label">법인명 <span>**없을 경우 이름 작성**</span></label>
 					<input type="text" class="form-control" name="corporate_name" required>
 				</div>
 				<div class="mb-32">
