@@ -44,10 +44,10 @@ $adminMenus = [
         'title' => '멤버십',
         'items' => [
             [
-                'url' => '#',
+                'url' => '/management/membership',
                 'icon' => 'icon-admin-menu-5.svg',
                 'text' => '멤버십 관리',
-                'active_patterns' => ['/membership', '/membership/']
+                'active_patterns' => ['/management/membership', '/management/membership/']
             ],
             [
                 'url' => '/voucher',

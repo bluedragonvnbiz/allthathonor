@@ -514,13 +514,14 @@ class VoucherService {
     /**
      * Get vouchers by category
      */
-    public function getVouchersByCategory(string $category): array {
+    public function getVouchersByCategory(string $category, string $status = 'expose'): array {
         global $wpdb;
         $table_name = VoucherDatabase::getTableName();
         
         $results = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE category LIKE %s ORDER BY created_at DESC",
-            '%' . $wpdb->esc_like($category) . '%'
+            "SELECT * FROM $table_name WHERE category LIKE %s AND status = %s ORDER BY created_at DESC",
+            '%' . $wpdb->esc_like($category) . '%',
+            $status
         ));
         
         return array_map(function($result) {

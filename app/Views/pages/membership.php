@@ -1,99 +1,117 @@
+<?php
+use App\Services\MembershipService;
+use App\Services\VoucherService;
+
+$sectionInfo = $sectionData['section_info'] ?? [];
+$contentInfo = $sectionData['content_info'] ?? [];
+
+$exposureStatus = $sectionInfo['section_exposure_status'] ?? 'hide';
+
+if ($exposureStatus === 'expose'):
+?>
+
 <section class="home-section mem-r-1 home-r1">
 	<div class="container">
 		<div class="d-xl-flex">
 			<div class="left d-flex align-items-center justify-content-center w-100">
 				<div class="box align-items-center d-flex flex-column text-center">
-					<p class="mb-0 text-uppercase">our membership</p>
-					<strong class="text-nowrap fw-normal">The Heritage<br>Travel Club</strong>
+					<p class="mb-0 text-uppercase"><?= $contentInfo['content_top_phrase'] ?></p>
+					<strong class="fw-normal"><?= $contentInfo['content_main_title'] ?></strong>
 					<p class="mb-0 text-center">
-						Vivamus volutpat eros pulvinar velit laoreet, sit amet egestas erat dignissim. Sed quis rutrum tellus, sit amet viverra felis. Cras sagittis sem sit amet urna feugiat rutrum. Nam nulla ipsum, venenatis malesuada felis.
+						<?= $contentInfo['content_description'] ?>
 					</p>
 				</div>
 			</div>		
-			<div class="right d-md-flex column-gap-4">
+	<?php
+// Get memberships from database
+$membershipService = new MembershipService();
+$memberships = $membershipService->getExposedMemberships();
+
+// Get voucher service for summary benefits
+$voucherService = new VoucherService();
+?>
+
+		<div class="right d-md-flex column-gap-4">
+			<?php foreach ($memberships as $membership): ?>
+				<?php 
+				// Get summary benefits for this membership
+				$summaryBenefits = [];
+				$categoryFields = ['travel_care_vouchers', 'lifestyle_vouchers', 'special_benefit_vouchers', 'welcome_gift_vouchers'];
+				
+				foreach ($categoryFields as $field) {
+					if (!empty($membership[$field])) {
+						foreach ($membership[$field] as $voucherData) {
+							if ($voucherData['is_summary'] ?? false) {
+								$voucher = $voucherService->getVoucher($voucherData['id']);
+								if ($voucher) {
+									$summaryBenefits[] = $voucher;
+								}
+							}
+						}
+					}
+				}
+				
+				// Limit to 3 summary benefits
+				$summaryBenefits = array_slice($summaryBenefits, 0, 3);
+				?>
 				<div class="item">
-					<p class="title">SIGNATURE</p>
-					<p class="description mb-2">전 여정 엄선된 맞춤형 서비스를 제공</p>
+					<p class="title"><?= esc_html($membership['membership_name']) ?></p>
+					<p class="description mb-2"><?= esc_html($membership['top_phrase']) ?></p>
 					<div class="price-box d-flex align-items-end column-gap-2 mb-32">
-						<strong>10,000,000원</strong>
+						<strong><?= number_format($membership['sale_price']) ?>원</strong>
 						<span>세금 별도</span>
 					</div>
-					<img src="<?= THEME_URL."/assets/images/signature-card.png" ?>" alt="All that Honors Club" class="mb-32">
+					<?php if (!empty($membership['image'])): ?>
+						<img src="<?= esc_url($membership['image']) ?>" alt="<?= esc_attr($membership['membership_name']) ?>" class="mb-32">
+					<?php else: ?>
+						<img src="<?= THEME_URL."/assets/images/".strtolower($membership['membership_name'])."-card.png" ?>" alt="<?= esc_attr($membership['membership_name']) ?>" class="mb-32">
+					<?php endif; ?>
 					<div class="group-action-btn mb-32 d-flex column-gap-2">
 						<a href="#" class="btn btn-outline-primary fw-medium">Learn More</a>
 						<button class="btn btn-primary fw-medium" type="button">Contact</button>
 					</div>
 					<ul class="list-unstyled mb-0 d-flex flex-column row-gap-3">
-						<li>
-							<strong>BENEFIT 1</strong>
-							<p>tVivamus volutpat eros pulvinar v</p>
-						</li>
-						<li>
-							<strong>BENEFIT 2</strong>
-							<p>tVivamus volutpat eros pulvinar v</p>
-						</li>
-						<li>
-							<strong>BENEFIT 3</strong>
-							<p>tVivamus volutpat eros pulvinar v</p>
-						</li>
+						<?php foreach ($summaryBenefits as $index => $benefit): ?>
+							<li>
+								<strong><?= $benefit['name'] ?></strong>
+								<p><?= esc_html($benefit['short_description']) ?></p>
+							</li>
+						<?php endforeach; ?>
 					</ul>
 				</div>
-				<div class="item">
-					<p class="title">PRIME</p>
-					<p class="description mb-2">핵심 혜택 중심의 실속형 패키지</p>
-					<div class="price-box d-flex align-items-end column-gap-2 mb-32">
-						<strong>5,000,000원</strong>
-						<span>세금 별도</span>
-					</div>
-					<img src="<?= THEME_URL."/assets/images/prime-card.png" ?>" alt="All that Honors Club" class="mb-32">
-					<div class="group-action-btn mb-32 d-flex column-gap-2">
-						<a href="#" class="btn btn-outline-primary fw-medium">Learn More</a>
-						<button class="btn btn-primary fw-medium" type="button">Contact</button>
-					</div>
-					<ul class="list-unstyled mb-0 d-flex flex-column row-gap-3">
-						<li>
-							<strong>BENEFIT 1</strong>
-							<p>tVivamus volutpat eros pulvinar v tVivamus volutpat eros pulvinar v  tVivamus volutpat eros pulvinar v</p>
-						</li>
-						<li>
-							<strong>BENEFIT 2</strong>
-							<p>tVivamus volutpat eros pulvinar v</p>
-						</li>
-						<li>
-							<strong>BENEFIT 3</strong>
-							<p>tVivamus volutpat eros pulvinar v</p>
-						</li>
-					</ul>
-				</div>
-			</div>
+			<?php endforeach; ?>
+		</div>
 		</div>
 	</div>
 </section>
+<?php endif; ?>
 
 <section class="home-section bg-gold">
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
+			<?php if (!empty($memberships[0])): $signature = $memberships[0]; ?>
 			<img src="<?= THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
-				<p class="card-name mb-3">Signature</p>
-				<p class="mb-32">전담 매니저를 상시 배정하여 전 여정 엄선된 맞춤형 서비스를 제공</p>
+				<p class="card-name mb-3"><?= esc_html($signature['membership_name']) ?></p>
+				<p class="mb-32"><?= esc_html($signature['top_phrase']) ?></p>
 				<hr class="mt-0 mb-32">
 				<ul class="mb-0 list-unstyled d-flex flex-column row-gap-2">
 					<li>
-						<strong>카드 연회비</strong>
-						<span>10,000,000원 (세금 별도)</span>
-					</li>
-					<li>
-						<strong>이용 기간</strong>
-						<span>가입 후 서비스 시작일로부터 1년</span>
-					</li>
-					<li>
-						<strong>가입문의</strong>
-						<span>02-1234-5678 혹은 웹사이트 1:1 문의</span>
-					</li>
+                        <strong>카드 연회비</strong>
+                        <span><?= number_format($signature['sale_price']) ?>원 (세금 별도)</span>
+                    </li>
+                    <li>
+                        <strong>이용 기간</strong>
+                        <span>가입 후 서비스 시작일로부터 1년</span>
+                    </li>
+                    <li>
+                        <strong>가입문의</strong>
+                        <span>02-1234-5678 혹은 웹사이트 1:1 문의</span>
+                    </li>
 				</ul>
 			</div>
+			<?php endif; ?>
 		</div>
 		
 		<!-- Signature Card Tabs -->
@@ -154,33 +172,77 @@
 					<div class="item">
 						<div class="left">Travel<br>Care</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['travel_care_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($signature['travel_care_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
 						<div class="left">special<br>benefit</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['special_benefit_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($signature['special_benefit_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
 						<div class="left">lifestyle<br>care</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['lifestyle_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($signature['lifestyle_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
 						<div class="left">welcome<br>gift</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['welcome_gift_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($signature['welcome_gift_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 				</div>
@@ -190,28 +252,25 @@
 					<div class="item">
 						<div class="left">제공 혜택</div>
 						<div class="right">
-							<div>
-								<p>tVivamus volutpat eros pulvinar v</p>
-								<span>해당 혜택에 대한 부가 설명입니다.</span>
-							</div>
-							<div>
-								<p>tVivamus volutpat eros pulvinar v</p>
-								<span>해당 혜택에 대한 부가 설명입니다.</span>
-							</div>
-							<div>
-								<p>tVivamus volutpat eros pulvinar v</p>
-								<span>해당 혜택에 대한 부가 설명입니다.</span>
-							</div>
+							<?php 
+							if (!empty($signature['travel_care_vouchers'])) {
+								foreach ($signature['travel_care_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<div><p>' . esc_html($voucher['name']) . '</p><span>' . esc_html($voucher['short_description']) . '</span></div>';
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
-						<div class="left">이용안내</div>
+						<div class="left">이용 안내</div>
 						<div class="right">
-							<ul>
-								<li>tVivamus volutpat eros pulvinar v</li>
-								<li>tVivamus volutpat eros pulvinar v</li>
-								<li>tVivamus volutpat eros pulvinar v</li>
-							</ul>
+							<?php 
+							$usageGuide = $signature['travel_care_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -219,11 +278,27 @@
 			<div class="tab-pane fade" id="card-tab-2_1" role="tabpanel">
 				<div class="list">
 					<div class="item">
-						<div class="left">Special Benefit</div>
+						<div class="left">제공 혜택</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['special_benefit_vouchers'])) {
+								foreach ($signature['special_benefit_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+									}
+								}
+							}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">이용 안내</div>
+						<div class="right">
+							<?php 
+							$usageGuide = $signature['special_benefit_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -231,11 +306,27 @@
 			<div class="tab-pane fade" id="card-tab-3_1" role="tabpanel">
 				<div class="list">
 					<div class="item">
-						<div class="left">Lifestyle Care</div>
+						<div class="left">제공 혜택</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['lifestyle_vouchers'])) {
+								foreach ($signature['lifestyle_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+									}
+								}
+							}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">이용 안내</div>
+						<div class="right">
+							<?php 
+							$usageGuide = $signature['lifestyle_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -243,11 +334,27 @@
 			<div class="tab-pane fade" id="card-tab-4_1" role="tabpanel">
 				<div class="list">
 					<div class="item">
-						<div class="left">Welcome Gift</div>
+						<div class="left">제공 혜택</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($signature['welcome_gift_vouchers'])) {
+								foreach ($signature['welcome_gift_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+									}
+								}
+							}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">이용 안내</div>
+						<div class="right">
+							<?php 
+							$usageGuide = $signature['welcome_gift_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -257,9 +364,10 @@
 		<div class="note-box mb-64">
 			<strong class="title">유의사항</strong>
 			<ul class="mb-0">
-				<li>tVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva</li>
-				<li>tVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva nar vtVivamus volutpat eros pulvinar vtViva</li>
-				<li>tVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva ar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva</li>
+				<?php 
+				$notes = $signature['notes'] ?? '';
+				echo htmlspecialchars($notes);
+				?>
 			</ul>
 		</div>
 		<div class="text-center"><a href="#" class="btn btn-dark btn-lg fw-medium">Contact</a></div>
@@ -269,27 +377,29 @@
 <section class="home-section">
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
+			<?php if (!empty($memberships[1])): $prime = $memberships[1]; ?>
 			<img src="<?= THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club">
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
-				<p class="card-name mb-3">Prime</p>
-				<p class="mb-32">핵심 혜택 중심의 실속형 패키지를 제공</p>
+				<p class="card-name mb-3"><?= esc_html($prime['membership_name']) ?></p>
+				<p class="mb-32"><?= esc_html($prime['top_phrase']) ?></p>
 				<hr class="mt-0 mb-32">
 				<ul class="mb-0 list-unstyled d-flex flex-column row-gap-2">
 					<li>
-						<strong>카드 연회비</strong>
-						<span>5,000,000원 (세금 별도)</span>
-					</li>
-					<li>
-						<strong>이용 기간</strong>
-						<span>가입 후 서비스 시작일로부터 1년</span>
-					</li>
-					<li>
-						<strong>가입문의</strong>
-						<span>02-1234-5678 혹은 웹사이트 1:1 문의</span>
-					</li>
+                        <strong>카드 연회비</strong>
+                        <span><?= number_format($prime['sale_price']) ?>원 (세금 별도)</span>
+                    </li>
+                    <li>
+                        <strong>이용 기간</strong>
+                        <span>가입 후 서비스 시작일로부터 1년</span>
+                    </li>
+                    <li>
+                        <strong>가입문의</strong>
+                        <span>02-1234-5678 혹은 웹사이트 1:1 문의</span>
+                    </li>
 				</ul>
 			</div>
+			<?php endif; ?>
 		</div>
 		
 		<!-- Prime Card Tabs -->
@@ -350,33 +460,77 @@
 					<div class="item">
 						<div class="left">Travel<br>Care</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['travel_care_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($prime['travel_care_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
 						<div class="left">special<br>benefit</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['special_benefit_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($prime['special_benefit_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
 						<div class="left">lifestyle<br>care</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['lifestyle_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($prime['lifestyle_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
 						<div class="left">welcome<br>gift</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['welcome_gift_vouchers'])) {
+								$summaryCount = 0;
+								foreach ($prime['welcome_gift_vouchers'] as $voucherData) {
+									if (($voucherData['is_summary'] ?? false) && $summaryCount < 3) {
+										$voucher = $voucherService->getVoucher($voucherData['id']);
+										if ($voucher) {
+											echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+											$summaryCount++;
+										}
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 				</div>
@@ -386,28 +540,25 @@
 					<div class="item">
 						<div class="left">제공 혜택</div>
 						<div class="right">
-							<div>
-								<p>tVivamus volutpat eros pulvinar v</p>
-								<span>해당 혜택에 대한 부가 설명입니다.</span>
-							</div>
-							<div>
-								<p>tVivamus volutpat eros pulvinar v</p>
-								<span>해당 혜택에 대한 부가 설명입니다.</span>
-							</div>
-							<div>
-								<p>tVivamus volutpat eros pulvinar v</p>
-								<span>해당 혜택에 대한 부가 설명입니다.</span>
-							</div>
+							<?php 
+							if (!empty($prime['travel_care_vouchers'])) {
+								foreach ($prime['travel_care_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<div><p>' . esc_html($voucher['name']) . '</p><span>' . esc_html($voucher['short_description']) . '</span></div>';
+									}
+								}
+							}
+							?>
 						</div>
 					</div>
 					<div class="item">
-						<div class="left">이용안내</div>
+						<div class="left">이용 안내</div>
 						<div class="right">
-							<ul>
-								<li>tVivamus volutpat eros pulvinar v</li>
-								<li>tVivamus volutpat eros pulvinar v</li>
-								<li>tVivamus volutpat eros pulvinar v</li>
-							</ul>
+							<?php 
+							$usageGuide = $prime['travel_care_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -415,11 +566,27 @@
 			<div class="tab-pane fade" id="card-tab-2_2" role="tabpanel">
 				<div class="list">
 					<div class="item">
-						<div class="left">Special Benefit</div>
+						<div class="left">제공 혜택</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['special_benefit_vouchers'])) {
+								foreach ($prime['special_benefit_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+									}
+								}
+							}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">이용 안내</div>
+						<div class="right">
+							<?php 
+							$usageGuide = $prime['special_benefit_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -427,11 +594,27 @@
 			<div class="tab-pane fade" id="card-tab-3_2" role="tabpanel">
 				<div class="list">
 					<div class="item">
-						<div class="left">Lifestyle Care</div>
+						<div class="left">제공 혜택</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['lifestyle_vouchers'])) {
+								foreach ($prime['lifestyle_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+									}
+								}
+							}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">이용 안내</div>
+						<div class="right">
+							<?php 
+							$usageGuide = $prime['lifestyle_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -439,11 +622,27 @@
 			<div class="tab-pane fade" id="card-tab-4_2" role="tabpanel">
 				<div class="list">
 					<div class="item">
-						<div class="left">Welcome Gift</div>
+						<div class="left">제공 혜택</div>
 						<div class="right">
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
-							<strong>tVivamus volutpat eros pulvinar v</strong>
+							<?php 
+							if (!empty($prime['welcome_gift_vouchers'])) {
+								foreach ($prime['welcome_gift_vouchers'] as $voucherData) {
+									$voucher = $voucherService->getVoucher($voucherData['id']);
+									if ($voucher) {
+										echo '<strong>' . esc_html($voucher['name']) . '</strong>';
+									}
+								}
+							}
+							?>
+						</div>
+					</div>
+					<div class="item">
+						<div class="left">이용 안내</div>
+						<div class="right">
+							<?php 
+							$usageGuide = $prime['welcome_gift_usage_guide'] ?? '';
+							echo htmlspecialchars($usageGuide);
+							?>
 						</div>
 					</div>
 				</div>
@@ -453,9 +652,10 @@
 		<div class="note-box mb-64">
 			<strong class="title">유의사항</strong>
 			<ul class="mb-0">
-				<li>tVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva</li>
-				<li>tVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva nar vtVivamus volutpat eros pulvinar vtViva</li>
-				<li>tVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva ar vtVivamus volutpat eros pulvinar vtVivamus volutpat eros pulvinar vtViva</li>
+				<?php 
+				$notes = $prime['notes'] ?? '';
+				echo htmlspecialchars($notes);
+				?>
 			</ul>
 		</div>
 		<div class="text-center"><a href="#" class="btn btn-dark btn-lg fw-medium">Contact</a></div>

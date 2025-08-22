@@ -372,7 +372,7 @@ class FieldRenderer {
         $align = isset($field['align']) ? $field['align'] : 'align-items-start';
         
         $content = '<label class="form-label">' . $field['label'] . '</label>
-            <textarea class="form-control" name="' . $name . '" ' . $rows . ' ' . $style . ' placeholder="' . $placeholder . '">' . htmlspecialchars($value) . '</textarea>';
+            <textarea style="height: ' . $rows . 'em;" class="form-control" name="' . $name . '" rows="' . $rows . '" ' . $style . ' placeholder="' . $placeholder . '">' . htmlspecialchars($value) . '</textarea>';
 
         if (!$isTwoColumnLayout) {
             if (strpos($name, 'product_') !== false) {
