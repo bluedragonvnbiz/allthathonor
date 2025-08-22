@@ -26,7 +26,6 @@ class InquiryController extends BaseController {
 
         // Register JS files for home page
         $this->view->addJS([
-            'home',
             'inquiry-form'
         ]);
         
