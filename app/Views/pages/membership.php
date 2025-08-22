@@ -90,7 +90,9 @@ $voucherService = new VoucherService();
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
 			<?php if (!empty($memberships[0])): $signature = $memberships[0]; ?>
-			<img src="<?= THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
+			<div class="left">
+				<img src="<?= THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
+			</div>
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
 				<p class="card-name mb-3"><?= esc_html($signature['membership_name']) ?></p>
@@ -378,7 +380,7 @@ $voucherService = new VoucherService();
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
 			<?php if (!empty($memberships[1])): $prime = $memberships[1]; ?>
-			<img src="<?= THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club">
+			<div class="left"><img src="<?= THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club"></div>
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
 				<p class="card-name mb-3"><?= esc_html($prime['membership_name']) ?></p>
