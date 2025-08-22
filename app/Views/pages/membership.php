@@ -12,7 +12,7 @@ if ($exposureStatus === 'expose'):
 
 <section class="home-section mem-r-1 home-r1">
 	<div class="container">
-		<div class="d-xl-flex">
+		<div class="d-xl-flex" style="column-gap:51px">
 			<div class="left d-flex align-items-center justify-content-center w-100">
 				<div class="box align-items-center d-flex flex-column text-center">
 					<p class="mb-0 text-uppercase"><?= $contentInfo['content_top_phrase'] ?></p>
