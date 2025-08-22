@@ -44,9 +44,17 @@ class MembershipController extends BaseController {
     public function management() {
         $id = $this->getGet('id');
 
+        // Enqueue WordPress Media Library
+        wp_enqueue_media();
+
         // Register CSS files for membership management page
         $this->view->addCSS([
             'pages/management'
+        ]);
+
+        // Register JS files for membership management page
+        $this->view->addJS([
+            'membership-management'
         ]);
 
         if (empty($id)) {

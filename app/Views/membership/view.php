@@ -1,8 +1,10 @@
 <?= $formHtml ?>
 <form class="card">
+	<input type="hidden" name="nonce" value="<?= wp_create_nonce('update_section_nonce') ?>">
+	<input type="hidden" name="membership_id" value="<?= $card_info['id'] ?? '' ?>">
 	<div class="card-header d-flex align-items-center justify-content-between">
 		<strong class="title">혜택 정보</strong>
-		<button class="btn btn-primary lh-1" type="submit">저장</button>
+		<button class="btn btn-primary lh-1 btn-save-benefits" type="button">저장</button>
 	</div>
 	<div class="card-body p-0">
 		<div class="section-box">

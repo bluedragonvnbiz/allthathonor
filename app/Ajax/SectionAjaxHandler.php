@@ -9,8 +9,6 @@ class SectionAjaxHandler {
     public function __construct() {
         add_action('wp_ajax_update_section', [$this, 'updateSection']);
         add_action('wp_ajax_nopriv_update_section', [$this, 'updateSection']);
-        add_action('wp_ajax_get_attachment_id_by_url', [$this, 'getAttachmentIdByUrl']);
-        add_action('wp_ajax_nopriv_get_attachment_id_by_url', [$this, 'getAttachmentIdByUrl']);
         add_action('wp_ajax_get_edit_form', [$this, 'getEditForm']);
         add_action('wp_ajax_nopriv_get_edit_form', [$this, 'getEditForm']);
     }
@@ -134,58 +132,6 @@ class SectionAjaxHandler {
         }
         
         return $sanitized;
-    }
-    
-    /**
-     * Get attachment ID by URL
-     */
-    public function getAttachmentIdByUrl() {
-        // Verify nonce for security
-        if (!wp_verify_nonce($_POST['nonce'], 'update_section_nonce')) {
-            wp_send_json_error(['message' => 'Security check failed']);
-            return;
-        }
-        
-        $url = sanitize_url($_POST['url']);
-        
-        if (empty($url)) {
-            wp_send_json_error(['message' => 'URL is required']);
-            return;
-        }
-        
-        global $wpdb;
-        
-        // Get attachment ID by URL - try multiple approaches
-        $attachment_id = null;
-        
-        // Method 1: Try to get by guid
-        $attachment_id = $wpdb->get_var($wpdb->prepare(
-            "SELECT ID FROM {$wpdb->posts} WHERE guid = %s AND post_type = 'attachment'",
-            $url
-        ));
-        
-        // Method 2: If not found, try to get by meta value
-        if (!$attachment_id) {
-            $attachment_id = $wpdb->get_var($wpdb->prepare(
-                "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = '_wp_attached_file' AND meta_value LIKE %s",
-                '%' . basename($url)
-            ));
-        }
-        
-        // Method 3: If still not found, try to get by filename in guid
-        if (!$attachment_id) {
-            $filename = basename($url);
-            $attachment_id = $wpdb->get_var($wpdb->prepare(
-                "SELECT ID FROM {$wpdb->posts} WHERE guid LIKE %s AND post_type = 'attachment'",
-                '%' . $filename
-            ));
-        }
-        
-        if ($attachment_id) {
-            wp_send_json_success(['attachment_id' => (int)$attachment_id]);
-        } else {
-            wp_send_json_error(['message' => 'Attachment not found']);
-        }
     }
     
     /**
