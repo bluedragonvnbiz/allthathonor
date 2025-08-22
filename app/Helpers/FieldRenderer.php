@@ -185,6 +185,9 @@ class FieldRenderer {
         
         $html = '<form class="card ' . $form_class . '" data-section="' . $baseSectionKey . '" data-block="' . $blockType . '">';
         $html .= '<input type="hidden" name="nonce" value="' . $nonce . '">';
+        if($data['id']) {
+            $html .= '<input type="hidden" name="id" value="' . $data['id'] . '">';
+        }
         $html .= '<input type="hidden" name="action" value="update_section">';
         $html .= '<div class="card-header d-flex align-items-center justify-content-between">';
         $html .= '<strong class="title fw-bolder letter-spacing-1">' . $blockConfig['title'] . '</strong>';
@@ -718,7 +721,7 @@ class FieldRenderer {
                 }
                 break;
             default: // text
-                $content .= '<div class="content">' . htmlspecialchars($value) . '</div>';
+                $content .= '<div class="content">' . (is_numeric($value) ? number_format($value) : htmlspecialchars($value)) . '</div>';
                 break;
         }
         
