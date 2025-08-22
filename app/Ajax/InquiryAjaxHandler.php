@@ -8,6 +8,7 @@ class InquiryAjaxHandler {
     
     public function __construct() {
         error_log('InquiryAjaxHandler constructor called');
+        add_action('wp_ajax_submit_inquiry', [$this, 'submitInquiry']);
         add_action('wp_ajax_nopriv_submit_inquiry', [$this, 'submitInquiry']);
         add_action('wp_ajax_get_inquiry_categories', [$this, 'getInquiryCategories']);
         add_action('wp_ajax_nopriv_get_inquiry_categories', [$this, 'getInquiryCategories']);
