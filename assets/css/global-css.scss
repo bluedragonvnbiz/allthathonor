@@ -2,6 +2,7 @@
 @font-face {
     font-family: 'Spoqa Han Sans Neo';
     font-weight: 700;
+    font-display: swap;
     src: local('Spoqa Han Sans Neo Bold'),
     url('../fonts/SpoqaHanSansNeo-Bold.woff2') format('woff2'),
     url('../fonts/SpoqaHanSansNeo-Bold.woff') format('woff'),
@@ -12,6 +13,7 @@
 @font-face {
     font-family: 'Spoqa Han Sans Neo';
     font-weight: 500;
+    font-display: swap;
     src: local('Spoqa Han Sans Neo Medium'),
     url('../fonts/SpoqaHanSansNeo-Medium.woff2') format('woff2'),
     url('../fonts/SpoqaHanSansNeo-Medium.woff') format('woff'),
@@ -21,6 +23,7 @@
 @font-face {
     font-family: 'Spoqa Han Sans Neo';
     font-weight: 400;
+    font-display: swap;
     src: local('Spoqa Han Sans Neo Regular'),
     url('../fonts/SpoqaHanSansNeo-Regular.woff2') format('woff2'),
     url('../fonts/SpoqaHanSansNeo-Regular.woff') format('woff'),
@@ -30,6 +33,7 @@
 @font-face {
     font-family: 'Spoqa Han Sans Neo';
     font-weight: 300;
+    font-display: swap;
     src: local('Spoqa Han Sans Neo Light'),
     url('../fonts/SpoqaHanSansNeo-Light.woff2') format('woff2'),
     url('../fonts/SpoqaHanSansNeo-Light.woff') format('woff'),
@@ -64,7 +68,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 .container {
     max-width: calc(1200px + var(--bs-gutter-x));
 }
-.btn{padding: 11px 23px;color: white;font-weight: 700;font-size: 11px;line-height: 15px;letter-spacing: 2px;text-transform: uppercase;border-radius: 0;white-space: nowrap;
+.btn{padding: 11px 22px;color: white;font-weight: 700;font-size: 11px;line-height: 15px;letter-spacing: 2px;text-transform: uppercase;border-radius: 0;white-space: nowrap;
 	&.btn-lg{padding: 18px 35px;font-size: 16px;
 		&.btn-dark{padding-left: 42px;padding-right: 42px}
 	}
@@ -73,7 +77,9 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 .btn-outline-primary{color: #C19B76 !important;border-color: #C19B76 !important;background-color: white !important;}
 .btn-dark{background-color: #1C1C1C !important;border-color: #1C1C1C !important}
 .form-control{box-shadow: none !important;border-color: #EEEEEE !important;height: 53px;background-color: #F8F8F8;border-radius: 0}
-.form-label{color: #878787;font-size: 14px;line-height: 14px;letter-spacing: 1.68px;margin-bottom: 13px;}
+.form-label{color: #878787;font-size: 14px;line-height: 14px;letter-spacing: 1.68px;margin-bottom: 13px;
+	span{font-weight: 300}
+}
 .form-check{padding-left: 0;display: flex;align-items: center;column-gap: 13px;margin-bottom: 0;
 	.form-check-input{float: none;margin-left: 0;opacity: 1 !important;margin-top: 0;}
 	.form-check-label{font-size: 16px;line-height: 14px;letter-spacing: 1.68px;opacity: 1 !important;color: #1C1C1C;cursor: pointer;}
@@ -100,7 +106,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 .home-banner{padding-top: 218px;padding-bottom: 218px;
 	background: 
         linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-        url("images/home-banner.jpg") no-repeat center;  
+        url("../images/home-banner.jpg") no-repeat center;  
     background-size: cover;
 	.text-box{display: flex;flex-direction: column;color: white;row-gap: 35px;
 		strong{display: block;font-family: var(--font-secondary), "serif";font-size: 80px;line-height: 80.5px;font-weight: 400;}
@@ -227,7 +233,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		a{font-size: 16px;line-height: 15.68px;letter-spacing: -0.31px;color: white;}
 	}
 }
-.page-title-box{min-height: 320px;background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/bg-inquiry.jpg) no-repeat center; background-size: cover;
+.page-title-box{min-height: 320px;background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/bg-inquiry.jpg) no-repeat center; background-size: cover;
 	.title{font-size: 80px;line-height: 80.5px;color: white;font-weight: 400}
 }
 .inquiry-wp{column-gap: 64px;
@@ -273,9 +279,12 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 }
 
 .card-infor{display: flex;column-gap: 64px;
-	>img{box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.25);border-radius: 15px;max-width: 464px}
+	.left{max-width: 464px;
+		img{box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.25);border-radius: 15px;}
+	}
 	.text{font-size: 18px;line-height: 20px;text-transform: uppercase;
 		.card-name{font-family: var(--font-secondary);font-size: 60px;line-height: 60px;}
+		p.mb-32{font-size: 20px;line-height: 20px}
 		hr{opacity: 1;border-color: #1C1C1C}
 		ul{
 			li{line-height: 30px;display: flex;column-gap: 32px;align-items: center;
@@ -312,7 +321,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 			.right{padding-left: 32px;border-left: 1px solid #C19B76;display: flex; flex-direction: column;row-gap: 32px;text-transform: uppercase;
 				strong{font-weight: 500;font-size: 18px;line-height: 20px;}
 				p{font-weight: 500;font-size: 18px;line-height: 20px;margin-bottom: 8px;}
-				span{color: #878787;line-height: 20px;display: block;}
+				span{color: #878787;line-height: 20px;display: block;font-size: 16px;}
 				ul{margin-bottom: 0;display: flex;flex-direction: column;row-gap: 16px;padding-left: 28px;
 					li{font-size: 18px;line-height: 20px;
 						&::marker{font-size: 14px;}
@@ -352,7 +361,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 				span{color: white;}
 			}
 		}
-		.note-box ul{background-color: rgba(255, 255, 255, 0.05);}
+		.note-box ul{background-color: rgba(255, 255, 255, 0.1);}
 	}
 }
 
@@ -363,7 +372,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 
 @media only screen and (min-width: 768px) and (max-width: 993px) {
 	.card-infor{column-gap: 32px;
-		>img{max-width: 40%}
+		.left{max-width: 40%}
 	}
 }// end @media
 @media only screen and (max-width: 992px) {
@@ -546,7 +555,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 } // end 768px
 
 @media only screen and (max-width: 576px) {
- .page-title-box{background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(images/bg-inquiry-mobile.jpg) no-repeat center;background-size: cover;}
+ .page-title-box{background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(../images/bg-inquiry-mobile.jpg) no-repeat center;background-size: cover;}
  .inquiry-wp{
  	.map-wp{min-width: inherit;}
  }
