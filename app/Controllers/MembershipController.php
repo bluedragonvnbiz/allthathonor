@@ -29,9 +29,6 @@ class MembershipController extends BaseController {
         ]);
 
         // Register JS files for home page
-        $this->view->addJS([
-            'home'
-        ]);
 
         $sectionData = $this->loadSectionData('our_membership', 'membership');
 

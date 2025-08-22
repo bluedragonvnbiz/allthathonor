@@ -12,7 +12,7 @@
 				</button>
 			</div>
 			<nav class="main-nav">
-				<ul class="list-unstyled mb-0">
+				<ul class="list-unstyled mb-0 justify-content-end">
 					<li><a href="/">회사 및 서비스 소개</a></li>
 					<li><a href="/membership/">멤버십</a></li>
 					<li><a href="/inquiry/">고객 문의</a></li>
