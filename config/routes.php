@@ -11,6 +11,10 @@ wp_route('home')->action('index@HomeController')->register();
 // Inquiry pages
 wp_route('inquiry')->action('index@InquiryController')->register();
 
+// Inquiry management page
+wp_route('management/inquiry')->action('management@InquiryController')->admin()->register();
+wp_route('management/inquiry-view')->action('view@InquiryController')->admin()->register();
+
 // Membership pages
 wp_route('membership')->action('index@MembershipController')->register();
 

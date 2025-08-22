@@ -26,10 +26,12 @@ class HonorsAjaxLoader {
         $ajax_dir = get_template_directory() . '/app/Ajax/';
         
         if (!is_dir($ajax_dir)) {
+            error_log('AJAX directory not found: ' . $ajax_dir);
             return;
         }
         
         $files = glob($ajax_dir . '*.php');
+        error_log('Found AJAX files: ' . print_r($files, true));
         
         foreach ($files as $file) {
             $class_name = basename($file, '.php');
@@ -37,15 +39,26 @@ class HonorsAjaxLoader {
             // Load the file first, then check if class exists
             require_once $file;
             
-            if (class_exists($class_name) && $this->isAjaxClass($class_name)) {
+            // Try with namespace first
+            $namespaced_class = 'App\\Ajax\\' . $class_name;
+            $found_class = null;
+            
+            if (class_exists($namespaced_class)) {
+                $found_class = $namespaced_class;
+            } elseif (class_exists($class_name)) {
+                $found_class = $class_name;
+            } else {
+                continue;
+            }
+            
+            if ($this->isAjaxClass($found_class)) {
                 try {
-                    $this->ajax_classes[] = new $class_name();
+                    $this->ajax_classes[] = new $found_class();
                 } catch (Exception $e) {
-                    // Log only if debug mode is enabled
-                    if (defined('WP_DEBUG') && WP_DEBUG) {
-                        error_log("Failed to instantiate AJAX class {$class_name}: " . $e->getMessage());
-                    }
+                    error_log("Failed to instantiate AJAX class {$found_class}: " . $e->getMessage());
                 }
+            } else {
+                error_log('Class is not AJAX class: ' . $found_class);
             }
         }
     }

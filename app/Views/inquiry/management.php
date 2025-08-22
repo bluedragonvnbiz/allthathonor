@@ -5,52 +5,27 @@
 				<label class="form-label">검색</label>
 				<div class="d-flex column-gap-2 w-100">
 					<select class="form-select" name="search_type">
-						<option value="voucher_name" <?= $searchType === 'voucher_name' ? 'selected' : '' ?>>혜택/바우처명</option>
-						<option value="voucher_code" <?= $searchType === 'voucher_code' ? 'selected' : '' ?>>혜택/바우처 코드</option>
+						<option value="corporate_name" <?= $searchType === 'corporate_name' ? 'selected' : '' ?>>법인명</option>
+						<option value="contact_person" <?= $searchType === 'contact_person' ? 'selected' : '' ?>>담당자명</option>
+						<option value="contact_phone" <?= $searchType === 'contact_phone' ? 'selected' : '' ?>>연락처</option>
+						<option value="email" <?= $searchType === 'email' ? 'selected' : '' ?>>이메일</option>
+						<option value="inquiry_number" <?= $searchType === 'inquiry_number' ? 'selected' : '' ?>>문의번호</option>
 					</select>
 					<input type="text" class="form-control" name="search_keyword" placeholder="검색어를 입력하세요." value="<?= htmlspecialchars($searchKeyword) ?>">
 				</div>
 			</div>
 			<div class="d-flex gap-40 align-items-center">
-				<label class="form-label">등급</label>
-				<div class="d-flex gap-20">
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="all" name="grade[]" id="grade_all" <?= in_array('all', $gradeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="grade_all">전체</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="signature" name="grade[]" id="grade_signature" <?= in_array('signature', $gradeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="grade_signature">SIGNATURE</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="prime" name="grade[]" id="grade_prime" <?= in_array('prime', $gradeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="grade_prime">PRIME</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="unclassified" name="grade[]" id="grade_unclassified" <?= in_array('unclassified', $gradeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="grade_unclassified">미분류</label>
-					</div>
-				</div>
-			</div>
-			<div class="d-flex gap-40 align-items-center">
-				<label class="form-label">유형</label>
-				<div class="d-flex gap-20">
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="all" name="type[]" id="type_all" <?= in_array('all', $typeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="type_all">전체</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="voucher" name="type[]" id="type_voucher" <?= in_array('voucher', $typeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="type_voucher">VOUCHER</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="event_invitation" name="type[]" id="type_event_invitation" <?= in_array('event_invitation', $typeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="type_event_invitation">EVENT INVITATION</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="unclassified" name="type[]" id="type_unclassified" <?= in_array('unclassified', $typeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="type_unclassified">미분류</label>
-					</div>
+				<label class="form-label">카테고리</label>
+				<div class="d-flex column-gap-2 position-relative">
+					<select class="form-select" name="category_main" id="category_main">
+						<option value="">메인 카테고리 선택</option>
+						<?php foreach ($mainCategories as $category): ?>
+							<option value="<?= htmlspecialchars($category) ?>" <?= $categoryMain === $category ? 'selected' : '' ?>><?= htmlspecialchars($category) ?></option>
+						<?php endforeach; ?>
+					</select>
+					<select class="form-select" name="category_sub" id="category_sub">
+						<option value="">서브 카테고리 선택</option>
+					</select>
 				</div>
 			</div>
 			<div class="d-flex gap-40 align-items-center">
@@ -61,12 +36,12 @@
 					  <label class="form-check-label" for="status_all">전체</label>
 					</div>
 					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="expose" name="status[]" id="status_expose" <?= in_array('expose', $statusFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="status_expose">노출</label>
+					  <input class="form-check-input" type="checkbox" value="unanswered" name="status[]" id="status_unanswered" <?= in_array('unanswered', $statusFilter) ? 'checked' : '' ?>>
+					  <label class="form-check-label" for="status_unanswered">미답변</label>
 					</div>
 					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="not_expose" name="status[]" id="status_not_expose" <?= in_array('not_expose', $statusFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="status_not_expose">미노출</label>
+					  <input class="form-check-input" type="checkbox" value="answered" name="status[]" id="status_answered" <?= in_array('answered', $statusFilter) ? 'checked' : '' ?>>
+					  <label class="form-check-label" for="status_answered">답변완료</label>
 					</div>
 				</div>
 			</div>
@@ -80,63 +55,48 @@
 
 <div class="card">
 	<div class="card-header d-flex align-items-center justify-content-between">
-		<strong class="title fw-bolder letter-spacing-1">전체 (<?= $totalVouchers ?> 건)</strong>
-		<a href="/voucher/add" class="btn btn-primary lh-1">+ 새 추가</a>
+		<strong class="title fw-bolder letter-spacing-1">전체 (<?= $totalInquiries ?> 건)</strong>
+		<div class="d-flex align-items-center">
+			<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="me-2">
+				<path d="M16.7857 15.7115H16.25V8.12221C16.25 4.97266 13.9219 2.36998 10.8929 1.93694V1.06864C10.8929 0.575335 10.4933 0.175781 10 0.175781C9.5067 0.175781 9.10714 0.575335 9.10714 1.06864V1.93694C6.07813 2.36998 3.75 4.97266 3.75 8.12221V15.7115H3.21429C2.8192 15.7115 2.5 16.0307 2.5 16.4258V17.1401C2.5 17.2383 2.58036 17.3186 2.67857 17.3186H7.5C7.5 18.6981 8.62054 19.8186 10 19.8186C11.3795 19.8186 12.5 18.6981 12.5 17.3186H17.3214C17.4196 17.3186 17.5 17.2383 17.5 17.1401V16.4258C17.5 16.0307 17.1808 15.7115 16.7857 15.7115ZM10 18.3901C9.40848 18.3901 8.92857 17.9102 8.92857 17.3186H11.0714C11.0714 17.9102 10.5915 18.3901 10 18.3901ZM5.35714 15.7115V8.12221C5.35714 6.88114 5.83929 5.71596 6.71652 4.83873C7.59375 3.9615 8.75893 3.47935 10 3.47935C11.2411 3.47935 12.4063 3.9615 13.2835 4.83873C14.1607 5.71596 14.6429 6.88114 14.6429 8.12221V15.7115H5.35714Z" fill="#1C1C1C"/>
+			</svg>
+		</div>
 	</div>
     <div class="card-body">
     <div class="table-responsive">
         <table class="table table-hover mb-0">
             <thead>
             <tr>
-                <th>혜택/바우처 번호</th>
-                <th>등급</th>
-                <th>유형</th>
-                <th>혜택/바우처명</th>
-                <th>상태</th>
+                <th>문의번호</th>
+                <th>법인명</th>
+                <th>담당자명</th>
+                <th>연락처</th>
+                <th>이메일</th>
+                <th>카테고리</th>
                 <th>등록일</th>
+                <th>상태</th>
+                <th>답변일</th>
             </tr>
             </thead>
             <tbody>
-            <?php if (!empty($vouchers)): ?>
-                <?php
-                foreach ($vouchers as $voucher):
-                    $viewUrl = '/voucher/edit/?id=' . $voucher['id'];
-                    
-                    // Format grade display
-                    $gradeDisplay = '--';
-                    if (!empty($voucher['category'])) {
-                        $grades = explode(',', $voucher['category']);
-                        if (count($grades) > 1) {
-                            $gradeDisplay = 'SIGNATURE/PRIME';
-                        } else {
-                            $gradeDisplay = strtoupper($grades[0]);
-                        }
-                    }
-                    
-                    // Format type display
-                    $typeDisplay = '--';
-                    if (!empty($voucher['type'])) {
-                        $types = explode(',', $voucher['type']);
-                        if (count($types) > 1) {
-                            $typeDisplay = 'Voucher/ Event';
-                        } else {
-                            $typeDisplay = strtoupper($types[0]);
-                        }
-                    }
-                ?>
-                <tr>
-                    <td><a href="<?= $viewUrl ?>">BF<?= str_pad($voucher['id'], 6, '0', STR_PAD_LEFT) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($gradeDisplay) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($typeDisplay) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($voucher['name']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= $voucher['status'] === 'expose' ? '노출' : '미노출' ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= date('Y.m.d', strtotime($voucher['created_at'])) ?></a></td>
+            <?php if (!empty($inquiries)): ?>
+                <?php foreach ($inquiries as $inquiry): ?>
+                <tr onclick="window.location.href='/management/inquiry-view?id=<?= $inquiry['id'] ?>'" style="cursor: pointer;">
+                    <td><?= $inquiry['inquiry_number'] ?></td>
+                    <td><?= $inquiry['corporate_name'] ?></td>
+                    <td><?= $inquiry['contact_person'] ?></td>
+                    <td><?= $inquiry['contact_phone'] ?></td>
+                    <td><?= $inquiry['email'] ?></td>
+                    <td><?= $inquiry['category_display'] ?></td>
+                    <td><?= $inquiry['registration_date'] ?></td>
+                    <td><?= $inquiry['status_display'] ?></td>
+                    <td><?= $inquiry['answer_date'] ?></td>
                 </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="6" class="text-center py-4">
-                        <p class="text-muted mb-0">등록된 혜택/바우처가 없습니다.</p>
+                    <td colspan="9" class="text-center py-4">
+                        <p class="text-muted mb-0">등록된 문의가 없습니다.</p>
                     </td>
                 </tr>
             <?php endif; ?>
@@ -146,7 +106,7 @@
     
     <?php if ($totalPages > 1): ?>
     <div class="card-footer">
-        <nav aria-label="Voucher pagination">
+        <nav aria-label="Inquiry pagination">
             <ul class="pagination justify-content-center mt-4 mb-0">
                 <?php if ($page > 1): ?>
                     <li class="page-item">
@@ -222,14 +182,10 @@
 <script>
 // Reset search form
 function resetSearch() {
-    document.querySelector('select[name="search_type"]').value = 'voucher_name';
+    document.querySelector('select[name="search_type"]').value = 'corporate_name';
     document.querySelector('input[name="search_keyword"]').value = '';
-    document.querySelectorAll('input[name="grade[]"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
-    document.querySelectorAll('input[name="type[]"]').forEach(checkbox => {
-        checkbox.checked = false;
-    });
+    document.querySelector('select[name="category_main"]').value = '';
+    document.querySelector('select[name="category_sub"]').value = '';
     document.querySelectorAll('input[name="status[]"]').forEach(checkbox => {
         checkbox.checked = false;
     });
@@ -291,5 +247,44 @@ function resetSearch() {
     pointer-events: auto;
     z-index: 1;
     position: relative;
+}
+
+/* Table styling */
+.table th {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    font-weight: 600;
+    color: #495057;
+}
+
+.table td {
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Form styling */
+.form-select, .form-control {
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #89b97c;
+    box-shadow: 0 0 0 0.2rem rgba(137, 185, 124, 0.25);
+}
+
+/* Checkbox styling */
+.form-check-input:checked {
+    background-color: #89b97c;
+    border-color: #89b97c;
+}
+
+.form-check-input:focus {
+    border-color: #89b97c;
+    box-shadow: 0 0 0 0.2rem rgba(137, 185, 124, 0.25);
 }
 </style>

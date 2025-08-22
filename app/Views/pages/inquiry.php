@@ -5,40 +5,49 @@
 <section class="home-section">
 	<div class="container">
 		<d class="d-lg-flex inquiry-wp">
-			<form class="form w-100">
+			<form class="form w-100" id="inquiry-form">
+				<?php wp_nonce_field('inquiry_form_nonce', 'inquiry_nonce'); ?>
 				<div class="mb-32">
 					<label class="form-label">문의 유형</label>
 					<div class="d-flex align-items-center" style="column-gap:13px;">
-						<input type="text" class="form-control w-100" name="">
+						<select class="form-control w-100" name="category_main" id="category_main" required>
+							<option value="">메인 카테고리 선택</option>
+							<option value="멤버십">멤버십</option>
+							<option value="상품">상품</option>
+							<option value="서비스">서비스</option>
+							<option value="기타">기타</option>
+						</select>
 						<svg class="flex-shrink-0" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<path d="M15.0502 12.4999L9.3752 18.1499L8.3252 17.0999L12.9252 12.4999L8.3252 7.8999L9.3752 6.8499L15.0502 12.4999Z" fill="#878787"/>
 						</svg>
-						<input type="text" class="form-control w-100" name="">
+						<select class="form-control w-100" name="category_sub" id="category_sub" required>
+							<option value="">서브 카테고리 선택</option>
+						</select>
 					</div>					
 				</div>
 				<div class="mb-32">
 					<label class="form-label">법인명 **없을 경우 이름 작성**</label>
-					<input type="text" class="form-control" name="" required>
+					<input type="text" class="form-control" name="corporate_name" required>
 				</div>
 				<div class="mb-32">
 					<div class="d-flex column-gap-3">
 						<div class="w-100">
 							<label class="form-label">담당자 성함</label>
-							<input type="text" class="form-control" name="" required>
+							<input type="text" class="form-control" name="contact_person" required>
 						</div>
 						<div class="w-100">
 							<label class="form-label">담당자 연락처</label>
-							<input type="text" class="form-control" name="" required>
+							<input type="text" class="form-control" name="contact_phone" required>
 						</div>
 					</div>
 				</div>
 				<div class="mb-32">
 					<label class="form-label">담당자 이메일</label>
-					<input type="text" class="form-control" name="" required>
+					<input type="email" class="form-control" name="email" required>
 				</div>
 				<div class="mb-32">
 					<label class="form-label">문의 내용</label>
-					<textarea class="form-control" style="min-height: 193px;"></textarea>
+					<textarea class="form-control" name="inquiry_content" style="min-height: 193px;" required></textarea>
 				</div>
 				<div class="mb-64">
 					<div class="form-check">
@@ -48,7 +57,10 @@
 					  </label>
 					</div>
 				</div>
-				<div class="text-center"><button class="btn btn-primary btn-lg" type="submit" disabled>send now</button></div>
+				<div class="text-center">
+					<button class="btn btn-primary btn-lg" type="submit" id="submit-btn" disabled>send now</button>
+					<div id="form-message" class="mt-3"></div>
+				</div>
 			</form>
 			<div class="map-wp flex-shrink-0">
 				<div id='map' class="mb-32"></div>
@@ -73,32 +85,4 @@
 	var marker = L.marker([37.538980, 127.071137]);
     marker.bindPopup('서울특별시 강서구 마곡중앙6로 11').openPopup();
     marker.addTo(map);
-
-	jQuery(document).ready(function ($) {
-	  	$("nav.main-nav li:nth-child(3) a").addClass("active");
-	     var $form = $("form");
-	     function checkRequired() {
-	    	let $submit = $form.find('button[type="submit"]');
-	        let isValid = true;
-
-	        $form.find("input[required]").each(function () {
-	            let $field = $(this);
-	            if ($field.is(":checkbox")) {          
-	                if (!$field.is(":checked")) {
-	                    isValid = false;
-	                    return false; 
-	                }
-	            } else {
-	                if (!$field.val().trim()) {
-	                    isValid = false;
-	                    return false;
-	                }
-	            }
-	        });
-
-	        $submit.prop("disabled", !isValid);
-	    }
-
-	    $form.find("input[required]").on("input", checkRequired);
-	});
 </script>

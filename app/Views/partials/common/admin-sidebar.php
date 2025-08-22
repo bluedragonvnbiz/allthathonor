@@ -16,10 +16,10 @@ $adminMenus = [
                 'active_patterns' => ['/management/', '/management']
             ],
             [
-                'url' => '#',
+                'url' => '/management/inquiry',
                 'icon' => 'icon-admin-menu-2.svg',
                 'text' => '1:1 문의',
-                'active_patterns' => ['/inquiry', '/contact']
+                'active_patterns' => ['/management/inquiry', '/management/inquiry/']
             ],
             [
                 'url' => '#',
@@ -59,18 +59,40 @@ $adminMenus = [
     ]
 ];
 
-// Lấy current URL
+// Get current URL
 $currentUrl = $_SERVER['REQUEST_URI'] ?? '/';
 
-// Function kiểm tra menu active
-function isMenuActive($patterns, $currentUrl) {
-    foreach ($patterns as $pattern) {
-        if (strpos($currentUrl, $pattern) === 0) {
-            return true;
+// Function find active menu item
+function findActiveMenuItem($adminMenus, $currentUrl) {
+    $bestMatch = null;
+    $bestMatchLength = 0;
+    
+    foreach ($adminMenus as $sectionKey => $section) {
+        foreach ($section['items'] as $itemIndex => $item) {
+            foreach ($item['active_patterns'] as $pattern) {
+                // Check exact match
+                if ($currentUrl === $pattern) {
+                    if (strlen($pattern) > $bestMatchLength) {
+                        $bestMatch = ['section' => $sectionKey, 'item' => $itemIndex];
+                        $bestMatchLength = strlen($pattern);
+                    }
+                }
+                // Check prefix match (currentUrl begin with pattern + /)
+                elseif (strpos($currentUrl, $pattern . '/') === 0) {
+                    if (strlen($pattern) > $bestMatchLength) {
+                        $bestMatch = ['section' => $sectionKey, 'item' => $itemIndex];
+                        $bestMatchLength = strlen($pattern);
+                    }
+                }
+            }
         }
     }
-    return false;
+    
+    return $bestMatch;
 }
+
+// Find active menu item
+$activeMenuItem = findActiveMenuItem($adminMenus, $currentUrl);
 ?>
 
 <div class="box position-sticky top-0">
@@ -83,9 +105,12 @@ function isMenuActive($patterns, $currentUrl) {
             <?= htmlspecialchars($section['title']) ?>
         </div>	
         <ul class="list-unstyled mb-0">
-            <?php foreach ($section['items'] as $item): ?>
+            <?php foreach ($section['items'] as $itemIndex => $item): ?>
                 <?php 
-                $isActive = isMenuActive($item['active_patterns'], $currentUrl);
+                // Check if item is active
+                $isActive = ($activeMenuItem && 
+                            $activeMenuItem['section'] === $sectionKey && 
+                            $activeMenuItem['item'] === $itemIndex);
                 $activeClass = $isActive ? 'active' : '';
                 ?>
                 <li>
