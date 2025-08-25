@@ -114,11 +114,12 @@ class FieldRenderer {
      * Render product view (display only, no form)
      */
     public function renderProductView($sectionConfig, $sectionData = []) {
-        $html = '<div class="card infor-box">';
+        $html = '<div class="card infor-box" data-product-id="' . $sectionData['id'] . '">';
+        $html .= wp_nonce_field('product_nonce', 'nonce', true, false);
         $html .= '<div class="card-body p-0">';
         $html .= '<div class="card-header d-flex align-items-center justify-content-between">';
         $html .= '<strong class="title fw-bolder letter-spacing-1">상품 내용</strong>';
-        $html .= '<a href="/admin/product/edit/?id=' . $sectionData['id'] . '" class="btn btn-primary">수정</a>';
+        $html .= '<button class="btn btn-primary btn-edit-product">수정</button>';
         $html .= '</div>';
         
         // Render all fields in view mode

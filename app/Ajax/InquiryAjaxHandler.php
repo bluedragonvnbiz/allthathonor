@@ -193,7 +193,7 @@ class InquiryAjaxHandler {
         try {
             // Validate required fields
             $inquiryId = intval($_POST['inquiry_id']);
-            $answerContent = wp_kses_post($_POST['answer_content']);
+            $answerContent = wp_kses_post(stripslashes($_POST['answer_content']));
 
             if (empty($inquiryId) || empty($answerContent)) {
                 wp_send_json_error(['message' => 'Missing required fields']);

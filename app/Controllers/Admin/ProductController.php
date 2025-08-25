@@ -118,10 +118,22 @@ class ProductController extends BaseController {
             wp_redirect('/admin/product/');
             exit;
         }
+
+                // Enqueue WordPress Media Library
+        wp_enqueue_media();
+
+        // Enqueue Quill.js
+        wp_enqueue_script('quill', 'https://cdn.quilljs.com/1.3.6/quill.min.js', [], '1.3.6', true);
+        wp_enqueue_style('quill', 'https://cdn.quilljs.com/1.3.6/quill.snow.css', [], '1.3.6');
         
         // Register CSS files
         $this->view->addCSS([
             'pages/management'
+        ]);
+
+        // Register JS files
+        $this->view->addJS([
+            'product-form'
         ]);
 
         $productFieldsConfig = require THEME_PATH . '/config/product_fields.php';

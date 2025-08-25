@@ -110,7 +110,10 @@
             <?php if (!empty($vouchers)): ?>
                 <?php
                 foreach ($vouchers as $voucher):
-                    $viewUrl = '/admin/voucher/edit/?id=' . $voucher['id'];
+                    // Add current page and search params to edit URL
+                    $currentParams = $_GET;
+                    $currentParams['id'] = $voucher['id'];
+                    $viewUrl = '/admin/voucher/edit/?' . http_build_query($currentParams);
                     
                     // Format grade display - convert membership IDs to names
                     $gradeDisplay = '--';

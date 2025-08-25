@@ -28,6 +28,11 @@ class ProductFormHandler {
             e.stopPropagation();
             this.openMediaLibrary(e.target);
         });
+
+        this.$(document).on('click', '.btn-edit-product', async (e) => {
+            e.preventDefault();
+            await this.loadEditForm(e.target);
+        });
         
         // Add real-time validation for submit button
         this.setupSubmitButtonValidation();
@@ -478,6 +483,97 @@ class ProductFormHandler {
     
     showErrorMessage(message) {
         alert(message);
+    }
+    
+    /**
+     * Load edit form via AJAX
+     */
+    async loadEditForm(button) {
+        const card = button.closest('.card');
+        const productId = card.dataset.productId;
+        
+        if (!productId) {
+            console.error('Missing product ID');
+            return;
+        }
+        
+        // Show loading
+        button.textContent = '로딩 중...';
+        button.disabled = true;
+        
+        try {
+            // Get nonce from the card (view mode)
+            const nonceInput = card.querySelector('input[name="nonce"]') || 
+                              document.querySelector('input[name="product_nonce"]');
+            const nonce = nonceInput ? nonceInput.value : '';
+            
+            // Load edit form via AJAX
+            const response = await fetch(define.ajax_url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    action: 'get_product_edit_form',
+                    nonce: nonce,
+                    product_id: productId
+                })
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Replace entire card with new form
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = result.data.html;
+                const newForm = tempDiv.firstElementChild;
+                
+                // Replace the card with the new form
+                card.parentNode.replaceChild(newForm, card);
+                
+                // Re-initialize rich text editors for the new form
+                this.initRichTextEditors();
+                
+                // Re-setup validation for the new form
+                this.setupSubmitButtonValidation();
+                
+            } else {
+                throw new Error(result.data.message || 'Failed to load edit form');
+            }
+            
+        } catch (error) {
+            console.error('Error loading edit form:', error);
+            button.textContent = '수정';
+            button.disabled = false;
+            
+            // Show error message in card
+            this.showErrorMessageInCard(card, '편집 폼을 불러오는데 실패했습니다: ' + error.message);
+        }
+    }
+    
+    /**
+     * Show error message in specific card
+     */
+    showErrorMessageInCard(card, message) {
+        // Remove existing messages in this card
+        const existingMessages = card.querySelectorAll('.product-message');
+        existingMessages.forEach(msg => msg.remove());
+        
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'product-message alert alert-danger mt-3';
+        messageDiv.textContent = message;
+        
+        // Insert after card content
+        const cardBody = card.querySelector('.card-body');
+        if (cardBody) {
+            cardBody.appendChild(messageDiv);
+        } else {
+            card.appendChild(messageDiv);
+        }
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            messageDiv.remove();
+        }, 5000);
     }
 }
 

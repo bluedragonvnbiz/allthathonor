@@ -323,7 +323,12 @@ jQuery(document).ready(function($) {
             .done(function(response) {
                 if (response.success) {
                     alert('Voucher saved successfully!');
-                    window.location.href = '/admin/voucher/';
+                    
+                    // Get return URL from hidden field or fallback to voucher list
+                    const returnUrlField = $('input[name="return_url"]');
+                    const returnUrl = returnUrlField.length ? returnUrlField.val() : '/admin/voucher/';
+                    
+                    window.location.href = returnUrl;
                 } else {
                     alert('Error: ' + (response.data?.message || 'Unknown error'));
                 }

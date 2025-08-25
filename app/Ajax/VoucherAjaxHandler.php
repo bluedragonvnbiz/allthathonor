@@ -208,12 +208,12 @@ class VoucherAjaxHandler {
         
         // Handle summary_description - map to short_description
         if (isset($data['short_description'])) {
-            $sanitized['short_description'] = sanitize_textarea_field($data['short_description']);
+            $sanitized['short_description'] = sanitize_textarea_field(stripslashes($data['short_description']));
         }
         
         // Handle detailed_description - map to detail_description
         if (isset($data['detail_description'])) {
-            $sanitized['detail_description'] = wp_kses_post($data['detail_description']);
+            $sanitized['detail_description'] = wp_kses_post(stripslashes($data['detail_description']));
         }
         
         return $sanitized;
