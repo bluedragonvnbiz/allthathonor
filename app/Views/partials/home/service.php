@@ -64,14 +64,14 @@ for ($i = 1; $i <= 3; $i++) {
 						</div>
 						<div class="more-infor bg-black text-white">
 							<p class="title"><?= htmlspecialchars($service['title']) ?></p>
-							<p class="description"><?= htmlspecialchars($service['description']) ?></p>
+							<p class="description"><?= nl2br(htmlspecialchars($service['description'])) ?></p>
 						</div>
 						
 					<?php elseif ($index == 2): ?>
 						<!-- Service 2: more-info trước, product sau với bg-gold -->
 						<div class="more-infor bg-gold text-white">
 							<p class="title"><?= htmlspecialchars($service['title']) ?></p>
-							<p class="description"><?= htmlspecialchars($service['description']) ?></p>
+							<p class="description"><?= nl2br(htmlspecialchars($service['description'])) ?></p>
 						</div>
 						<div class="product">
 							<?php if (!empty($service['product']['main_image'])): ?>
@@ -100,7 +100,7 @@ for ($i = 1; $i <= 3; $i++) {
 						</div>
 						<div class="more-infor bg-gold text-white">
 							<p class="title"><?= htmlspecialchars($service['title']) ?></p>
-							<p class="description"><?= htmlspecialchars($service['description']) ?></p>
+							<p class="description"><?= nl2br(htmlspecialchars($service['description'])) ?></p>
 						</div>
 					<?php endif; ?>
 				</div>

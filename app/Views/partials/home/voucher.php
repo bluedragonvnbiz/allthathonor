@@ -35,7 +35,7 @@ if ($exposureStatus === 'expose'): ?>
 									<div class="swiper-slide">
 										<div class="box">
 											<p class="slide-title"><?= $voucher_info['name'] ?></p>
-											<p class="slide-description"><?= $voucher_info['short_description'] ?></p>
+											<p class="slide-description"><?= nl2br($voucher_info['short_description']) ?></p>
 											<a href="#" class="btn btn-outline-primary">view detail</a>
 										</div>
 									</div>
@@ -69,7 +69,7 @@ if ($exposureStatus === 'expose'): ?>
 									<div class="swiper-slide">
 										<div class="box">
 											<p class="slide-title"><?= $voucher_info['name'] ?></p>
-											<p class="slide-description"><?= $voucher_info['short_description'] ?></p>
+											<p class="slide-description"><?= nl2br($voucher_info['short_description']) ?></p>
 											<a href="#" class="btn btn-outline-primary">view detail</a>
 										</div>
 									</div>

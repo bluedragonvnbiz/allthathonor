@@ -3,6 +3,7 @@
 namespace App\Ajax;
 
 use App\Database\InquiryDatabase;
+use App\Services\EmailService;
 
 class InquiryAjaxHandler {
     
@@ -223,9 +224,31 @@ class InquiryAjaxHandler {
                 return;
             }
 
+            // Get updated inquiry data for email
+            $inquiryData = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM $table_name WHERE id = %d",
+                $inquiryId
+            ), ARRAY_A);
+
+            // Send email notification if inquiry data exists
+            if ($inquiryData) {
+                try {
+                    $emailService = new EmailService();
+                    $emailSent = $emailService->sendInquiryAnswerNotification($inquiryData);
+                    
+                    if ($emailSent) {
+                        error_log("Answer notification email sent successfully for inquiry ID: $inquiryId");
+                    } else {
+                        error_log("Failed to send answer notification email for inquiry ID: $inquiryId");
+                    }
+                } catch (\Exception $e) {
+                    error_log("Email service error for inquiry ID $inquiryId: " . $e->getMessage());
+                }
+            }
+
             // Send success response
             wp_send_json_success([
-                'message' => '답변이 성공적으로 저장되었습니다.'
+                'message' => '답변이 성공적으로 저장되었으며 고객에게 알림 메일이 발송되었습니다.'
             ]);
 
         } catch (\Exception $e) {

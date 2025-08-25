@@ -16,9 +16,7 @@ class SectionService {
         $cached = wp_cache_get($this->getCacheKey($sectionKey, $page));
         
         if ($cached !== false) {
-            $data = json_decode($cached, true);
-            error_log("Section data from cache: " . json_encode($data, JSON_UNESCAPED_UNICODE));
-            return $data;
+            return json_decode($cached, true);
         }
 
         global $wpdb;
