@@ -16,7 +16,7 @@
 	--main-color:#89B97C;
 }
 html{font-size: 16px}
-body{font-family: "Pretendard", sans-serif;color: var(--text-primary);}
+body{font-family: "Pretendard", sans-serif;color: var(--text-primary);background-color: #F5F5F5;}
 a{text-decoration: none;color: var(--text-primary);}
 hr{opacity: 1;border-color: #E8E8E8;}
 .column-gap-10{gap: 10px;}
@@ -122,7 +122,7 @@ textarea.form-control{min-height: 60px}
 		&:last-child{border-right: none}
 	}
 }
-.card{border: none;margin-bottom: 30px;border: none;
+.card{border: none;margin-bottom: 32px;border: none;
 	--bs-card-border-radius:0px;
 	--bs-card-cap-bg:white;
 	--bs-card-color:var(--text-primary);
@@ -165,6 +165,9 @@ table.table{text-align: center;--bs-table-hover-bg:#FAFBFD;--bs-table-border-col
 	}
 }
 .page-title{color: #2A3547;font-weight: 600;font-size: 20px;line-height: 140%;letter-spacing: -0.01em;margin-bottom: 32px;}
+.wrap-management {
+	gap: 1px;
+}
 .main-header{padding: 20px 32px;height: 72px;
 	.open-notif-btn{
 		span{position: absolute;width: 16px;height: 16px;background-color: #FF6B72;color: white;font-size: 12px;
@@ -244,4 +247,60 @@ table.table{text-align: center;--bs-table-hover-bg:#FAFBFD;--bs-table-border-col
 		    border-top: 5px solid white;
 		}
 	}
+}
+
+/* Breadcrumb arrow spreader */
+.spreader {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 8px;
+    color: var(--text-primary);
+    font-size: 14px;
+    transition: all 0.2s ease;
+    
+    &:before {
+        content: ">";
+        font-size: 24px;
+        font-weight: 500;
+        line-height: 1;
+    }
+    
+    /* Hover effect on parent link */
+    a:hover + &,
+    &:hover {
+        opacity: 1;
+        color: #495057;
+        transform: translateX(2px);
+    }
+}
+
+/* Alternative with CSS arrow */
+.spreader-arrow {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 10px;
+    opacity: 0.5;
+    transition: all 0.2s ease;
+    
+    &:before {
+        content: "";
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 5px solid #6c757d;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+    }
+    
+    /* Hover effect */
+    a:hover + &,
+    &:hover {
+        opacity: 1;
+        
+        &:before {
+            border-left-color: #495057;
+        }
+        
+        transform: translateX(2px);
+    }
 }

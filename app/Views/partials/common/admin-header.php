@@ -1,4 +1,4 @@
-<header class="main-header d-flex justify-content-end align-items-center">			
+<header class="main-header bg-white d-flex justify-content-end align-items-center">			
     <div class="d-flex justify-content-end align-items-center" style="column-gap:40px;">
         <!-- Notification Button -->
         <a href="#" class="btn p-0 border-0 open-notif-btn d-block position-relative" type="button">
