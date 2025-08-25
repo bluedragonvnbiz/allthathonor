@@ -36,8 +36,11 @@ class SectionAjaxHandler {
         $data = [];
         foreach ($_POST as $key => $value) {
             if (!in_array($key, ['action', 'nonce', 'section', 'section_page', 'block'])) {
-                // Handle Unicode encoding issues
+                // Handle Unicode encoding issues and fix quotes
                 if (is_string($value)) {
+                    // Remove unwanted slashes first (fix magic quotes issue)
+                    $value = stripslashes($value);
+                    
                     // Decode unicode sequences safely (preserves newlines and special chars)
                     if (preg_match('/\\\\u[0-9a-fA-F]{4}/', $value)) {
                         $value = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function($matches) {
@@ -114,15 +117,26 @@ class SectionAjaxHandler {
             if (is_array($value)) {
                 $sanitized[$key] = $this->sanitizeSectionData($value);
             } else {
-                // Check if this field should preserve newlines (like descriptions)
-                $preserveNewlines = in_array($key, [
-                    'content_description', 
-                    'section_description',
-                    'description',
-                    'content',
-                    'notes',
-                    'detail'
-                ]);
+                // Check if this field should preserve newlines (textarea fields)
+                $preserveNewlines = (
+                    // Specific field names
+                    in_array($key, [
+                        'content_description', 
+                        'section_description',
+                        'description',
+                        'content',
+                        'notes',
+                        'detail'
+                    ]) ||
+                    // Fields ending with _description
+                    str_ends_with($key, '_description') ||
+                    // Fields containing 'description'
+                    strpos($key, 'description') !== false ||
+                    // Fields ending with _content
+                    str_ends_with($key, '_content') ||
+                    // Fields ending with _notes
+                    str_ends_with($key, '_notes')
+                );
                 
                 if ($preserveNewlines) {
                     // Use sanitize_textarea_field for fields that need newlines
