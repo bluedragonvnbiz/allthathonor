@@ -89,9 +89,9 @@ $voucherService = new VoucherService();
 <section class="home-section bg-gold">
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
-			<?php if (!empty($memberships[0])): $signature = $memberships[0]; ?>
+			<?php if (!empty($memberships[0])): $signature = $memberships[0];?>
 			<div class="left">
-				<img src="<?= THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
+				<img src="<?= (!empty($signature['image'])) ? esc_url($signature['image']) : THEME_URL."/assets/images/signature-card-detail.png" ?>" alt="All that Honors Club">
 			</div>
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
@@ -380,7 +380,7 @@ $voucherService = new VoucherService();
 	<div class="container card-detail">
 		<div class="card-infor mb-64">
 			<?php if (!empty($memberships[1])): $prime = $memberships[1]; ?>
-			<div class="left"><img src="<?= THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club"></div>
+			<div class="left"><img src="<?= (!empty($prime['image'])) ? esc_url($prime['image']) : THEME_URL."/assets/images/prime-card-detail.png" ?>" alt="All that Honors Club"></div>
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3">The Heritage Travel Club</span>
 				<p class="card-name mb-3"><?= esc_html($prime['membership_name']) ?></p>

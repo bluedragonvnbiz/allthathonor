@@ -6,9 +6,11 @@
 class RouteBuilder {
     private $path;
     private $action;
-    private $capability = 'read';
+    private $capability = null;
     private $layout = 'main';
-    private $require_login = false;
+    private $prefix = '';
+    private $middleware = [];
+    private static $currentGroup = null;
     
     /**
      * Constructor
@@ -18,6 +20,72 @@ class RouteBuilder {
         if ($path) {
             $this->path = $path;
         }
+        
+        // Apply group settings if in a group context
+        if (self::$currentGroup) {
+            $this->applyGroupSettings(self::$currentGroup);
+        }
+    }
+    
+    /**
+     * Create a new route group
+     * @param array $settings Group settings
+     * @param callable $callback Group definition callback
+     */
+    public static function group($settings, $callback) {
+        $previousGroup = self::$currentGroup;
+        
+        // Merge with previous group settings if nested
+        if ($previousGroup) {
+            $settings = self::mergeGroupSettings($previousGroup, $settings);
+        }
+        
+        self::$currentGroup = $settings;
+        
+        // Execute the group definition
+        call_user_func($callback);
+        
+        // Restore previous group context
+        self::$currentGroup = $previousGroup;
+    }
+    
+    /**
+     * Merge group settings for nested groups
+     * @param array $previous Previous group settings
+     * @param array $current Current group settings
+     * @return array
+     */
+    private static function mergeGroupSettings($previous, $current) {
+        return [
+            'prefix' => trim($previous['prefix'] . '/' . ($current['prefix'] ?? ''), '/'),
+            'middleware' => array_merge($previous['middleware'] ?? [], $current['middleware'] ?? []),
+            'layout' => $current['layout'] ?? $previous['layout'] ?? 'main',
+            'capability' => $current['capability'] ?? $previous['capability'] ?? null,
+        ];
+    }
+    
+    /**
+     * Apply group settings to the current route
+     * @param array $settings
+     */
+    private function applyGroupSettings($settings) {
+        if (isset($settings['prefix'])) {
+            $this->prefix = $settings['prefix'];
+        }
+        
+        if (isset($settings['middleware'])) {
+            $this->middleware = array_merge($this->middleware, $settings['middleware']);
+        }
+        
+        if (isset($settings['layout'])) {
+            $this->layout = $settings['layout'];
+        }
+        
+        if (isset($settings['capability'])) {
+            $this->capability = $settings['capability'];
+        }
+        
+
     }
     
     /**
@@ -41,6 +109,20 @@ class RouteBuilder {
     }
     
     /**
+     * Add middleware to the route
+     * @param string|array $middleware
+     * @return $this
+     */
+    public function middleware($middleware) {
+        if (is_array($middleware)) {
+            $this->middleware = array_merge($this->middleware, $middleware);
+        } else {
+            $this->middleware[] = $middleware;
+        }
+        return $this;
+    }
+    
+    /**
      * Set required capability
      * @param string $capability
      * @return $this
@@ -57,39 +139,26 @@ class RouteBuilder {
     public function admin() {
         $this->capability = 'manage_options';
         $this->layout = 'admin';
-        $this->require_login = true;
+        $this->middleware[] = 'AdminMiddleware';
         return $this;
     }
     
     /**
-     * Set auth route (capability: read + require login)
+     * Set auth route (requires login)
      * @return $this
      */
     public function auth() {
-        $this->capability = 'read';
         $this->layout = 'main';
-        $this->require_login = true;
+        $this->middleware[] = 'AuthMiddleware';
         return $this;
     }
     
     /**
-     * Set public route (no capability required)
+     * Set public route (no auth required)
      * @return $this
      */
     public function public() {
-        $this->capability = null;
         $this->layout = 'main';
-        return $this;
-    }
-    
-    /**
-     * Set login required route (capability: read + user must be logged in)
-     * @return $this
-     */
-    public function loginRequired() {
-        $this->capability = 'read';
-        $this->layout = 'main';
-        $this->require_login = true;
         return $this;
     }
     
@@ -98,20 +167,21 @@ class RouteBuilder {
      * @return array
      */
     public function build() {
+        // Build the full path including prefix
+        $fullPath = $this->prefix ? trim($this->prefix . '/' . $this->path, '/') : $this->path;
+        
         $config = [
+            'path' => $fullPath,
             'action' => $this->action,
-            'layout' => $this->layout
+            'layout' => $this->layout,
+            'middleware' => array_unique($this->middleware)
         ];
         
-        // Only add capability if it's not null and not the default 'read'
         if ($this->capability !== null && $this->capability !== 'read') {
             $config['capability'] = $this->capability;
         }
         
-        // Add require_login if it's true
-        if ($this->require_login) {
-            $config['require_login'] = true;
-        }
+
         
         return $config;
     }
@@ -121,7 +191,11 @@ class RouteBuilder {
      * @return void
      */
     public function register() {
-        Router::registerRoute($this->path, $this->build());
+        // Build the full path including prefix
+        $fullPath = $this->prefix ? trim($this->prefix . '/' . $this->path, '/') : $this->path;
+        error_log('Registering route: ' . $fullPath);
+        error_log('Route config: ' . print_r($this->build(), true));
+        Router::registerRoute($fullPath, $this->build());
     }
     
     /**

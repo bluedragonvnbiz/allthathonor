@@ -101,50 +101,44 @@ class Router {
      * @return array|null
      */
     public function getCurrentRoute() {
-        // Check for home page first
-        if (is_home() || is_front_page()) {
+        // Debug
+        error_log('Current Routes: ' . print_r(self::$routes, true));
+        error_log('Request URI: ' . $_SERVER['REQUEST_URI']);
+        error_log('Query Vars: ' . print_r($GLOBALS['wp_query']->query_vars, true));
+
+        // Try to get route from query var first (set by our rewrite rules)
+        $honors_route = get_query_var('honors_route');
+        error_log('Honors Route: ' . $honors_route);
+        
+        if ($honors_route && isset(self::$routes[$honors_route])) {
+            error_log('Found route config: ' . print_r(self::$routes[$honors_route], true));
+            return self::$routes[$honors_route];
+        }
+
+        // Fallback to request URI parsing
+        $request_uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
+        error_log('Parsed Request URI: ' . $request_uri);
+        
+        // Try exact match first
+        if (isset(self::$routes[$request_uri])) {
+            error_log('Found route by exact match: ' . $request_uri);
+            return self::$routes[$request_uri];
+        }
+
+        // Try without trailing slash
+        $alt_uri = rtrim($request_uri, '/');
+        if ($alt_uri !== $request_uri && isset(self::$routes[$alt_uri])) {
+            error_log('Found route without trailing slash: ' . $alt_uri);
+            return self::$routes[$alt_uri];
+        }
+
+        // Check for home page last
+        if (empty($request_uri) || is_home() || is_front_page()) {
+            error_log('Homepage detected');
             return isset(self::$routes['home']) ? self::$routes['home'] : null;
         }
-        
-        // Get current page and subpage
-        $current_page = get_query_var('pagename');
-        $subpage = get_query_var('subpage');
-        
-        // Manual URL parsing as fallback
-        if (!$current_page || !$subpage) {
-            $request_uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-            $path_parts = explode('/', $request_uri);
-            
-            if (!empty($path_parts[0])) {
-                if (!$current_page) {
-                    $current_page = $path_parts[0];
-                }
-                if (!$subpage && !empty($path_parts[1])) {
-                    $subpage = $path_parts[1];
-                }
-            }
-        }
-        
-        if (!$current_page) {
-            return null;
-        }
-        
-        // Check for subpage route FIRST
-        if ($subpage) {
-            $full_route = $current_page . '/' . $subpage;
-            if (isset(self::$routes[$full_route])) {
-                return self::$routes[$full_route];
-            }
-            
-            wp_redirect(home_url(), 301);
-            exit;
-        }
-        
-        // Check for exact parent page match (only if no subpage)
-        if (isset(self::$routes[$current_page])) {
-            return self::$routes[$current_page];
-        }
-        
+
+        error_log('No route found for: ' . $request_uri);
         return null;
     }
     
@@ -153,38 +147,79 @@ class Router {
      * @param array $route_config
      */
     private function handleConfiguredRoute($route_config) {
-        // Check if login is required FIRST
-        if (isset($route_config['require_login']) && $route_config['require_login']) {
-            if (!is_user_logged_in()) {
-                wp_redirect(home_url('/login'));
-                exit;
-            }
-        }
+        error_log('Handling route config: ' . print_r($route_config, true));
         
-        // Check capability AFTER login check
+        // Create request data
+        $request = [
+            'path' => $_SERVER['REQUEST_URI'],
+            'method' => $_SERVER['REQUEST_METHOD'],
+            'query' => $_GET,
+            'post' => $_POST,
+            'route_config' => $route_config
+        ];
+        
+        // Build middleware chain
+        $middleware = isset($route_config['middleware']) ? $route_config['middleware'] : [];
+        
+        // Add default middleware for capability checks
         if (isset($route_config['capability'])) {
-            if (!current_user_can($route_config['capability'])) {
-                wp_die(__('You do not have sufficient permissions to access this page.'));
+            array_unshift($middleware, function($request, $next) use ($route_config) {
+                if (!current_user_can($route_config['capability'])) {
+                    wp_die(__('You do not have sufficient permissions to access this page.'));
+                }
+                return $next($request);
+            });
+        }
+        
+        // Build the middleware pipeline
+        $pipeline = $this->buildMiddlewarePipeline($middleware, function($request) use ($route_config) {
+            // Parse route string (method@controller) and preserve other config
+            if (isset($route_config['action'])) {
+                $parsed = $this->parseRouteString($route_config['action']);
+                $route_config = array_merge($route_config, $parsed);
             }
-        }
+            
+            // Set layout for View
+            if (isset($route_config['layout'])) {
+                $this->setLayout($route_config['layout']);
+            }
+            
+            // Create controller
+            $controller_class = $route_config['controller'];
+            $controller = new $controller_class();
+            
+            // Call the method directly
+            return $this->handleMainPage($controller, $route_config);
+        });
         
-        // Parse route string (method@controller) and preserve other config
-        if (isset($route_config['action'])) {
-            $parsed = $this->parseRouteString($route_config['action']);
-            $route_config = array_merge($route_config, $parsed);
-        }
-        
-        // Set layout for View
-        if (isset($route_config['layout'])) {
-            $this->setLayout($route_config['layout']);
-        }
-        
-        // Create controller
-        $controller_class = $route_config['controller'];
-        $controller = new $controller_class();
-        
-        // Call the method directly
-        $this->handleMainPage($controller, $route_config);
+        // Execute the pipeline
+        return $pipeline($request);
+    }
+    
+    /**
+     * Build middleware pipeline
+     * @param array $middleware Array of middleware
+     * @param callable $core Core handler
+     * @return callable
+     */
+    private function buildMiddlewarePipeline($middleware, callable $core) {
+        return array_reduce(array_reverse($middleware), function($next, $middleware) {
+            return function($request) use ($next, $middleware) {
+                if (is_string($middleware)) {
+                    $middleware = new $middleware();
+                }
+                
+                if (is_callable($middleware)) {
+                    return $middleware($request, $next);
+                }
+                
+                if (method_exists($middleware, 'handle')) {
+                    return $middleware->handle($request, $next);
+                }
+                
+                throw new Exception('Invalid middleware type');
+            };
+        }, $core);
     }
     
     /**
@@ -211,17 +246,24 @@ class Router {
      * @return array
      */
     private function parseRouteString($route_string) {
+        error_log('Parsing route string: ' . $route_string);
+        
         $parts = explode('@', $route_string);
         if (count($parts) === 2) {
-            return [
+            $result = [
                 'method' => $parts[0],
                 'controller' => $parts[1]
             ];
+            error_log('Parsed route parts: ' . print_r($result, true));
+            return $result;
         }
-        return [
+        
+        $result = [
             'method' => 'index',
             'controller' => $route_string
         ];
+        error_log('Using default route parts: ' . print_r($result, true));
+        return $result;
     }
     
     /**
@@ -241,44 +283,4 @@ class Router {
             $controller->index();
         }
     }
-    
-    /**
-     * Handle WordPress conditional routes
-     */
-    private function handleWordPressRoutes() {
-        if (is_category()) {
-            $controller = new CategoryController();
-            $controller->archive();
-        }
-        elseif (is_tag()) {
-            $controller = new TagController();
-            $controller->archive();
-        }
-        elseif (is_tax()) {
-            $controller = new TaxonomyController();
-            $controller->archive();
-        }
-        elseif (is_single()) {
-            $controller = new PostController();
-            $controller->single();
-        }
-        elseif (is_archive()) {
-            $controller = new ArchiveController();
-            $controller->archive();
-        }
-        elseif (is_search()) {
-            $controller = new SearchController();
-            $controller->search();
-        }
-        elseif (is_404()) {
-            $controller = new ErrorController();
-            $controller->notFound();
-        }
-        else {
-            $controller = new DefaultController();
-            $controller->index();
-        }
-    }
-    
-
 } 

@@ -3,16 +3,22 @@
  * Management Controller
  * Handle management page logic
  */
+
+namespace Admin;
+
 use App\Services\SectionService;
 use App\Helpers\FieldRenderer;
+use BaseController;
 
-class ManagementController extends BaseController {
+class SectionController extends BaseController {
     
     public function __construct() {
         parent::__construct();
     }
     
     public function index() {
+        $this->setPageTitle('Section Management');
+        
         // Load available sections
         $sectionService = new SectionService();
         $sections = $sectionService->getAvailableSections(['main', 'membership']);
@@ -23,20 +29,21 @@ class ManagementController extends BaseController {
         ]);
         
         // Render management view
-        $this->view->render('management/index', [
+        $this->view->render('admin/section/index', [
             'user_info' => $this->user_info,
-            'page_title' => 'Management Dashboard',
             'sections' => $sections
         ]);
     }
 
     public function edit($sectionKey = 'banner') {
+        $this->setPageTitle('Edit Section');
+        
         $sectionKey = $this->getGet('section');
         $sectionPage = $this->getGet('section_page', default: 'main');
         
         // Validate section key
         if (empty($sectionKey)) {
-            wp_redirect('/management/');
+            wp_redirect('/admin/section/');
             exit;
         }
         
@@ -50,7 +57,7 @@ class ManagementController extends BaseController {
             $sectionConfig = $sectionService->loadSectionConfig($sectionKey, $sectionPage);
         } catch (\Exception $e) {
             // Redirect to management page if section config not found
-            wp_redirect('/management/');
+            wp_redirect('/admin/section/');
             exit;
         }
 
@@ -74,7 +81,7 @@ class ManagementController extends BaseController {
         // Enqueue WordPress Media Library
         wp_enqueue_media();
         
-        $this->view->render('management/section-edit', [
+        $this->view->render('admin/section/edit', [
             'sectionKey' => $sectionKey,
             'sectionName' => $sectionConfig['name'],
             'formHtml' => $formHtml,

@@ -10,16 +10,16 @@ $adminMenus = [
         'title' => '운영 및 문의',
         'items' => [
             [
-                'url' => '/management/',
+                'url' => '/admin/section/',
                 'icon' => 'icon-admin-menu-1.svg',
                 'text' => '웹사이트 관리',
-                'active_patterns' => ['/management/', '/management']
+                'active_patterns' => ['/admin/section/', '/admin/section']
             ],
             [
-                'url' => '/management/inquiry',
+                'url' => '/admin/inquiry',
                 'icon' => 'icon-admin-menu-2.svg',
                 'text' => '1:1 문의',
-                'active_patterns' => ['/management/inquiry', '/management/inquiry/']
+                'active_patterns' => ['/admin/inquiry', '/admin/inquiry/']
             ],
             [
                 'url' => '#',
@@ -33,10 +33,10 @@ $adminMenus = [
         'title' => '상품',
         'items' => [
             [
-                'url' => '/product',
+                'url' => '/admin/product',
                 'icon' => 'icon-admin-menu-4.svg',
                 'text' => '상품 관리',
-                'active_patterns' => ['/product', '/product/']
+                'active_patterns' => ['/admin/product', '/admin/product/']
             ]
         ]
     ],
@@ -44,16 +44,16 @@ $adminMenus = [
         'title' => '멤버십',
         'items' => [
             [
-                'url' => '/management/membership',
+                'url' => '/admin/membership',
                 'icon' => 'icon-admin-menu-5.svg',
                 'text' => '멤버십 관리',
-                'active_patterns' => ['/management/membership', '/management/membership/']
+                'active_patterns' => ['/admin/membership', '/admin/membership/']
             ],
             [
-                'url' => '/voucher',
+                'url' => '/admin/voucher',
                 'icon' => 'icon-admin-menu-6.svg',
                 'text' => '혜택/바우처 관리',
-                'active_patterns' => ['/voucher', '/benefits']
+                'active_patterns' => ['/admin/voucher', '/admin/benefits']
             ]
         ]
     ]

@@ -3,10 +3,10 @@
 if ( is_user_logged_in() ) {
 	$current_user = wp_get_current_user();
 	if ( user_can( $current_user, 'manage_options' ) ) {
-		wp_safe_redirect( home_url( '/management' ) );
+		wp_safe_redirect( home_url( '/admin/section' ) );
 		exit;
 	}
-	$member_dashboard_url = apply_filters( 'honors_member_dashboard_url', home_url( '/member' ), $current_user );
+	$member_dashboard_url = apply_filters( 'honors_member_dashboard_url', home_url( '/admin/section' ), $current_user );
 	wp_safe_redirect( $member_dashboard_url );
 	exit;
 }

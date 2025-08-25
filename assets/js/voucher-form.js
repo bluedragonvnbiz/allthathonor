@@ -323,7 +323,7 @@ jQuery(document).ready(function($) {
             .done(function(response) {
                 if (response.success) {
                     alert('Voucher saved successfully!');
-                    window.location.href = '/voucher/';
+                    window.location.href = '/admin/voucher/';
                 } else {
                     alert('Error: ' + (response.data?.message || 'Unknown error'));
                 }

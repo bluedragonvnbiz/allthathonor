@@ -276,11 +276,15 @@ class MembershipAjaxHandler {
                 $voucherField = $category . '_vouchers';
                 $usageGuideField = $category . '_usage_guide';
                 
-                // Process voucher data
+                // Process voucher data (including empty arrays for clearing categories)
                 if (isset($_POST[$voucherField])) {
                     $voucherData = json_decode(stripslashes($_POST[$voucherField]), true);
                     if (is_array($voucherData)) {
+                        // Always set data, even if empty array (to clear category)
                         $benefitsData[$voucherField] = $this->sanitizeVoucherArray($voucherData);
+                    } else {
+                        // If JSON decode failed, set as empty array
+                        $benefitsData[$voucherField] = [];
                     }
                 }
                 

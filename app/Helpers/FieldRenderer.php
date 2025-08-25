@@ -118,7 +118,7 @@ class FieldRenderer {
         $html .= '<div class="card-body p-0">';
         $html .= '<div class="card-header d-flex align-items-center justify-content-between">';
         $html .= '<strong class="title fw-bolder letter-spacing-1">상품 내용</strong>';
-        $html .= '<a href="/product/edit/?id=' . $sectionData['id'] . '" class="btn btn-primary">수정</a>';
+        $html .= '<a href="/admin/product/edit/?id=' . $sectionData['id'] . '" class="btn btn-primary">수정</a>';
         $html .= '</div>';
         
         // Render all fields in view mode

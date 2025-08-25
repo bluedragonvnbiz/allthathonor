@@ -3,8 +3,9 @@ return array (
   'AccountController' => '/app/Controllers/AccountController.php',
   'HomeController' => '/app/Controllers/HomeController.php',
   'InquiryController' => '/app/Controllers/InquiryController.php',
-  'ManagementController' => '/app/Controllers/ManagementController.php',
   'MembershipController' => '/app/Controllers/MembershipController.php',
-  'ProductController' => '/app/Controllers/ProductController.php',
-  'VoucherController' => '/app/Controllers/VoucherController.php',
+  'DashboardController' => '/app/Controllers/Admin/DashboardController.php',
+  'ProductController' => '/app/Controllers/Admin/ProductController.php',
+  'SectionController' => '/app/Controllers/Admin/SectionController.php',
+  'VoucherController' => '/app/Controllers/Admin/VoucherController.php',
 );

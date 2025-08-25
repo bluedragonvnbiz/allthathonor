@@ -3,8 +3,10 @@
  * Voucher Controller
  * Handle voucher management page logic
  */
+namespace Admin;
 use App\Services\VoucherService;
 use App\Helpers\FieldRenderer;
+use BaseController;
 
 class VoucherController extends BaseController {
     
@@ -13,6 +15,7 @@ class VoucherController extends BaseController {
     }
     
     public function index() {
+        $this->setPageTitle('Voucher Management');
         
         // Get search parameters
         $searchType = $this->getGet('search_type') ?: 'voucher_name';
@@ -45,6 +48,11 @@ class VoucherController extends BaseController {
         $page = (int)($this->getGet('current_page') ?: 1);
         $perPage = 2;
         
+        // Load available grades from memberships
+        $membershipService = new \App\Services\MembershipService();
+        $availableGrades = $membershipService->getAvailableGrades();
+
+        // Now voucher table stores membership IDs, so pass gradeFilter directly
         // Load vouchers with search and pagination
         $voucherService = new VoucherService();
         $vouchers = $voucherService->getAllVouchers($searchType, $searchKeyword, $statusFilter, $typeFilter, $gradeFilter, $page, $perPage);
@@ -61,10 +69,10 @@ class VoucherController extends BaseController {
         ]);
         
         // Render voucher list view
-        $this->view->render('voucher/index', [
+        $this->view->render('admin/voucher/index', [
             'user_info' => $this->user_info,
-            'page_title' => 'Voucher Management',
             'vouchers' => $vouchers,
+            'availableGrades' => $availableGrades,
             'searchType' => $searchType,
             'searchKeyword' => $searchKeyword,
             'statusFilter' => $statusFilter,
@@ -105,7 +113,7 @@ class VoucherController extends BaseController {
         $renderer = new FieldRenderer();
         $formHtml = $renderer->renderSection($voucherFieldsConfig, [], 'voucher');
 
-        $this->view->render('voucher/add', [
+        $this->view->render('admin/voucher/add', [
             'formHtml' => $formHtml,
             'voucher' => [] // Empty array for new voucher
         ]);
@@ -153,7 +161,7 @@ class VoucherController extends BaseController {
         $renderer = new FieldRenderer();
         $formHtml = $renderer->renderSection($voucherFieldsConfig, $voucher, 'voucher');
 
-        $this->view->render('voucher/edit', [
+        $this->view->render('admin/voucher/edit', [
             'user_info' => $this->user_info,
             'page_title' => 'Edit Voucher',
             'voucher' => $voucher,

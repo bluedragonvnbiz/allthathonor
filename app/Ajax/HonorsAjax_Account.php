@@ -52,9 +52,9 @@ class HonorsAjax_Account {
 
         // Role-based redirect
         if (user_can($user, 'manage_options')) {
-            $redirect_url = home_url('/management');
+            $redirect_url = home_url('/admin/section');
         } else {
-            $redirect_url = apply_filters('honors_member_dashboard_url', home_url('/member'), $user);
+            $redirect_url = apply_filters('honors_member_dashboard_url', home_url('/admin/section'), $user);
         }
 
         wp_send_json_success([

@@ -7,7 +7,6 @@ use App\Helpers\FieldRenderer;
 use App\Services\VoucherService;
 use App\Services\MembershipService;
 use App\Services\SectionService;
-
 class MembershipController extends BaseController {
     private $sectionService;
     public function __construct() {
