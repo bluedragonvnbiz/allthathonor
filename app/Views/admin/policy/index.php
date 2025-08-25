@@ -22,7 +22,7 @@
                                 <?= htmlspecialchars($file['policy_name']) ?>
                             </td>
                             <td>
-                                <div>
+                                <div class="file-row">
                                     <?php if($file['file_url']): ?>
                                         <a href="<?= $file['file_url'] ?>" class="text-decoration-underline" target="_blank"><?= htmlspecialchars($file['file_name']) ?></a>
                                     <?php else: ?>
@@ -46,6 +46,19 @@
 </div>
 
 <style>
+    .file-row {
+        width: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        gap: 10px;
+        margin: 0 auto;
+    }
+    @media (min-width: 1200px) {
+        .file-row {
+            width: 200px;
+        }
+    }
     .upload-box input {
         width: auto;
     }
