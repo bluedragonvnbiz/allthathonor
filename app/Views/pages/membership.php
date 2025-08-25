@@ -56,7 +56,7 @@ $voucherService = new VoucherService();
 				?>
 				<div class="item">
 					<p class="title"><?= esc_html($membership['membership_name']) ?></p>
-					<p class="description mb-2"><?= esc_html($membership['top_phrase']) ?></p>
+					<p class="description mb-2"><?= esc_html($membership['summary_description']) ?></p>
 					<div class="price-box d-flex align-items-end column-gap-2 mb-32">
 						<strong><?= number_format($membership['sale_price']) ?>원</strong>
 						<span>세금 별도</span>
