@@ -39,7 +39,10 @@ class PolicyController extends BaseController {
         return [
             'terms_of_service' => '이용약관',
             'privacy_policy' => '개인정보 처리방침',
-            'travel_terms' => '국내/외 여행 표준약관'
+            'travel_terms' => '국내/외 여행 표준약관',
+            'sub_consent' => '부속 동의서',
+            'marketing_consent' => '마케팅 목적 활용 동의',
+            'third_party_consent' => '제 3자 정보 제공 동의',
         ];
     }
 
