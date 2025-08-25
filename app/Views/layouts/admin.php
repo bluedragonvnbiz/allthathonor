@@ -7,8 +7,8 @@
 </head>
 <body <?php body_class(); ?>>
 
-<div class="d-flex">
-    <div class="main-sidebar flex-shrink-0<?php if(!empty($_COOKIE['sidebar-collapsed']) && $_COOKIE['sidebar-collapsed'] == "true") echo " sidebar-collapsed"; ?>">
+<div class="d-flex wrap-management">
+    <div class="main-sidebar bg-white flex-shrink-0<?php if(!empty($_COOKIE['sidebar-collapsed']) && $_COOKIE['sidebar-collapsed'] == "true") echo " sidebar-collapsed"; ?>">
         <?php $this->partial('common/admin-sidebar') ?>		
     </div><!--end sidebar-->
 

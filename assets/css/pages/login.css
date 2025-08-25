@@ -28,11 +28,11 @@
 /* Login Form Container */
 .login-form-container {
     background: white;
-    border-radius: 20px;
-    padding: 40px;
+    border-radius: 10px;
+    padding: 32px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 400px;
+    max-width: 347px;
     position: relative;
     z-index: 5;
 }
@@ -40,7 +40,7 @@
 /* Logo Section */
 .logo-section {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
 }
 
 .logo {
@@ -60,7 +60,7 @@
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 24px;
 }
 
 .form-group {
@@ -95,8 +95,8 @@
     position: absolute;
     left: 15px;
     color: #666;
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
     z-index: 2;
     display: flex;
     align-items: center;
@@ -119,10 +119,10 @@
 
 .input-wrapper input {
     width: 100%;
-    padding: 15px 15px 15px 45px;
-    border: 2px solid #d1d5db;
-    border-radius: 12px;
-    font-size: 14px;
+    padding: 10px 15px 9px 45px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 13px;
     font-family: 'Arial', sans-serif;
     background: white;
     transition: all 0.3s ease;
@@ -137,23 +137,22 @@
 
 .input-wrapper input::placeholder {
     color: #9ca3af;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 /* Login Button - Match exact color from image */
 .login-btn {
     width: 100%;
-    padding: 16px;
+    padding: 10px 16px;
     background: #89b97c;
     color: white;
     border: none;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius:4px;
+    font-size: 14px;
     font-weight: 600;
     font-family: 'Arial', sans-serif;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 10px;
 }
 
 .login-btn:hover:not(:disabled) {
