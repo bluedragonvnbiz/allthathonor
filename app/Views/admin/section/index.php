@@ -1,10 +1,4 @@
-<?php
-/**
- * Table List Partial
- * Display data in table format
- */
-?>
-
+<h1 class="page-title">웹사이트 관리</h1>
 <div class="card">
 	<div class="card-body">
 		<div class="table-responsive">
@@ -90,13 +84,13 @@
 			  			$lastModified = $sectionService->getSectionLastModified($sectionKey, $page);
 			  			$lastModified = $lastModified ? date('Y-m-d', strtotime($lastModified)) : '-';
 			  		?>
-			  		<tr>				      
-			  			<td><a href="/management/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>"><?= htmlspecialchars($location) ?></a></td>
-			  			<td><a href="/management/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>"><?= htmlspecialchars($sectionNumber) ?></a></td>
-			  			<td><a href="/management/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>"><?= htmlspecialchars($topPhrase) ?></a></td>
-			  			<td><a href="/management/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>"><?= htmlspecialchars($mainTitle) ?></a></td>
-			  			<td><a href="/management/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>"><?= htmlspecialchars($exposureStatus === 'expose' ? '노출' : '미노출') ?></a></td>
-			  			<td><a href="/management/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>"><?= htmlspecialchars($lastModified) ?></a></td>
+			  		<tr onclick="window.location.href='/admin/section/edit/?section=<?= $sectionKey ?>&section_page=<?= $page ?>'" style="cursor: pointer;">				      
+			  			<td><?= htmlspecialchars($location) ?></td>
+			  			<td><?= htmlspecialchars($sectionNumber) ?></td>
+			  			<td><?= htmlspecialchars($topPhrase) ?></td>
+			  			<td><?= htmlspecialchars($mainTitle) ?></td>
+			  			<td><?= htmlspecialchars($exposureStatus === 'expose' ? '노출' : '미노출') ?></td>
+			  			<td><?= htmlspecialchars($lastModified) ?></td>
 			  		</tr>
 			  		<?php endforeach; ?>
 			  	<?php else: ?>

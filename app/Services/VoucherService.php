@@ -47,13 +47,25 @@ class VoucherService {
         // Search by keyword
         if (!empty($searchKeyword)) {
             if ($searchType === 'voucher_code') {
-                // Remove 'BF' prefix if user includes it
+                // Remove 'BF' prefix if user includes it for more flexible search
                 $searchCode = str_replace('BF', '', $searchKeyword);
-                // Search by ID field
-                $where_conditions[] = "id = %d";
-                $where_values[] = (int) $searchCode;
+                // Support partial code search by padding with zeros and using LIKE
+                if (is_numeric($searchCode)) {
+                    // If numeric, search both as ID and formatted code
+                    $where_conditions[] = "(id = %d OR LPAD(id, 6, '0') LIKE %s)";
+                    $where_values[] = (int) $searchCode;
+                    $where_values[] = '%' . $wpdb->esc_like(str_pad($searchCode, 6, '0', STR_PAD_LEFT)) . '%';
+                } else {
+                    // If not numeric, just search the keyword in formatted code
+                    $where_conditions[] = "LPAD(id, 6, '0') LIKE %s";
+                    $where_values[] = '%' . $wpdb->esc_like($searchKeyword) . '%';
+                }
+            } elseif ($searchType === 'voucher_name') {
+                // Map voucher_name to actual column name 'name'
+                $where_conditions[] = "name LIKE %s";
+                $where_values[] = '%' . $wpdb->esc_like($searchKeyword) . '%';
             } else {
-                // Search by name field
+                // Fallback for other search types
                 $where_conditions[] = "$searchType LIKE %s";
                 $where_values[] = '%' . $wpdb->esc_like($searchKeyword) . '%';
             }
@@ -120,7 +132,7 @@ class VoucherService {
             }
         }
 
-        // Filter by category (grade)
+        // Filter by category (grade) - now using membership IDs
         if (!empty($categoryFilter)) {
             // If 'all' is selected, don't filter by category
             if (!in_array('all', $categoryFilter)) {
@@ -134,33 +146,37 @@ class VoucherService {
                     if (!empty($categoryFilter)) {
                         // Both specific categories and unclassified selected
                         $category_conditions = [];
-                        foreach ($categoryFilter as $category) {
-                            $category_conditions[] = "category LIKE %s";
-                            $where_values[] = '%' . $wpdb->esc_like($category) . '%';
+                        foreach ($categoryFilter as $categoryId) {
+                            if (is_numeric($categoryId)) {
+                                $category_conditions[] = "FIND_IN_SET(%s, category) > 0";
+                                $where_values[] = $categoryId;
+                            }
                         }
-                        // Add unclassified condition (empty or not matching defined categories)
-                        $category_conditions[] = "(category IS NULL OR category = '' OR (category NOT LIKE %s AND category NOT LIKE %s))";
-                        $where_values[] = '%signature%';
-                        $where_values[] = '%prime%';
+                        // Add unclassified condition (empty or no valid membership IDs)
+                        $category_conditions[] = "(category IS NULL OR category = '' OR category NOT REGEXP '^[0-9,]+$')";
                         $where_conditions[] = "(" . implode(' OR ', $category_conditions) . ")";
                     } else {
                         // Only unclassified selected
-                        $where_conditions[] = "(category IS NULL OR category = '' OR (category NOT LIKE %s AND category NOT LIKE %s))";
-                        $where_values[] = '%signature%';
-                        $where_values[] = '%prime%';
+                        $where_conditions[] = "(category IS NULL OR category = '' OR category NOT REGEXP '^[0-9,]+$')";
                     }
                 } else {
                     // Only specific categories selected
                     if (is_array($categoryFilter)) {
                         $category_conditions = [];
-                        foreach ($categoryFilter as $category) {
-                            $category_conditions[] = "category LIKE %s";
-                            $where_values[] = '%' . $wpdb->esc_like($category) . '%';
+                        foreach ($categoryFilter as $categoryId) {
+                            if (is_numeric($categoryId)) {
+                                $category_conditions[] = "FIND_IN_SET(%s, category) > 0";
+                                $where_values[] = $categoryId;
+                            }
                         }
-                        $where_conditions[] = "(" . implode(' OR ', $category_conditions) . ")";
+                        if (!empty($category_conditions)) {
+                            $where_conditions[] = "(" . implode(' OR ', $category_conditions) . ")";
+                        }
                     } else {
-                        $where_conditions[] = "category LIKE %s";
-                        $where_values[] = '%' . $wpdb->esc_like($categoryFilter) . '%';
+                        if (is_numeric($categoryFilter)) {
+                            $where_conditions[] = "FIND_IN_SET(%s, category) > 0";
+                            $where_values[] = $categoryFilter;
+                        }
                     }
                 }
             }
@@ -214,13 +230,25 @@ class VoucherService {
         // Search by keyword
         if (!empty($searchKeyword)) {
             if ($searchType === 'voucher_code') {
-                // Remove 'BF' prefix if user includes it
+                // Remove 'BF' prefix if user includes it for more flexible search
                 $searchCode = str_replace('BF', '', $searchKeyword);
-                // Search by ID field
-                $where_conditions[] = "id = %d";
-                $where_values[] = (int) $searchCode;
+                // Support partial code search by padding with zeros and using LIKE
+                if (is_numeric($searchCode)) {
+                    // If numeric, search both as ID and formatted code
+                    $where_conditions[] = "(id = %d OR LPAD(id, 6, '0') LIKE %s)";
+                    $where_values[] = (int) $searchCode;
+                    $where_values[] = '%' . $wpdb->esc_like(str_pad($searchCode, 6, '0', STR_PAD_LEFT)) . '%';
+                } else {
+                    // If not numeric, just search the keyword in formatted code
+                    $where_conditions[] = "LPAD(id, 6, '0') LIKE %s";
+                    $where_values[] = '%' . $wpdb->esc_like($searchKeyword) . '%';
+                }
+            } elseif ($searchType === 'voucher_name') {
+                // Map voucher_name to actual column name 'name'
+                $where_conditions[] = "name LIKE %s";
+                $where_values[] = '%' . $wpdb->esc_like($searchKeyword) . '%';
             } else {
-                // Search by name field
+                // Fallback for other search types
                 $where_conditions[] = "$searchType LIKE %s";
                 $where_values[] = '%' . $wpdb->esc_like($searchKeyword) . '%';
             }
@@ -287,7 +315,7 @@ class VoucherService {
             }
         }
 
-        // Filter by category (grade)
+        // Filter by category (grade) - now using membership IDs
         if (!empty($categoryFilter)) {
             // If 'all' is selected, don't filter by category
             if (!in_array('all', $categoryFilter)) {
@@ -301,33 +329,37 @@ class VoucherService {
                     if (!empty($categoryFilter)) {
                         // Both specific categories and unclassified selected
                         $category_conditions = [];
-                        foreach ($categoryFilter as $category) {
-                            $category_conditions[] = "category LIKE %s";
-                            $where_values[] = '%' . $wpdb->esc_like($category) . '%';
+                        foreach ($categoryFilter as $categoryId) {
+                            if (is_numeric($categoryId)) {
+                                $category_conditions[] = "FIND_IN_SET(%s, category) > 0";
+                                $where_values[] = $categoryId;
+                            }
                         }
-                        // Add unclassified condition (empty or not matching defined categories)
-                        $category_conditions[] = "(category IS NULL OR category = '' OR (category NOT LIKE %s AND category NOT LIKE %s))";
-                        $where_values[] = '%signature%';
-                        $where_values[] = '%prime%';
+                        // Add unclassified condition (empty or no valid membership IDs)
+                        $category_conditions[] = "(category IS NULL OR category = '' OR category NOT REGEXP '^[0-9,]+$')";
                         $where_conditions[] = "(" . implode(' OR ', $category_conditions) . ")";
                     } else {
                         // Only unclassified selected
-                        $where_conditions[] = "(category IS NULL OR category = '' OR (category NOT LIKE %s AND category NOT LIKE %s))";
-                        $where_values[] = '%signature%';
-                        $where_values[] = '%prime%';
+                        $where_conditions[] = "(category IS NULL OR category = '' OR category NOT REGEXP '^[0-9,]+$')";
                     }
                 } else {
                     // Only specific categories selected
                     if (is_array($categoryFilter)) {
                         $category_conditions = [];
-                        foreach ($categoryFilter as $category) {
-                            $category_conditions[] = "category LIKE %s";
-                            $where_values[] = '%' . $wpdb->esc_like($category) . '%';
+                        foreach ($categoryFilter as $categoryId) {
+                            if (is_numeric($categoryId)) {
+                                $category_conditions[] = "FIND_IN_SET(%s, category) > 0";
+                                $where_values[] = $categoryId;
+                            }
                         }
-                        $where_conditions[] = "(" . implode(' OR ', $category_conditions) . ")";
+                        if (!empty($category_conditions)) {
+                            $where_conditions[] = "(" . implode(' OR ', $category_conditions) . ")";
+                        }
                     } else {
-                        $where_conditions[] = "category LIKE %s";
-                        $where_values[] = '%' . $wpdb->esc_like($categoryFilter) . '%';
+                        if (is_numeric($categoryFilter)) {
+                            $where_conditions[] = "FIND_IN_SET(%s, category) > 0";
+                            $where_values[] = $categoryFilter;
+                        }
                     }
                 }
             }
@@ -512,15 +544,20 @@ class VoucherService {
     }
 
     /**
-     * Get vouchers by category
+     * Get vouchers by category - using membership ID
      */
-    public function getVouchersByCategory(string $category, string $status = 'expose'): array {
+    public function getVouchersByCategory(string $categoryId, string $status = 'expose'): array {
         global $wpdb;
         $table_name = VoucherDatabase::getTableName();
         
+        // Validate that categoryId is numeric
+        if (!is_numeric($categoryId)) {
+            return [];
+        }
+        
         $results = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM $table_name WHERE category LIKE %s AND status = %s ORDER BY created_at DESC",
-            '%' . $wpdb->esc_like($category) . '%',
+            "SELECT * FROM $table_name WHERE FIND_IN_SET(%s, category) > 0 AND status = %s ORDER BY created_at DESC",
+            $categoryId,
             $status
         ));
         

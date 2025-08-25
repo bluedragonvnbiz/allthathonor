@@ -28,10 +28,10 @@ class AccountController {
         $this->view->layout('login');
         
         // Render login view
-        $this->view->render('login', [
+        $this->view->render('pages/login', [
             'page_title' => 'Login - All That Honors Club',
             'form_action' => wp_login_url(),
-            'redirect_to' => isset($_GET['redirect_to']) ? $_GET['redirect_to'] : home_url('/management')
+            'redirect_to' => isset($_GET['redirect_to']) ? $_GET['redirect_to'] : home_url('/admin/section')
         ]);
     }
     

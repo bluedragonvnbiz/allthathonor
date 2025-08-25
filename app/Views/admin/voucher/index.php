@@ -18,14 +18,24 @@
 					  <input class="form-check-input" type="checkbox" value="all" name="grade[]" id="grade_all" <?= in_array('all', $gradeFilter) ? 'checked' : '' ?>>
 					  <label class="form-check-label" for="grade_all">전체</label>
 					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="signature" name="grade[]" id="grade_signature" <?= in_array('signature', $gradeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="grade_signature">SIGNATURE</label>
-					</div>
-					<div class="form-check checkbox">
-					  <input class="form-check-input" type="checkbox" value="prime" name="grade[]" id="grade_prime" <?= in_array('prime', $gradeFilter) ? 'checked' : '' ?>>
-					  <label class="form-check-label" for="grade_prime">PRIME</label>
-					</div>
+					<?php if (!empty($availableGrades)): ?>
+						<?php foreach ($availableGrades as $grade): ?>
+							<div class="form-check checkbox">
+							  <input class="form-check-input" type="checkbox" value="<?= $grade->grade_id ?>" name="grade[]" id="grade_<?= $grade->grade_id ?>" <?= in_array($grade->grade_id, $gradeFilter) ? 'checked' : '' ?>>
+							  <label class="form-check-label" for="grade_<?= $grade->grade_id ?>"><?= htmlspecialchars($grade->grade_name) ?></label>
+							</div>
+						<?php endforeach; ?>
+					<?php else: ?>
+						<!-- Fallback if no grades found in database -->
+						<div class="form-check checkbox">
+						  <input class="form-check-input" type="checkbox" value="signature" name="grade[]" id="grade_signature" <?= in_array('signature', $gradeFilter) ? 'checked' : '' ?>>
+						  <label class="form-check-label" for="grade_signature">SIGNATURE</label>
+						</div>
+						<div class="form-check checkbox">
+						  <input class="form-check-input" type="checkbox" value="prime" name="grade[]" id="grade_prime" <?= in_array('prime', $gradeFilter) ? 'checked' : '' ?>>
+						  <label class="form-check-label" for="grade_prime">PRIME</label>
+						</div>
+					<?php endif; ?>
 					<div class="form-check checkbox">
 					  <input class="form-check-input" type="checkbox" value="unclassified" name="grade[]" id="grade_unclassified" <?= in_array('unclassified', $gradeFilter) ? 'checked' : '' ?>>
 					  <label class="form-check-label" for="grade_unclassified">미분류</label>
@@ -81,7 +91,7 @@
 <div class="card">
 	<div class="card-header d-flex align-items-center justify-content-between">
 		<strong class="title fw-bolder letter-spacing-1">전체 (<?= $totalVouchers ?> 건)</strong>
-		<a href="/voucher/add" class="btn btn-primary lh-1">+ 새 추가</a>
+		<a href="/admin/voucher/add" class="btn btn-primary lh-1">+ 새 추가</a>
 	</div>
     <div class="card-body">
     <div class="table-responsive">
@@ -100,16 +110,33 @@
             <?php if (!empty($vouchers)): ?>
                 <?php
                 foreach ($vouchers as $voucher):
-                    $viewUrl = '/voucher/edit/?id=' . $voucher['id'];
+                    $viewUrl = '/admin/voucher/edit/?id=' . $voucher['id'];
                     
-                    // Format grade display
+                    // Format grade display - convert membership IDs to names
                     $gradeDisplay = '--';
                     if (!empty($voucher['category'])) {
-                        $grades = explode(',', $voucher['category']);
-                        if (count($grades) > 1) {
-                            $gradeDisplay = 'SIGNATURE/PRIME';
-                        } else {
-                            $gradeDisplay = strtoupper($grades[0]);
+                        $gradeIds = explode(',', $voucher['category']);
+                        $gradeNames = [];
+                        
+                        foreach ($gradeIds as $gradeId) {
+                            $gradeId = trim($gradeId);
+                            if (is_numeric($gradeId)) {
+                                // Find corresponding grade name from availableGrades
+                                foreach ($availableGrades as $grade) {
+                                    if ($grade->grade_id == $gradeId) {
+                                        $gradeNames[] = $grade->grade_name;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (!empty($gradeNames)) {
+                            if (count($gradeNames) > 1) {
+                                $gradeDisplay = implode('/', $gradeNames);
+                            } else {
+                                $gradeDisplay = $gradeNames[0];
+                            }
                         }
                     }
                     

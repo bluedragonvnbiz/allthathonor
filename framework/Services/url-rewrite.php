@@ -8,11 +8,31 @@ class HonorsUrlRewrite {
     private static $rewrite_flushed = false;
     
     public function __construct() {
+        // Register query vars first
+        add_filter('query_vars', [$this, 'registerQueryVars'], 1);
+        
         // Add rewrite rules after WordPress init
-        add_action('init', [$this, 'addRewriteRules'], 10);
+        add_action('init', [$this, 'addRewriteRules'], 1);
         
         // Force our rewrite rules to be FIRST using rewrite_rules_array filter
         add_filter('rewrite_rules_array', [$this, 'prioritizeCustomRules'], 1);
+        
+        // Force flush rewrite rules on theme activation
+        add_action('after_switch_theme', [$this, 'flushRules']);
+        
+        // Also flush on plugin activation/deactivation
+        add_action('activated_plugin', [$this, 'flushRules']);
+        add_action('deactivated_plugin', [$this, 'flushRules']);
+    }
+    
+    /**
+     * Register custom query vars
+     */
+    public function registerQueryVars($vars) {
+        error_log('Registering query vars...');
+        $vars[] = 'honors_route';
+        error_log('Query vars after registration: ' . print_r($vars, true));
+        return $vars;
     }
     
     /**
@@ -21,37 +41,30 @@ class HonorsUrlRewrite {
     public function addRewriteRules() {
         // Get routes from Router
         $routes = Router::getRoutes();
+        error_log('Adding rewrite rules for routes: ' . print_r($routes, true));
         
         if (empty($routes)) {
+            error_log('No routes to add rewrite rules for');
             return;
         }
         
         // Auto-generate rewrite rules from config
         foreach ($routes as $route => $config) {
-            // Handle subpage routes (e.g., management/abc)
-            if (strpos($route, '/') !== false) {
-                $parts = explode('/', $route);
-                $parent_page = $parts[0];
-                $subpage = $parts[1];
-                
-                $pattern = "^{$parent_page}/{$subpage}/?$";
-                $replacement = "index.php?pagename={$parent_page}&subpage={$subpage}";
-                
-                add_rewrite_rule($pattern, $replacement, 'top');
-            }
-            // Also add a generic pattern for the parent page to catch dynamic subpages
-            else {
-                $pattern = "^{$route}/([^/]+)/?$";
-                $replacement = "index.php?pagename={$route}&subpage=\$matches[1]";
-                
-                add_rewrite_rule($pattern, $replacement, 'top');
-            }
+            // Add exact match rule
+            $pattern = "^{$route}/?$";
+            $replacement = "index.php?honors_route={$route}";
+            error_log("Adding rewrite rule: {$pattern} => {$replacement}");
+            add_rewrite_rule($pattern, $replacement, 'top');
         }
         
         // Only flush if not already flushed
         if (!self::$rewrite_flushed) {
+            error_log('Flushing rewrite rules...');
             flush_rewrite_rules(false);
             self::$rewrite_flushed = true;
+            error_log('Rewrite rules flushed');
+        } else {
+            error_log('Rewrite rules already flushed');
         }
     }
     
@@ -59,47 +72,32 @@ class HonorsUrlRewrite {
      * Force our custom rules to be FIRST in the rewrite rules array
      */
     public function prioritizeCustomRules($rules) {
-        // Extract our custom rules (avoid duplicates)
         $custom_rules = [];
         $routes = Router::getRoutes();
-        $added_patterns = []; // Track added patterns to avoid duplicates
+        error_log('Prioritizing custom rules for routes: ' . print_r($routes, true));
         
         if ($routes) {
             foreach ($routes as $route => $config) {
-                if (strpos($route, '/') !== false) {
-                    $parts = explode('/', $route);
-                    $parent_page = $parts[0];
-                    $subpage = $parts[1];
-                    
-                    // Add specific rule for this exact subpage
-                    $specific_pattern = "^{$parent_page}/{$subpage}/?$";
-                    $specific_replacement = "index.php?pagename={$parent_page}&subpage={$subpage}";
-                    $custom_rules[$specific_pattern] = $specific_replacement;
-                    
-                    // Add generic pattern only once per parent page
-                    $generic_pattern = "^{$parent_page}/([^/]+)/?$";
-                    if (!in_array($generic_pattern, $added_patterns)) {
-                        $generic_replacement = "index.php?pagename={$parent_page}&subpage=\$matches[1]";
-                        $custom_rules[$generic_pattern] = $generic_replacement;
-                        $added_patterns[] = $generic_pattern;
-                    }
-                }
+                // Add exact match rule
+                $pattern = "^{$route}/?$";
+                $replacement = "index.php?honors_route={$route}";
+                error_log("Adding prioritized rule: {$pattern} => {$replacement}");
+                $custom_rules[$pattern] = $replacement;
             }
         }
         
         // Merge custom rules FIRST, then existing rules
-        return array_merge($custom_rules, $rules);
+        $merged_rules = array_merge($custom_rules, $rules);
+        error_log('Final rewrite rules: ' . print_r($merged_rules, true));
+        return $merged_rules;
     }
-
-
     
     /**
-     * Build URL for subpage
-     * @param string $parent_page
-     * @param string $subpage
-     * @return string
+     * Flush rewrite rules
      */
-    public static function buildSubpageUrl($parent_page, $subpage) {
-        return home_url("/{$parent_page}/{$subpage}/");
+    public function flushRules() {
+        error_log('Force flushing rewrite rules...');
+        flush_rewrite_rules(true);
+        error_log('Rewrite rules force flushed');
     }
 }

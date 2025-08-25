@@ -54,6 +54,8 @@ class HonorsAutoloader {
             'HonorsAdminCache' => '/framework/Services/admin-cache.php',
             'HonorsAjaxLoader' => '/framework/Services/ajax-loader.php',
             'HonorsUrlRewrite' => '/framework/Services/url-rewrite.php',
+            'AdminMiddleware' => '/framework/Middleware/AdminMiddleware.php',
+            'AuthMiddleware' => '/framework/Middleware/AuthMiddleware.php',
         ];
     }
     
@@ -131,13 +133,27 @@ class HonorsAutoloader {
         $controllers_dir = $this->base_path . '/app/Controllers/';
         
         if (is_dir($controllers_dir)) {
+            // Scan root directory
             $files = glob($controllers_dir . '*.php');
-            
             foreach ($files as $file) {
                 $class_name = basename($file, '.php');
                 $relative_path = '/app/Controllers/' . basename($file);
-                
                 $this->class_map[$class_name] = $relative_path;
+            }
+
+            // Scan subdirectories (skip if class already exists in root)
+            $subdirs = glob($controllers_dir . '*', GLOB_ONLYDIR);
+            foreach ($subdirs as $subdir) {
+                $subdir_files = glob($subdir . '/*.php');
+                foreach ($subdir_files as $file) {
+                    $class_name = basename($file, '.php');
+                    $relative_path = str_replace($this->base_path, '', $file);
+                    
+                    // Only add if class doesn't exist in root (avoid overwriting root classes)
+                    if (!isset($this->class_map[$class_name])) {
+                        $this->class_map[$class_name] = $relative_path;
+                    }
+                }
             }
         }
         
@@ -199,6 +215,16 @@ class HonorsAutoloader {
      * @return string|false File path or false if not found
      */
     private function findClassFile($class_name) {
+        // Handle namespace Honors\ to framework/ directory mapping
+        if (strpos($class_name, 'Honors\\') === 0) {
+            $relative_class = substr($class_name, 7); // Remove 'Honors\'
+            $file_path = $this->base_path . '/framework/' . str_replace('\\', '/', $relative_class) . '.php';
+            
+            if (file_exists($file_path)) {
+                return $file_path;
+            }
+        }
+        
         // Handle namespace App\ to app/ directory mapping
         if (strpos($class_name, 'App\\') === 0) {
             $relative_class = substr($class_name, 4); // Remove 'App\'
@@ -207,7 +233,18 @@ class HonorsAutoloader {
             if (file_exists($file_path)) {
                 return $file_path;
             }
-        }        
+        }
+        
+        // Handle namespace Admin\ to app/Controllers/Admin/ directory mapping
+        if (strpos($class_name, 'Admin\\') === 0) {
+            $relative_class = substr($class_name, 6); // Remove 'Admin\'
+            $file_path = $this->base_path . '/app/Controllers/Admin/' . str_replace('\\', '/', $relative_class) . '.php';
+            
+            if (file_exists($file_path)) {
+                return $file_path;
+            }
+        }
+        
         return false;
     }
     

@@ -1,11 +1,27 @@
 <?php
 
+// Load membership options dynamically
+$membershipOptions = [];
+if (class_exists('\App\Services\MembershipService')) {
+    $membershipService = new \App\Services\MembershipService();
+    $availableGrades = $membershipService->getAvailableGrades();
+    
+    foreach ($availableGrades as $grade) {
+        $membershipOptions[$grade->grade_id] = $grade->grade_name;
+    }
+}
+
+// Fallback options if no memberships found
+if (empty($membershipOptions)) {
+    $membershipOptions = ['1' => 'PRIME', '2' => 'SIGNATURE'];
+}
+
 return [
     'one_submit' => true,
     'section_info' => [
         'title' => '혜택/바우처 정보',
         'fields' => [
-            ['key' => 'category', 'type' => 'checkbox', 'label' => '등급', 'options' => ['prime' => 'PRIME', 'signature' => 'SIGNATURE']],
+            ['key' => 'category', 'type' => 'checkbox', 'label' => '등급', 'options' => $membershipOptions],
             ['key' => 'status', 'type' => 'radio', 'label' => '상태', 'options' => ['expose' => '노출', 'not_expose' => '미노출'], 'default' => 'expose'],
             ['key' => 'type', 'type' => 'checkbox', 'label' => '유형', 'options' => ['voucher' => 'VOUCHER', 'event_invitation' => 'EVENT INVITATION']],
             ['key' => 'voucher_name', 'type' => 'display_text', 'label' => '', 'placeholder' => ''],

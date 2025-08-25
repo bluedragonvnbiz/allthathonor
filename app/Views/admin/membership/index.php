@@ -3,7 +3,6 @@
 <div class="card">
 	<div class="card-header d-flex align-items-center justify-content-between">
 		<strong class="title fw-bolder letter-spacing-1">전체 (<?= $totalMemberships ?> 건)</strong>
-		<a href="/management/membership/add" class="btn btn-primary lh-1">+ 새 추가</a>
 	</div>
     <div class="card-body">
     <div class="table-responsive">
@@ -22,7 +21,7 @@
             <?php if (!empty($memberships)): ?>
                 <?php
                 foreach ($memberships as $membership):
-                    $viewUrl = '/management/membership/?id=' . $membership['id'];
+                    $viewUrl = '/admin/membership/view/?id=' . $membership['id'];
                 ?>
                 <tr>
                     <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($membership['membership_number']) ?></a></td>

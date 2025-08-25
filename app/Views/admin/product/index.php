@@ -35,7 +35,7 @@
 <div class="card">
 	<div class="card-header d-flex align-items-center justify-content-between">
 		<strong class="title fw-bolder letter-spacing-1">전체 (<?= $totalProducts ?> 건)</strong>
-		<a href="/product/add" class="btn btn-primary lh-1">+ 새 추가</a>
+		<a href="/admin/product/add" class="btn btn-primary lh-1">+ 새 추가</a>
 	</div>
     <div class="card-body">
     <div class="table-responsive">
@@ -53,7 +53,7 @@
             <?php if (!empty($products)): ?>
                 <?php
                 foreach ($products as $product):
-                    $viewUrl = '/product/view/?id=' . $product['id'];
+                    $viewUrl = '/admin/product/view/?id=' . $product['id'];
                 ?>
                 <tr>
                     <td><a href="<?= $viewUrl ?>">PT<?= str_pad($product['id'], 6, '0', STR_PAD_LEFT) ?></a></td>

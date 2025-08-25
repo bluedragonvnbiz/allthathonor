@@ -472,10 +472,8 @@ class MembershipManagementHandler {
                 }
             });
             
-            // Add voucher data to form
-            if (selectedVouchers.length > 0) {
-                formData.append(`${category}_vouchers`, JSON.stringify(selectedVouchers));
-            }
+            // Always add voucher data to form (even if empty array to clear category)
+            formData.append(`${category}_vouchers`, JSON.stringify(selectedVouchers));
             
             // Collect usage guide
             const usageGuide = form.querySelector(`textarea[name="${category}_usage_guide"]`);

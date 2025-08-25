@@ -81,7 +81,7 @@
             <tbody>
             <?php if (!empty($inquiries)): ?>
                 <?php foreach ($inquiries as $inquiry): ?>
-                <tr onclick="window.location.href='/management/inquiry-view?id=<?= $inquiry['id'] ?>'" style="cursor: pointer;">
+                <tr onclick="window.location.href='/admin/inquiry/view?id=<?= $inquiry['id'] ?>'" style="cursor: pointer;">
                     <td><?= $inquiry['inquiry_number'] ?></td>
                     <td><?= $inquiry['corporate_name'] ?></td>
                     <td><?= $inquiry['contact_person'] ?></td>

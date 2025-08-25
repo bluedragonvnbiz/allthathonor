@@ -481,6 +481,23 @@ class MembershipService {
     }
 
     /**
+     * Get available grades for voucher filters
+     */
+    public function getAvailableGrades(): array {
+        global $wpdb;
+        $table_name = MembershipDatabase::getTableName();
+        
+        $results = $wpdb->get_results(
+            "SELECT id as grade_id, membership_name as grade_name, sort_order
+             FROM {$table_name} 
+             WHERE status = 'expose' 
+             ORDER BY sort_order ASC, membership_name ASC"
+        );
+        
+        return $results ?: [];
+    }
+
+    /**
      * Clear all membership cache
      */
     private function clearCache(): void {

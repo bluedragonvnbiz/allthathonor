@@ -233,9 +233,9 @@ class ProductFormHandler {
                 setTimeout(() => submitBtn.textContent = originalText, 2000);
                 
                 if (action === 'create') {
-                    setTimeout(() => window.location.href = '/product/', 100);
+                    setTimeout(() => window.location.href = '/admin/product/', 100);
                 } else {
-                    setTimeout(() => window.location.href = '/product/view/?id=' + response.data.product_id, 100);
+                    setTimeout(() => window.location.href = '/admin/product/view/?id=' + response.data.product_id, 100);
                 }
             })
             .catch(error => {
