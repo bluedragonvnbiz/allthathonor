@@ -36,7 +36,7 @@ if ($exposureStatus === 'expose'):
 							<?= htmlspecialchars($contentInfo['content_main_title']['part1'] ?? '') ?> 
 							<span><?= htmlspecialchars($contentInfo['content_main_title']['part2'] ?? '') ?></span>
 						<?php else: ?>
-							<?= htmlspecialchars($contentInfo['content_main_title']) ?>
+							<?= nl2br(htmlspecialchars($contentInfo['content_main_title'])) ?>
 						<?php endif; ?>
 					</h4>
 				<?php endif; ?>
@@ -52,7 +52,7 @@ if ($exposureStatus === 'expose'):
 					<?php endif; ?>
 					
 					<?php if (!empty($contentInfo['content_description_1'])): ?>
-						<p class="mb-0 lp-168 fw-light lh-27"><?= htmlspecialchars($contentInfo['content_description_1']) ?></p>
+						<p class="mb-0 lp-168 fw-light lh-27"><?= nl2br(htmlspecialchars($contentInfo['content_description_1'])) ?></p>
 					<?php endif; ?>
 				</div>
 				<div class="w-100">
@@ -61,7 +61,7 @@ if ($exposureStatus === 'expose'):
 					<?php endif; ?>
 					
 					<?php if (!empty($contentInfo['content_description_2'])): ?>
-						<p class="mb-0 lp-168 fw-light lh-27"><?= htmlspecialchars($contentInfo['content_description_2']) ?></p>
+						<p class="mb-0 lp-168 fw-light lh-27"><?= nl2br(htmlspecialchars($contentInfo['content_description_2'])) ?></p>
 					<?php endif; ?>
 				</div>
 			</div>

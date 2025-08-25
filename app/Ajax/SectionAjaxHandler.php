@@ -36,19 +36,14 @@ class SectionAjaxHandler {
         $data = [];
         foreach ($_POST as $key => $value) {
             if (!in_array($key, ['action', 'nonce', 'section', 'section_page', 'block'])) {
-                // Debug: Log radio field data
-                if (strpos($key, 'exposure_status') !== false) {
-                    error_log("Debug - Radio field {$key}: " . print_r($value, true));
-                }
-                
                 // Handle Unicode encoding issues
                 if (is_string($value)) {
-                    // First try to decode if it's JSON encoded
+                    // Decode unicode sequences safely (preserves newlines and special chars)
                     if (preg_match('/\\\\u[0-9a-fA-F]{4}/', $value)) {
-                        $decoded = json_decode('"' . $value . '"');
-                        if ($decoded !== null) {
-                            $value = $decoded;
-                        }
+                        $value = preg_replace_callback('/\\\\u([0-9a-fA-F]{4})/', function($matches) {
+                            $codepoint = hexdec($matches[1]);
+                            return mb_chr($codepoint, 'UTF-8');
+                        }, $value);
                     }
                     
                     // Ensure proper UTF-8 encoding
@@ -56,15 +51,13 @@ class SectionAjaxHandler {
                         $value = mb_convert_encoding($value, 'UTF-8', 'auto');
                     }
                 }
+                
                 $data[$key] = $value;
             }
         }
         
         // Sanitize data
         $sanitizedData = $this->sanitizeSectionData($data);
-        
-        // Debug: Log the data before saving
-        error_log('Section data before save: ' . json_encode($sanitizedData, JSON_UNESCAPED_UNICODE));
         
         try {
             $sectionService = new SectionService();
@@ -121,8 +114,23 @@ class SectionAjaxHandler {
             if (is_array($value)) {
                 $sanitized[$key] = $this->sanitizeSectionData($value);
             } else {
-                // For Korean text, use minimal sanitization to preserve characters
-                $sanitized[$key] = sanitize_text_field($value);
+                // Check if this field should preserve newlines (like descriptions)
+                $preserveNewlines = in_array($key, [
+                    'content_description', 
+                    'section_description',
+                    'description',
+                    'content',
+                    'notes',
+                    'detail'
+                ]);
+                
+                if ($preserveNewlines) {
+                    // Use sanitize_textarea_field for fields that need newlines
+                    $sanitized[$key] = sanitize_textarea_field($value);
+                } else {
+                    // For other fields, use minimal sanitization to preserve characters
+                    $sanitized[$key] = sanitize_text_field($value);
+                }
                 
                 // If it's Korean text, ensure proper encoding
                 if (preg_match('/[\x{AC00}-\x{D7AF}]/u', $sanitized[$key])) {
