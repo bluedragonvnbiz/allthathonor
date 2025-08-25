@@ -23,13 +23,13 @@
                 foreach ($memberships as $membership):
                     $viewUrl = '/admin/membership/view/?id=' . $membership['id'];
                 ?>
-                <tr>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($membership['membership_number']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($membership['membership_name']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($membership['top_phrase']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= number_format($membership['sale_price']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= $membership['status'] === 'expose' ? '노출' : '미노출' ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= date('Y.m.d', strtotime($membership['updated_at'])) ?></a></td>
+                <tr onclick="window.location.href='<?= $viewUrl ?>'">
+                    <td><?= htmlspecialchars($membership['membership_number']) ?></td>
+                    <td><?= htmlspecialchars($membership['membership_name']) ?></td>
+                    <td><?= htmlspecialchars($membership['top_phrase']) ?></td>
+                    <td><?= number_format($membership['sale_price']) ?></td>
+                    <td><?= $membership['status'] === 'expose' ? '노출' : '미노출' ?></td>
+                    <td><?= date('Y.m.d', strtotime($membership['updated_at'])) ?></td>
                 </tr>
                 <?php endforeach; ?>
             <?php else: ?>

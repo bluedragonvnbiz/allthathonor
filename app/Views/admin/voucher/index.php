@@ -154,13 +154,13 @@
                         }
                     }
                 ?>
-                <tr>
-                    <td><a href="<?= $viewUrl ?>">BF<?= str_pad($voucher['id'], 6, '0', STR_PAD_LEFT) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($gradeDisplay) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($typeDisplay) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($voucher['name']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= $voucher['status'] === 'expose' ? '노출' : '미노출' ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= date('Y.m.d', strtotime($voucher['created_at'])) ?></a></td>
+                <tr onclick="window.location.href='<?= $viewUrl ?>'">
+                    <td>BF<?= str_pad($voucher['id'], 6, '0', STR_PAD_LEFT) ?></td>
+                    <td><?= htmlspecialchars($gradeDisplay) ?></td>
+                    <td><?= htmlspecialchars($typeDisplay) ?></td>
+                    <td><?= htmlspecialchars($voucher['name']) ?></td>
+                    <td><?= $voucher['status'] === 'expose' ? '노출' : '미노출' ?></td>
+                    <td><?= date('Y.m.d', strtotime($voucher['created_at'])) ?></td>
                 </tr>
                 <?php endforeach; ?>
             <?php else: ?>

@@ -203,7 +203,7 @@ class VoucherAjaxHandler {
         
         // Handle voucher_name - map to name
         if (isset($data['name'])) {
-            $sanitized['name'] = sanitize_text_field($data['name']);
+            $sanitized['name'] = sanitize_text_field(stripslashes($data['name']));
         }
         
         // Handle summary_description - map to short_description

@@ -152,15 +152,15 @@ class MembershipService {
 
         // Prepare data
         $membershipData = [
-            'membership_number' => sanitize_text_field($data['membership_number']),
-            'membership_name' => sanitize_text_field($data['membership_name']),
+            'membership_number' => sanitize_text_field(stripslashes($data['membership_number'])),
+            'membership_name' => sanitize_text_field(stripslashes($data['membership_name'])),
             'status' => $data['status'] ?? 'expose',
-            'top_phrase' => sanitize_text_field($data['top_phrase'] ?? ''),
+            'top_phrase' => sanitize_text_field(stripslashes($data['top_phrase'] ?? '')),
             'image' => $data['image'] ?? null,
             'sale_price' => $this->formatPrice($data['sale_price'] ?? ''),
-            'summary_description' => sanitize_textarea_field($data['summary_description'] ?? ''),
-            'notes' => wp_kses_post($data['notes'] ?? ''),
-            'usage_guide' => wp_kses_post($data['usage_guide'] ?? ''),
+            'summary_description' => sanitize_textarea_field(stripslashes($data['summary_description'] ?? '')),
+            'notes' => wp_kses_post(stripslashes($data['notes'] ?? '')),
+            'usage_guide' => wp_kses_post(stripslashes($data['usage_guide'] ?? '')),
             'travel_care_vouchers' => $this->formatJsonField($data['travel_care_vouchers'] ?? []),
             'lifestyle_vouchers' => $this->formatJsonField($data['lifestyle_vouchers'] ?? []),
             'special_benefit_vouchers' => $this->formatJsonField($data['special_benefit_vouchers'] ?? []),
@@ -222,14 +222,14 @@ class MembershipService {
 
         // Prepare data
         $membershipData = [
-            'membership_name' => sanitize_text_field($data['membership_name']),
+            'membership_name' => sanitize_text_field(stripslashes($data['membership_name'])),
             'status' => $data['status'] ?? 'expose',
-            'top_phrase' => sanitize_text_field($data['top_phrase'] ?? ''),
+            'top_phrase' => sanitize_text_field(stripslashes($data['top_phrase'] ?? '')),
             'image' => $data['image'] ?? null,
             'sale_price' => $this->formatPrice($data['sale_price'] ?? ''),
-            'summary_description' => sanitize_textarea_field($data['summary_description'] ?? ''),
-            'notes' => wp_kses_post($data['notes'] ?? ''),
-            'usage_guide' => wp_kses_post($data['usage_guide'] ?? ''),
+            'summary_description' => sanitize_textarea_field(stripslashes($data['summary_description'] ?? '')),
+            'notes' => wp_kses_post(stripslashes($data['notes'] ?? '')),
+            'usage_guide' => wp_kses_post(stripslashes($data['usage_guide'] ?? '')),
             'travel_care_vouchers' => $this->formatJsonField($data['travel_care_vouchers'] ?? []),
             'lifestyle_vouchers' => $this->formatJsonField($data['lifestyle_vouchers'] ?? []),
             'special_benefit_vouchers' => $this->formatJsonField($data['special_benefit_vouchers'] ?? []),
