@@ -123,7 +123,7 @@ class VoucherController extends BaseController {
         $voucherId = $this->getGet('id') ?: $voucherId;
         
         if (!$voucherId) {
-            wp_redirect('/voucher/');
+            wp_redirect('/admin/voucher/');
             exit;
         }
         
@@ -132,7 +132,7 @@ class VoucherController extends BaseController {
         $voucher = $voucherService->getVoucher($voucherId);
 
         if (!$voucher) {
-            wp_redirect('/voucher/');
+            wp_redirect('/admin/voucher/');
             exit;
         }
         
@@ -157,6 +157,14 @@ class VoucherController extends BaseController {
             'voucher-form'
         ]);
 
+        // Build return URL from current GET parameters (excluding id)
+        $returnParams = $_GET;
+        unset($returnParams['id']);
+        $returnUrl = '/admin/voucher/';
+        if (!empty($returnParams)) {
+            $returnUrl .= '?' . http_build_query($returnParams);
+        }
+
         // Create FieldRenderer instance
         $renderer = new FieldRenderer();
         $formHtml = $renderer->renderSection($voucherFieldsConfig, $voucher, 'voucher');
@@ -165,7 +173,8 @@ class VoucherController extends BaseController {
             'user_info' => $this->user_info,
             'page_title' => 'Edit Voucher',
             'voucher' => $voucher,
-            'formHtml' => $formHtml
+            'formHtml' => $formHtml,
+            'returnUrl' => $returnUrl
         ]);
     }
 } 

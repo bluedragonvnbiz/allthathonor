@@ -169,6 +169,7 @@ class InquiryService {
         return [
             'id' => $inquiry['id'],
             'inquiry_number' => htmlspecialchars($inquiry['inquiry_number']),
+            'inquiry_content'=> nl2br(htmlspecialchars($inquiry['inquiry_content'])),
             'corporate_name' => htmlspecialchars($inquiry['corporate_name']),
             'contact_person' => htmlspecialchars($inquiry['contact_person']),
             'contact_phone' => htmlspecialchars($inquiry['contact_phone']),
@@ -179,7 +180,7 @@ class InquiryService {
             'registration_date' => date('Y.m.d', strtotime($inquiry['registration_date'])),
             'status' => $inquiry['status'],
             'status_display' => $inquiry['status'] === 'unanswered' ? '미답변' : '답변완료',
-            'answer_content' => $inquiry['answer_content'],
+            'answer_content' => nl2br(htmlspecialchars($inquiry['answer_content'])),
             'answer_date' => $inquiry['answer_date'] ? date('Y.m.d', strtotime($inquiry['answer_date'])) : '-'
         ];
     }

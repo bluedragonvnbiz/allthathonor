@@ -99,7 +99,7 @@ class MembershipAjaxHandler {
             foreach ($usageGuideFields as $postField) {
                 $membershipField = str_replace('section_', '', $postField);
                 if (isset($_POST[$postField])) {
-                    $membershipData[$membershipField] = wp_kses_post($_POST[$postField]);
+                    $membershipData[$membershipField] = wp_kses_post(stripslashes($_POST[$postField]));
                 }
             }
             
