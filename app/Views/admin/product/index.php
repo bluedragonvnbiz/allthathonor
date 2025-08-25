@@ -55,12 +55,12 @@
                 foreach ($products as $product):
                     $viewUrl = '/admin/product/view/?id=' . $product['id'];
                 ?>
-                <tr>
-                    <td><a href="<?= $viewUrl ?>">PT<?= str_pad($product['id'], 6, '0', STR_PAD_LEFT) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($product['product_name']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= htmlspecialchars($product['product_name_en']) ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= $product['exposure_status'] === 'expose' ? '노출' : '미노출' ?></a></td>
-                    <td><a href="<?= $viewUrl ?>"><?= date('Y-m-d', strtotime($product['created_at'])) ?></a></td>
+                <tr onclick="window.location.href='<?= $viewUrl ?>'">
+                    <td>PT<?= str_pad($product['id'], 6, '0', STR_PAD_LEFT) ?></td>
+                    <td><?= htmlspecialchars($product['product_name']) ?></td>
+                    <td><?= htmlspecialchars($product['product_name_en']) ?></td>
+                    <td><?= $product['exposure_status'] === 'expose' ? '노출' : '미노출' ?></td>
+                    <td><?= date('Y-m-d', strtotime($product['created_at'])) ?></td>
                 </tr>
                 <?php endforeach; ?>
             <?php else: ?>

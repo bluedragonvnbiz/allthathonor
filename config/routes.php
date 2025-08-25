@@ -41,4 +41,7 @@ RouteBuilder::group([
     wp_route('voucher/add')->action('add@Admin\VoucherController')->register();
     wp_route('voucher/edit')->action('edit@Admin\VoucherController')->register();
     wp_route('voucher/view')->action('view@Admin\VoucherController')->register();
+
+    // Policy management
+    wp_route('policy')->action('index@Admin\PolicyController')->register();
 });

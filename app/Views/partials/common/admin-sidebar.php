@@ -22,10 +22,10 @@ $adminMenus = [
                 'active_patterns' => ['/admin/inquiry', '/admin/inquiry/']
             ],
             [
-                'url' => '#',
+                'url' => '/admin/policy',
                 'icon' => 'icon-admin-menu-3.svg',
                 'text' => '약관 관리',
-                'active_patterns' => ['/terms', '/policy']
+                'active_patterns' => ['/admin/policy', '/admin/policy/']
             ]
         ]
     ],
