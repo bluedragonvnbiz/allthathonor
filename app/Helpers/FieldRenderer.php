@@ -561,7 +561,7 @@ class FieldRenderer {
         $width = isset($field['width']) ? $field['width'] : '';
         
         $content = '<label class="form-label">' . $field['label'] . '</label>
-            <span class="' . $textClass . '">' . htmlspecialchars($value) . '</span>';
+            <span class="display-text ' . $textClass . '">' . htmlspecialchars($value) . '</span>';
 
         if (!$isTwoColumnLayout) {
             return '<div class="d-flex ' . $gap . ' ' . $align . '">' . $content . '</div>';

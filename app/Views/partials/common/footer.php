@@ -9,10 +9,52 @@
 				<p class="mb-0">통신판매업신고번호 : 2022-서울강서- 2168호</p>
 				<p class="mb-0">전화번호 : 1600-0595 <span class="line"></span> 이메일 :athc@allthathonorsclub.com</p>
 			</div>
+<?php
+// Get policy files for footer
+$defaultPolicyTypes = [
+    'terms_of_service' => '이용약관',
+    'privacy_policy' => '개인정보처리방침',
+    'travel_terms' => '국내/외 여행 표준약관'
+];
+
+$policyArgs = [
+    'post_type' => 'attachment',
+    'post_mime_type' => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+    'post_status' => 'inherit',
+    'numberposts' => -1,
+    'meta_query' => [
+        [
+            'key' => '_policy_type',
+            'compare' => 'EXISTS'
+        ]
+    ]
+];
+
+$policyAttachments = get_posts($policyArgs);
+$footerPolicies = [];
+
+foreach ($policyAttachments as $attachment) {
+    $policyTypes = get_post_meta($attachment->ID, '_policy_type', false);
+    $fileUrl = wp_get_attachment_url($attachment->ID);
+    
+    foreach ($policyTypes as $policyType) {
+        if (isset($defaultPolicyTypes[$policyType])) {
+            $footerPolicies[$policyType] = [
+                'name' => $defaultPolicyTypes[$policyType],
+                'url' => $fileUrl
+            ];
+        }
+    }
+}
+?>
 			<div class="box d-flex flex-column" style="row-gap:20px;">
-				<a href="#">이용약관</a>
-				<a href="#">개인정보처리방침</a>
-				<a href="#">국내/외 여행 표준약관</a>
+				<?php foreach ($defaultPolicyTypes as $typeKey => $typeName): ?>
+					<?php if (isset($footerPolicies[$typeKey])): ?>
+						<a href="<?= $footerPolicies[$typeKey]['url'] ?>" download><?= $typeName ?></a>
+					<?php else: ?>
+						<a href="#" onclick="alert('<?= $typeName ?> 파일이 아직 업로드되지 않았습니다.');"><?= $typeName ?></a>
+					<?php endif; ?>
+				<?php endforeach; ?>
 			</div>
 			<div class="box d-flex flex-column row-gap-3">
 				<p class="mb-0 text-white fw-bolder">고객센터</p>

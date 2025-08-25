@@ -60,21 +60,20 @@
 .login-form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 30px;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .form-group label {
     font-family: 'Arial', sans-serif;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 400;
     color: #333;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     position: relative;
 }
 
@@ -136,7 +135,7 @@
 }
 
 .input-wrapper input::placeholder {
-    color: #9ca3af;
+    color: #72849A66;
     font-size: 13px;
 }
 

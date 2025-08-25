@@ -175,6 +175,9 @@ table.table{text-align: center;--bs-table-hover-bg:#FAFBFD;--bs-table-border-col
 		}
 	}
 }
+.display-text {
+	font-size: 14px !important;
+}
 .upload-box{display: flex;column-gap: 15px;
 	.btn{white-space: nowrap;padding: 11px;}
 }
