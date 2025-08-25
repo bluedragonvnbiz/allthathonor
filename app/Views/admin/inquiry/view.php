@@ -8,31 +8,31 @@
             <div class="d-flex gap-40">
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">문의번호</label>
-                    <span class=""><?php echo esc_html($inquiry['inquiry_number'] ?? ''); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['inquiry_number'] ?? ''); ?></span>
                 </div>
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">등록일</label>
-                    <span class=""><?php echo esc_html($inquiry['registration_date'] ?? ''); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['registration_date'] ?? ''); ?></span>
                 </div>
             </div>
             <div class="d-flex gap-40">
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">법인명</label>
-                    <span class=""><?php echo esc_html($inquiry['corporate_name'] ?? ''); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['corporate_name'] ?? ''); ?></span>
                 </div>
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">담당자</label>
-                    <span class=""><?php echo esc_html($inquiry['contact_person'] ?? ''); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['contact_person'] ?? ''); ?></span>
                 </div>
             </div>
             <div class="d-flex gap-40">
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">이메일</label>
-                    <span class=""><?php echo esc_html($inquiry['email'] ?? ''); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['email'] ?? ''); ?></span>
                 </div>
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">연락처</label>
-                    <span class=""><?php echo esc_html($inquiry['contact_phone'] ?? ''); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['contact_phone'] ?? ''); ?></span>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
             <div class="d-flex gap-40">
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">문의내용</label>
-                    <span class=""><?php echo nl2br(esc_html($inquiry['inquiry_content'] ?? '문의내용입니다.')); ?></span>
+                    <span class="display-text"><?php echo nl2br(esc_html($inquiry['inquiry_content'] ?? '문의내용입니다.')); ?></span>
                 </div>
             </div>
         </div>
@@ -62,11 +62,11 @@
             <div class="d-flex gap-40">
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">답변상태</label>
-                    <span class=""><?php echo esc_html($inquiry['status'] == 'unanswered' ? '미답변' : '답변완료'); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['status'] == 'unanswered' ? '미답변' : '답변완료'); ?></span>
                 </div>
                 <div class="d-flex column-gap-30 w-100 align-items-center">
                     <label class="form-label">답변일</label>
-                    <span class=""><?php echo esc_html($inquiry['answer_date'] ?? '-'); ?></span>
+                    <span class="inquiry-display-text"><?php echo esc_html($inquiry['answer_date'] ?? '-'); ?></span>
                 </div>
             </div>
         </div>
@@ -75,7 +75,7 @@
                 <textarea class="form-control rich-text-editor" name="answer_content" id="answer_content" rows="10"></textarea>
             <?php else : ?>
                 <div class="d-flex column-gap-30 w-100 align-items-center">
-                    <span class=""><?php echo htmlspecialchars_decode($inquiry['answer_content'] ?? '답변내용입니다.'); ?></span>
+                    <span class="display-text"><?php echo htmlspecialchars_decode($inquiry['answer_content'] ?? '답변내용입니다.'); ?></span>
                 </div>
             <?php endif; ?>
         </div>
