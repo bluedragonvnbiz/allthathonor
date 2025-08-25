@@ -185,7 +185,12 @@ table.table{text-align: center;--bs-table-hover-bg:#FAFBFD;--bs-table-border-col
 	.btn{white-space: nowrap;padding: 11px;}
 }
 .card.infor-box{
-	.content{min-height: 40px;font-size: 13px;line-height: 140%;padding-top: 11px;padding-bottom: 10px;}
+	.content{
+		min-height: 40px;font-size: 13px;line-height: 140%;padding-top: 11px;padding-bottom: 10px;
+		.separator {
+			padding: 0 30px;
+		}
+	}
 	.form-label{padding-top: 11px;}
 }
 .nav-tab-btn{column-gap: 64px;

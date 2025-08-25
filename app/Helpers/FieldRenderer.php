@@ -699,7 +699,7 @@ class FieldRenderer {
                 break;
             case 'text_group':
                 $content .= '<div class="content">';
-                $content .= implode(' / ', array_map('htmlspecialchars', $value));
+                $content .= implode(' <span class="separator">/</span> ', array_map('htmlspecialchars', $value));
                 $content .= '</div>';
                 break;
             case 'field_group':
