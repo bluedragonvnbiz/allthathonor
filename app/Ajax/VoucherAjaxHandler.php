@@ -219,6 +219,3 @@ class VoucherAjaxHandler {
         return $sanitized;
     }
 }
-
-// Initialize voucher AJAX handler
-new VoucherAjaxHandler();

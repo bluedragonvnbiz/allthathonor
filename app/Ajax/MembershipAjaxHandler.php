@@ -324,6 +324,3 @@ class MembershipAjaxHandler {
         }
     }
 }
-
-// Initialize AJAX handler
-new MembershipAjaxHandler();

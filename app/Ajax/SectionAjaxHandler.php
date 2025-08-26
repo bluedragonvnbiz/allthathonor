@@ -202,6 +202,3 @@ class SectionAjaxHandler {
         }
     }
 }
-
-// Initialize AJAX handler
-new SectionAjaxHandler();

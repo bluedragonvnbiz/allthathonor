@@ -2,7 +2,9 @@
 /**
  * AJAX: Account domain (login, register, etc.)
  */
-class HonorsAjax_Account {
+namespace App\Ajax;
+
+class AccountAjaxHandler {
     public function __construct() {
         add_action('wp_ajax_nopriv_honors_account_login', [$this, 'login']);
         add_action('wp_ajax_honors_account_login', [$this, 'login']);

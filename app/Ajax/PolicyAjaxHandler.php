@@ -111,6 +111,3 @@ class PolicyAjaxHandler {
         }
     }
 }
-
-// Initialize AJAX handler
-new PolicyAjaxHandler();

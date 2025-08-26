@@ -154,7 +154,7 @@
                         }
                     }
                 ?>
-                <tr onclick="window.location.href='<?= $viewUrl ?>'">
+                <tr onclick="window.location.href='<?= $viewUrl ?>'" style="cursor: pointer;">
                     <td>BF<?= str_pad($voucher['id'], 6, '0', STR_PAD_LEFT) ?></td>
                     <td><?= htmlspecialchars($gradeDisplay) ?></td>
                     <td><?= htmlspecialchars($typeDisplay) ?></td>

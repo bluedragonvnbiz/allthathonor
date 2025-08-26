@@ -17,12 +17,12 @@ class LiveChatController extends BaseController {
         // Enqueue WordPress Media Library
         wp_enqueue_media();
 
-        // Register CSS files for policy management page
+        // Register CSS files for live chat management page
         $this->view->addCSS([
             'pages/management'
         ]);
 
-        // Render policy management page
+        // Render live chat management page
         $this->view->render('admin/live-chat/index');
     }
 }

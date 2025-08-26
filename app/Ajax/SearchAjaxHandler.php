@@ -66,6 +66,3 @@ class SearchAjaxHandler {
         }
     }
 }
-
-// Initialize search AJAX handler
-new SearchAjaxHandler();

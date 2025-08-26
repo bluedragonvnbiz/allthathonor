@@ -55,7 +55,7 @@
                 foreach ($products as $product):
                     $viewUrl = '/admin/product/view/?id=' . $product['id'];
                 ?>
-                <tr onclick="window.location.href='<?= $viewUrl ?>'">
+                <tr onclick="window.location.href='<?= $viewUrl ?>'" style="cursor: pointer;">
                     <td>PT<?= str_pad($product['id'], 6, '0', STR_PAD_LEFT) ?></td>
                     <td><?= htmlspecialchars($product['product_name']) ?></td>
                     <td><?= htmlspecialchars($product['product_name_en']) ?></td>
