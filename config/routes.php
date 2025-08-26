@@ -42,6 +42,9 @@ RouteBuilder::group([
     wp_route('voucher/edit')->action('edit@Admin\VoucherController')->register();
     wp_route('voucher/view')->action('view@Admin\VoucherController')->register();
 
+    // Live chat management
+    wp_route('live-chat')->action('index@Admin\LiveChatController')->register();
+
     // Policy management
     wp_route('policy')->action('index@Admin\PolicyController')->register();
 });

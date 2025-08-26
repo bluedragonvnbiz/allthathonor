@@ -11,22 +11,29 @@ $adminMenus = [
         'items' => [
             [
                 'url' => '/admin/section/',
-                'icon' => 'icon-admin-menu-1.svg',
+                'icon' => 'icon-admin-menu-section.svg',
                 'text' => '웹사이트 관리',
                 'active_patterns' => ['/admin/section/', '/admin/section']
             ],
             [
                 'url' => '/admin/inquiry',
-                'icon' => 'icon-admin-menu-2.svg',
+                'icon' => 'icon-admin-menu-inquiry.svg',
                 'text' => '1:1 문의',
                 'active_patterns' => ['/admin/inquiry', '/admin/inquiry/']
             ],
             [
                 'url' => '/admin/policy',
-                'icon' => 'icon-admin-menu-3.svg',
+                'icon' => 'icon-admin-menu-policy.svg',
                 'text' => '약관 관리',
                 'active_patterns' => ['/admin/policy', '/admin/policy/']
+            ],
+            [
+                'url' => '/admin/live-chat',
+                'icon' => 'icon-admin-menu-live-chat.svg',
+                'text' => '실시간 채팅 관리',
+                'active_patterns' => ['/admin/live-chat', '/admin/live-chat/']
             ]
+            
         ]
     ],
     'products' => [
@@ -34,7 +41,7 @@ $adminMenus = [
         'items' => [
             [
                 'url' => '/admin/product',
-                'icon' => 'icon-admin-menu-4.svg',
+                'icon' => 'icon-admin-menu-product.svg',
                 'text' => '상품 관리',
                 'active_patterns' => ['/admin/product', '/admin/product/']
             ]
@@ -45,13 +52,13 @@ $adminMenus = [
         'items' => [
             [
                 'url' => '/admin/membership',
-                'icon' => 'icon-admin-menu-5.svg',
+                'icon' => 'icon-admin-menu-membership.svg',
                 'text' => '멤버십 관리',
                 'active_patterns' => ['/admin/membership', '/admin/membership/']
             ],
             [
                 'url' => '/admin/voucher',
-                'icon' => 'icon-admin-menu-6.svg',
+                'icon' => 'icon-admin-menu-voucher.svg',
                 'text' => '혜택/바우처 관리',
                 'active_patterns' => ['/admin/voucher', '/admin/benefits']
             ]
