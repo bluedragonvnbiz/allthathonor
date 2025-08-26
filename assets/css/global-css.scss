@@ -1,5 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Gilda+Display&display=swap');
 @font-face {
+    font-family: 'Pretendard';
+    font-weight: 45 920;
+    font-style: normal;
+    font-display: swap;
+    src: url('../fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+@font-face {
     font-family: 'Spoqa Han Sans Neo';
     font-weight: 700;
     font-display: swap;
@@ -362,6 +369,12 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 			}
 		}
 		.note-box ul{background-color: rgba(255, 255, 255, 0.1);}
+	}
+}
+
+.chat-box{ font-family: "Pretendard";position: fixed;bottom: 61px; right: 51px;z-index: 5;
+	.dropdown-menu{padding: 24px; max-width: 100vw; width: 430px;height: 654px;max-height: 90vh;background-color: #F8F8F8;
+		box-shadow: 0px 2px 30px 0px rgba(0, 0, 0, 0.15);border-radius: 5px;
 	}
 }
 
