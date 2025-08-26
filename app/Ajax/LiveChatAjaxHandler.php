@@ -34,6 +34,12 @@ class LiveChatAjaxHandler {
         add_action('wp_ajax_livechat_close_session', [$this, 'closeSession']);
         add_action('wp_ajax_nopriv_livechat_close_session', [$this, 'closeSession']);
         
+        add_action('wp_ajax_livechat_get_messages', [$this, 'getMessages']);
+        add_action('wp_ajax_nopriv_livechat_get_messages', [$this, 'getMessages']);
+        
+        add_action('wp_ajax_livechat_get_main_categories', [$this, 'getMainCategories']);
+        add_action('wp_ajax_nopriv_livechat_get_main_categories', [$this, 'getMainCategories']);
+        
         // Admin only AJAX actions
         add_action('wp_ajax_livechat_admin_send_message', [$this, 'adminSendMessage']);
         add_action('wp_ajax_livechat_get_session_stats', [$this, 'getSessionStats']);
@@ -204,6 +210,62 @@ class LiveChatAjaxHandler {
         } catch (Exception $e) {
             error_log("LiveChatAjax: closeSession failed - " . $e->getMessage());
             wp_send_json_error('Failed to close session: ' . $e->getMessage(), 500);
+        }
+    }
+    
+    /**
+     * Get messages for session restoration
+     */
+    public function getMessages() {
+        try {
+            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
+                throw new Exception('Invalid security token');
+            }
+            
+            $sessionId = $_POST['session_id'] ?? '';
+            $sinceId = (int) ($_POST['since_id'] ?? 0);
+            $limit = (int) ($_POST['limit'] ?? 50);
+            
+            if (!$sessionId) {
+                throw new Exception('Missing session ID');
+            }
+            
+            $result = $this->liveChatService->getChatMessages($sessionId, $sinceId, $limit);
+            
+            if ($result['success']) {
+                wp_send_json_success([
+                    'messages' => $result['messages'],
+                    'count' => $result['count'],
+                    'session_id' => $result['session_id']
+                ]);
+            } else {
+                wp_send_json_error($result['error'], 400);
+            }
+            
+        } catch (Exception $e) {
+            error_log("LiveChatAjax: getMessages failed - " . $e->getMessage());
+            wp_send_json_error('Failed to get messages: ' . $e->getMessage(), 500);
+        }
+    }
+    
+    /**
+     * Get main categories for session restoration
+     */
+    public function getMainCategories() {
+        try {
+            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
+                throw new Exception('Invalid security token');
+            }
+            
+            $categories = $this->liveChatService->getMainCategories();
+            
+            wp_send_json_success([
+                'categories' => $categories
+            ]);
+            
+        } catch (Exception $e) {
+            error_log("LiveChatAjax: getMainCategories failed - " . $e->getMessage());
+            wp_send_json_error('Failed to get main categories: ' . $e->getMessage(), 500);
         }
     }
     

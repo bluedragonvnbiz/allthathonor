@@ -1,3 +1,4 @@
+<?php include get_template_directory() . '/app/Views/partials/livechat/init.php'; ?>
 <footer class="main-footer">
 	<div class="container">
 		<div class="d-flex justify-content-between flex-column flex-md-row column-gap-3">
@@ -9,44 +10,44 @@
 				<p class="mb-0">통신판매업신고번호 : 2022-서울강서- 2168호</p>
 				<p class="mb-0">전화번호 : 1600-0595 <span class="line"></span> 이메일 :athc@allthathonorsclub.com</p>
 			</div>
-<?php
-// Get policy files for footer
-$defaultPolicyTypes = [
-    'terms_of_service' => '이용약관',
-    'privacy_policy' => '개인정보처리방침',
-    'travel_terms' => '국내/외 여행 표준약관'
-];
+			<?php
+			// Get policy files for footer
+			$defaultPolicyTypes = [
+				'terms_of_service' => '이용약관',
+				'privacy_policy' => '개인정보처리방침',
+				'travel_terms' => '국내/외 여행 표준약관'
+			];
 
-$policyArgs = [
-    'post_type' => 'attachment',
-    'post_mime_type' => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
-    'post_status' => 'inherit',
-    'numberposts' => -1,
-    'meta_query' => [
-        [
-            'key' => '_policy_type',
-            'compare' => 'EXISTS'
-        ]
-    ]
-];
+			$policyArgs = [
+				'post_type' => 'attachment',
+				'post_mime_type' => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+				'post_status' => 'inherit',
+				'numberposts' => -1,
+				'meta_query' => [
+					[
+						'key' => '_policy_type',
+						'compare' => 'EXISTS'
+					]
+				]
+			];
 
-$policyAttachments = get_posts($policyArgs);
-$footerPolicies = [];
+			$policyAttachments = get_posts($policyArgs);
+			$footerPolicies = [];
 
-foreach ($policyAttachments as $attachment) {
-    $policyTypes = get_post_meta($attachment->ID, '_policy_type', false);
-    $fileUrl = wp_get_attachment_url($attachment->ID);
-    
-    foreach ($policyTypes as $policyType) {
-        if (isset($defaultPolicyTypes[$policyType])) {
-            $footerPolicies[$policyType] = [
-                'name' => $defaultPolicyTypes[$policyType],
-                'url' => $fileUrl
-            ];
-        }
-    }
-}
-?>
+			foreach ($policyAttachments as $attachment) {
+				$policyTypes = get_post_meta($attachment->ID, '_policy_type', false);
+				$fileUrl = wp_get_attachment_url($attachment->ID);
+				
+				foreach ($policyTypes as $policyType) {
+					if (isset($defaultPolicyTypes[$policyType])) {
+						$footerPolicies[$policyType] = [
+							'name' => $defaultPolicyTypes[$policyType],
+							'url' => $fileUrl
+						];
+					}
+				}
+			}
+			?>
 			<div class="box d-flex flex-column" style="row-gap:20px;">
 				<?php foreach ($defaultPolicyTypes as $typeKey => $typeName): ?>
 					<?php if (isset($footerPolicies[$typeKey])): ?>

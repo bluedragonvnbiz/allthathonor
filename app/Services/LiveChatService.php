@@ -43,7 +43,7 @@ class LiveChatService {
     /**
      * Get session by session ID
      */
-    private function getSession($sessionId) {
+    public function getSession($sessionId) {
         global $wpdb;
         
         $table = LiveChatDatabase::getSessionTableName();
@@ -138,7 +138,7 @@ class LiveChatService {
     /**
      * Get messages from database
      */
-    private function getMessagesFromDB($sessionId, $sinceId = 0, $limit = 50) {
+    public function getMessagesFromDB($sessionId, $sinceId = 0, $limit = 50) {
         global $wpdb;
         
         $table = LiveChatDatabase::getMessageTableName();
@@ -155,7 +155,7 @@ class LiveChatService {
     /**
      * Get all messages for session
      */
-    private function getAllMessagesFromDB($sessionId) {
+    public function getAllMessagesFromDB($sessionId) {
         global $wpdb;
         
         $table = LiveChatDatabase::getMessageTableName();

@@ -101,44 +101,32 @@ class Router {
      * @return array|null
      */
     public function getCurrentRoute() {
-        // Debug
-        error_log('Current Routes: ' . print_r(self::$routes, true));
-        error_log('Request URI: ' . $_SERVER['REQUEST_URI']);
-        error_log('Query Vars: ' . print_r($GLOBALS['wp_query']->query_vars, true));
-
         // Try to get route from query var first (set by our rewrite rules)
         $honors_route = get_query_var('honors_route');
-        error_log('Honors Route: ' . $honors_route);
         
         if ($honors_route && isset(self::$routes[$honors_route])) {
-            error_log('Found route config: ' . print_r(self::$routes[$honors_route], true));
             return self::$routes[$honors_route];
         }
 
         // Fallback to request URI parsing
         $request_uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-        error_log('Parsed Request URI: ' . $request_uri);
         
         // Try exact match first
         if (isset(self::$routes[$request_uri])) {
-            error_log('Found route by exact match: ' . $request_uri);
             return self::$routes[$request_uri];
         }
 
         // Try without trailing slash
         $alt_uri = rtrim($request_uri, '/');
         if ($alt_uri !== $request_uri && isset(self::$routes[$alt_uri])) {
-            error_log('Found route without trailing slash: ' . $alt_uri);
             return self::$routes[$alt_uri];
         }
 
         // Check for home page last
         if (empty($request_uri) || is_home() || is_front_page()) {
-            error_log('Homepage detected');
             return isset(self::$routes['home']) ? self::$routes['home'] : null;
         }
 
-        error_log('No route found for: ' . $request_uri);
         return null;
     }
     
@@ -147,8 +135,6 @@ class Router {
      * @param array $route_config
      */
     private function handleConfiguredRoute($route_config) {
-        error_log('Handling route config: ' . print_r($route_config, true));
-        
         // Create request data
         $request = [
             'path' => $_SERVER['REQUEST_URI'],
@@ -246,15 +232,12 @@ class Router {
      * @return array
      */
     private function parseRouteString($route_string) {
-        error_log('Parsing route string: ' . $route_string);
-        
         $parts = explode('@', $route_string);
         if (count($parts) === 2) {
             $result = [
                 'method' => $parts[0],
                 'controller' => $parts[1]
             ];
-            error_log('Parsed route parts: ' . print_r($result, true));
             return $result;
         }
         

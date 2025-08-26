@@ -193,8 +193,6 @@ class RouteBuilder {
     public function register() {
         // Build the full path including prefix
         $fullPath = $this->prefix ? trim($this->prefix . '/' . $this->path, '/') : $this->path;
-        error_log('Registering route: ' . $fullPath);
-        error_log('Route config: ' . print_r($this->build(), true));
         Router::registerRoute($fullPath, $this->build());
     }
     
