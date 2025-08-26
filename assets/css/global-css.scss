@@ -489,7 +489,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
     	.text{font-size: 12px;
     		>span{margin-bottom: 10px !important}
     		.card-name{font-size: 40px;line-height: 60px;margin-bottom: 10px !important}
-    		>p.mb-32{margin-bottom: 20px !important;font-size: 14px;}
+    		>p.mb-32{margin-bottom: 30px !important;font-size: 14px;}
     		hr.mb-32{margin-bottom: 30px;}
     		ul{row-gap: 0 !important}
     	}
@@ -513,13 +513,17 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
     .card-detail{
     	.note-box{
     		.title{font-size: 18px;margin-bottom: 30px}
-    		ul{padding: 32px 32px 32px 42px;
+    		ul{padding: 32px 32px 32px 42px;font-size: 12px;
     			li{font-size: 12px;line-height: 20px;}
     		}
     	}
     }
     .inquiry-wp{
 	 	.form{margin-bottom: 120px;}
+	 	#map{min-height: inherit;aspect-ratio: 343 / 233}
+	 	.contact-infor p{margin-bottom: 10px;
+	 		&.mb-32{margin-bottom: 30px !important}
+	 	}
 	 }
 }//end 992
 
@@ -553,6 +557,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		}
 	}
 	.bottom-nav ul a{font-size: 10px;}
+	.mem-r-1.home-r1 .left{margin-bottom: 0}
 } // end 768px
 
 @media only screen and (max-width: 576px) {
