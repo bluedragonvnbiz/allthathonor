@@ -22,16 +22,16 @@ $adminMenus = [
                 'active_patterns' => ['/admin/inquiry', '/admin/inquiry/']
             ],
             [
+                'url' => '/admin/live-chat',
+                'icon' => 'icon-admin-menu-live-chat.svg',
+                'text' => '실시간 채팅',
+                'active_patterns' => ['/admin/live-chat', '/admin/live-chat/']
+            ],
+            [
                 'url' => '/admin/policy',
                 'icon' => 'icon-admin-menu-policy.svg',
                 'text' => '약관 관리',
                 'active_patterns' => ['/admin/policy', '/admin/policy/']
-            ],
-            [
-                'url' => '/admin/live-chat',
-                'icon' => 'icon-admin-menu-live-chat.svg',
-                'text' => '실시간 채팅 관리',
-                'active_patterns' => ['/admin/live-chat', '/admin/live-chat/']
             ]
             
         ]
