@@ -66,13 +66,13 @@ class MembershipAjaxHandler {
                         $membershipData[$membershipField] = floatval($value);
                     } elseif ($membershipField === 'notes') {
                         // Allow HTML for notes field
-                        $membershipData[$membershipField] = wp_kses_post($value);
-                    } elseif ($membershipField === 'description') {
+                        $membershipData[$membershipField] = wp_kses_post(stripslashes($value));
+                    } elseif ($membershipField === 'summary_description') {
                         // Allow HTML for description field
-                        $membershipData[$membershipField] = wp_kses_post($value);
+                        $membershipData[$membershipField] = wp_kses_post(stripslashes($value));
                     } else {
                         // Regular text fields
-                        $membershipData[$membershipField] = sanitize_text_field($value);
+                        $membershipData[$membershipField] = sanitize_text_field(stripslashes($value));
                     }
                 }
             }
