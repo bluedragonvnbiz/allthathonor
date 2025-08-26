@@ -500,7 +500,7 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 
     .card-infor{margin-bottom: 60px;
     	.text{font-size: 12px;
-    		>span{margin-bottom: 10px !important}
+    		>span{margin-bottom: 10px !important;font-size: 8px;}
     		.card-name{font-size: 40px;line-height: 60px;margin-bottom: 10px !important}
     		>p.mb-32{margin-bottom: 30px !important;font-size: 14px;}
     		hr.mb-32{margin-bottom: 30px;}
@@ -515,9 +515,10 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
     }
     .card-detail .tab-pane .item{padding: 16px;column-gap: 16px;
     	.left{min-width: 80px;font-size: 14px;line-height: 20px}
-    	.right{padding-left: 16px;row-gap: 10px;
+    	.right{padding-left: 16px;row-gap: 10px;font-size: 12px;
     		strong{font-size: 12px}
     		p{font-size: 12px;margin-bottom: 0px}
+    		span{font-size: 10px;}
     		ul{padding-left: 16px;
     			li{font-size: 12px}
     		}
