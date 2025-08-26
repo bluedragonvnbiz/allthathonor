@@ -56,7 +56,7 @@ $voucherService = new VoucherService();
 				?>
 				<div class="item">
 					<p class="title"><?= esc_html($membership['membership_name']) ?></p>
-					<p class="description mb-2"><?= esc_html($membership['summary_description']) ?></p>
+					<p class="description mb-2"><?= wpautop(esc_html($membership['summary_description'])) ?></p>
 					<div class="price-box d-flex align-items-end column-gap-2 mb-32">
 						<strong><?= number_format($membership['sale_price']) ?>원</strong>
 						<span>세금 별도</span>
@@ -96,7 +96,7 @@ $voucherService = new VoucherService();
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3"><?= esc_html($signature['top_phrase']) ?></span>
 				<p class="card-name mb-3"><?= esc_html($signature['membership_name']) ?></p>
-				<p class="mb-32"><?= esc_html($signature['summary_description']) ?></p>
+				<p class="mb-32"><?= wpautop(esc_html($signature['summary_description'])) ?></p>
 				<hr class="mt-0 mb-32">
 				<ul class="mb-0 list-unstyled d-flex flex-column row-gap-2">
 					<li>
@@ -384,7 +384,7 @@ $voucherService = new VoucherService();
 			<div class="text">
 				<span class="d-block fs-14 lh-14 lp-308 mb-3"><?= esc_html($prime['top_phrase']) ?></span>
 				<p class="card-name mb-3"><?= esc_html($prime['membership_name']) ?></p>
-				<p class="mb-32"><?= esc_html($prime['summary_description']) ?></p>
+				<p class="mb-32"><?= wpautop(esc_html($prime['summary_description'])) ?></p>
 				<hr class="mt-0 mb-32">
 				<ul class="mb-0 list-unstyled d-flex flex-column row-gap-2">
 					<li>
