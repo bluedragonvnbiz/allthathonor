@@ -23,7 +23,7 @@ class AdminMiddleware {
                 exit;
             }
             
-            wp_redirect(home_url('/login'));
+            wp_redirect(home_url('/admin'));
             exit;
         }
 

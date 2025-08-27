@@ -9,12 +9,14 @@ class AccountController {
     public function __construct() {
         $this->view = HonorsApp::getInstance()->view;
     }
-    
+
     /**
-     * Login page
+     * Admin login page
      */
-    public function login() {
-        // Register CSS files for login page
+    public function admin() {
+        $this->view->layout('login');
+
+        // Register CSS files for home page
         $this->view->addCSS([
             'pages/login'
         ]);
@@ -24,11 +26,30 @@ class AccountController {
             'login-ajax'
         ]);
         
-        // Set login layout
-        $this->view->layout('login');
-        
         // Render login view
         $this->view->render('pages/login', [
+            'page_title' => 'Login - All That Honors Club',
+            'form_action' => wp_login_url(),
+            'redirect_to' => isset($_GET['redirect_to']) ? $_GET['redirect_to'] : home_url('/admin/section')
+        ]);
+    }
+    
+    /**
+     * Login page
+     */
+    public function login() {
+        // Register CSS files for home page
+        $this->view->addCSS([
+            'global-css','pages/user-account'
+        ]);
+        
+        // Register JS files for AJAX login
+        $this->view->addJS([
+            'login-ajax'
+        ]);
+        
+        // Render login view
+        $this->view->render('pages/user-login', [
             'page_title' => 'Login - All That Honors Club',
             'form_action' => wp_login_url(),
             'redirect_to' => isset($_GET['redirect_to']) ? $_GET['redirect_to'] : home_url('/admin/section')
@@ -40,13 +61,11 @@ class AccountController {
      */
     public function register() {
         // TODO: Implement register page
-        $this->view->addCSS([
-            'pages/register'
+         $this->view->addCSS([
+            'global-css','pages/user-account'
         ]);
-        
-        $this->view->layout('login'); // Use same layout as login
-        
-        $this->view->render('register', [
+                
+        $this->view->render('pages/user-register', [
             'page_title' => 'Register - All That Honors Club'
         ]);
     }

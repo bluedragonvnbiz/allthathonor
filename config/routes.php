@@ -9,6 +9,8 @@ wp_route('home')->action('index@HomeController')->public()->register();
 wp_route('inquiry')->action('index@InquiryController')->public()->register();
 wp_route('membership')->action('index@MembershipController')->public()->register();
 wp_route('login')->action('login@AccountController')->public()->register();
+wp_route('register')->action('register@AccountController')->public()->register();
+wp_route('admin')->action('admin@AccountController')->public()->register();
 
 // LiveChat public routes
 wp_route('chat/start')->action('startSession@LiveChatController')->public()->register();
@@ -25,8 +27,6 @@ RouteBuilder::group([
     'middleware' => ['AdminMiddleware'],
     'layout' => 'admin'
 ], function() {
-    wp_route('')->action('index@Admin\DashboardController')->register();
-    
     // Section management
     wp_route('section')->action('index@Admin\SectionController')->register();
     wp_route('section/edit')->action('edit@Admin\SectionController')->register();
