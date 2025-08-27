@@ -54,6 +54,7 @@
 :root{
 	--text-color:#1C1C1C;
 	--bs-link-color-rgb:28,28,28;
+	--bs-form-invalid-color:#FF0000;
 	--font-secondary: "Gilda Display";
 }
 html{font-size: 16px;}
@@ -80,12 +81,14 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		&.btn-dark{padding-left: 42px;padding-right: 42px}
 	}
 }
+.text-gold{color: #C19B76 !important}
 .btn-primary{background-color: #C19B76 !important;border-color: #C19B76 !important}
 .btn-outline-primary{color: #C19B76 !important;border-color: #C19B76 !important;background-color: white !important;}
 .btn-outline-secondary{background-color: white !important;border-color: #878787 !important;color: #878787 !important}
 .btn-dark{background-color: #1C1C1C !important;border-color: #1C1C1C !important}
 .form-control{box-shadow: none !important;border-color: #EEEEEE !important;height: 53px;background-color: #F8F8F8;border-radius: 0;
 	&::placeholder{color: #CECECE;font-size: 14px;letter-spacing: 2px}
+	&.is-invalid{background-image: none;border-color: #FF0000 !important}
 }
 .form-label{color: #878787;font-size: 14px;line-height: 14px;letter-spacing: 1.68px;margin-bottom: 13px;
 	span{font-weight: 300}
@@ -430,19 +433,26 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 		}
 	}
 }
-@keyframes d1 {
-    0% {
-        box-shadow: 10px 0 #49963B, -10px 0 #89B97C;
-        background: #49963B
-    }
-    33% {
-        box-shadow: 10px 0 #49963B, -10px 0 #89B97C;
-        background: #89B97C
-    }
-    66% {
-        box-shadow: 10px 0 #385D31, -10px 0 #385D31;
-        background: #385D31
-    }
+
+.modal{
+	--bs-modal-border-radius:0;
+	--bs-modal-border-color:#EEEEEE;
+	.modal-dialog{max-width: 410px;}
+	.title{font-weight: 400;font-size: 24px;line-height: 20px;letter-spacing: 2px;text-transform: uppercase;margin-bottom: 32px;display: block;text-align: center;}
+}
+
+.custom-number-input{position: relative;
+	.arrows{position: absolute;top: 0;right: 0;height: 100%;display: flex;flex-direction: column;justify-content: space-between; padding: 5px 12px;}
+	.form-control{padding-right: 33px}
+	button{background-color: transparent;}
+	input[type=number]::-webkit-inner-spin-button,
+	input[type=number]::-webkit-outer-spin-button {
+	    -webkit-appearance: none;
+	    margin: 0;
+	}
+	input[type=number] {
+	    -moz-appearance: textfield;
+	}
 }
 @media only screen and (max-width: 1200px) {
 	.mem-r-1 .left .box{margin-bottom: 32px}
@@ -667,3 +677,18 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
  }
  .card-infor{flex-direction: column;row-gap: 30px}
 }//end 576px
+
+@keyframes d1 {
+    0% {
+        box-shadow: 10px 0 #49963B, -10px 0 #89B97C;
+        background: #49963B
+    }
+    33% {
+        box-shadow: 10px 0 #49963B, -10px 0 #89B97C;
+        background: #89B97C
+    }
+    66% {
+        box-shadow: 10px 0 #385D31, -10px 0 #385D31;
+        background: #385D31
+    }
+}
