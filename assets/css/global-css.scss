@@ -82,8 +82,11 @@ body{font-family: 'Spoqa Han Sans Neo', 'sans-serif';font-weight: 400;color: var
 }
 .btn-primary{background-color: #C19B76 !important;border-color: #C19B76 !important}
 .btn-outline-primary{color: #C19B76 !important;border-color: #C19B76 !important;background-color: white !important;}
+.btn-outline-secondary{background-color: white !important;border-color: #878787 !important;color: #878787 !important}
 .btn-dark{background-color: #1C1C1C !important;border-color: #1C1C1C !important}
-.form-control{box-shadow: none !important;border-color: #EEEEEE !important;height: 53px;background-color: #F8F8F8;border-radius: 0}
+.form-control{box-shadow: none !important;border-color: #EEEEEE !important;height: 53px;background-color: #F8F8F8;border-radius: 0;
+	&::placeholder{color: #CECECE;font-size: 14px;letter-spacing: 2px}
+}
 .form-label{color: #878787;font-size: 14px;line-height: 14px;letter-spacing: 1.68px;margin-bottom: 13px;
 	span{font-weight: 300}
 }
