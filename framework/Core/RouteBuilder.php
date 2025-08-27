@@ -148,7 +148,7 @@ class RouteBuilder {
      * @return $this
      */
     public function auth() {
-        $this->layout = 'main';
+        $this->layout = 'auth';
         $this->middleware[] = 'AuthMiddleware';
         return $this;
     }
