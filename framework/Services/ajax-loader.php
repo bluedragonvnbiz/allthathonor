@@ -31,7 +31,6 @@ class HonorsAjaxLoader {
         }
         
         $files = glob($ajax_dir . '*.php');
-        error_log('Found AJAX files: ' . print_r($files, true));
         
         foreach ($files as $file) {
             $class_name = basename($file, '.php');

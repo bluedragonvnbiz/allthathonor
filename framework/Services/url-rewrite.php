@@ -41,7 +41,6 @@ class HonorsUrlRewrite {
     public function addRewriteRules() {
         // Get routes from Router
         $routes = Router::getRoutes();
-        error_log('Adding rewrite rules for routes: ' . print_r($routes, true));
         
         if (empty($routes)) {
             error_log('No routes to add rewrite rules for');
@@ -53,18 +52,13 @@ class HonorsUrlRewrite {
             // Add exact match rule
             $pattern = "^{$route}/?$";
             $replacement = "index.php?honors_route={$route}";
-            error_log("Adding rewrite rule: {$pattern} => {$replacement}");
             add_rewrite_rule($pattern, $replacement, 'top');
         }
         
         // Only flush if not already flushed
         if (!self::$rewrite_flushed) {
-            error_log('Flushing rewrite rules...');
             flush_rewrite_rules(false);
             self::$rewrite_flushed = true;
-            error_log('Rewrite rules flushed');
-        } else {
-            error_log('Rewrite rules already flushed');
         }
     }
     
@@ -74,21 +68,18 @@ class HonorsUrlRewrite {
     public function prioritizeCustomRules($rules) {
         $custom_rules = [];
         $routes = Router::getRoutes();
-        error_log('Prioritizing custom rules for routes: ' . print_r($routes, true));
         
         if ($routes) {
             foreach ($routes as $route => $config) {
                 // Add exact match rule
                 $pattern = "^{$route}/?$";
                 $replacement = "index.php?honors_route={$route}";
-                error_log("Adding prioritized rule: {$pattern} => {$replacement}");
                 $custom_rules[$pattern] = $replacement;
             }
         }
         
         // Merge custom rules FIRST, then existing rules
         $merged_rules = array_merge($custom_rules, $rules);
-        error_log('Final rewrite rules: ' . print_r($merged_rules, true));
         return $merged_rules;
     }
     
@@ -96,8 +87,6 @@ class HonorsUrlRewrite {
      * Flush rewrite rules
      */
     public function flushRules() {
-        error_log('Force flushing rewrite rules...');
         flush_rewrite_rules(true);
-        error_log('Rewrite rules force flushed');
     }
 }

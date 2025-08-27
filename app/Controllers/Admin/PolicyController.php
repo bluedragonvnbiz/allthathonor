@@ -122,6 +122,4 @@ class PolicyController extends BaseController {
 
         return $policyFiles;
     }
-
-
 } 

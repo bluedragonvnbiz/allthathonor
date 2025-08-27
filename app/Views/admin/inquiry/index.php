@@ -249,23 +249,6 @@ function resetSearch() {
     position: relative;
 }
 
-/* Table styling */
-.table th {
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
-    font-weight: 600;
-    color: #495057;
-}
-
-.table td {
-    vertical-align: middle;
-    border-bottom: 1px solid #f1f3f4;
-}
-
-.table tbody tr:hover {
-    background-color: #f8f9fa;
-}
-
 /* Form styling */
 .form-select, .form-control {
     border: 1px solid #dee2e6;

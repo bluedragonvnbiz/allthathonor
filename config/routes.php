@@ -12,6 +12,15 @@ wp_route('login')->action('login@AccountController')->public()->register();
 wp_route('register')->action('register@AccountController')->public()->register();
 wp_route('admin')->action('admin@AccountController')->public()->register();
 
+// LiveChat public routes
+wp_route('chat/start')->action('startSession@LiveChatController')->public()->register();
+wp_route('chat/subcategories')->action('getSubCategories@LiveChatController')->public()->register();
+wp_route('chat/begin')->action('startChat@LiveChatController')->public()->register();
+wp_route('chat/send')->action('sendMessage@LiveChatController')->public()->register();
+wp_route('chat/stream')->action('streamMessages@LiveChatController')->public()->register();
+wp_route('chat/history')->action('getChatHistory@LiveChatController')->public()->register();
+wp_route('chat/close')->action('closeChat@LiveChatController')->public()->register();
+
 // Admin routes
 RouteBuilder::group([
     'prefix' => 'admin',

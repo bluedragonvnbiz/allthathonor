@@ -223,6 +223,3 @@ class ProductAjaxHandler {
         ];
     }
 }
-
-// Initialize AJAX handler
-new ProductAjaxHandler();

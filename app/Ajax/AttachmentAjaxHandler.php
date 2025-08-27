@@ -54,6 +54,3 @@ class AttachmentAjaxHandler {
         }
     }
 }
-
-// Initialize attachment AJAX handler
-new AttachmentAjaxHandler();

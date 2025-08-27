@@ -23,7 +23,7 @@
                 foreach ($memberships as $membership):
                     $viewUrl = '/admin/membership/view/?id=' . $membership['id'];
                 ?>
-                <tr onclick="window.location.href='<?= $viewUrl ?>'">
+                <tr onclick="window.location.href='<?= $viewUrl ?>'" style="cursor: pointer;">
                     <td><?= htmlspecialchars($membership['membership_number']) ?></td>
                     <td><?= htmlspecialchars($membership['membership_name']) ?></td>
                     <td><?= htmlspecialchars($membership['top_phrase']) ?></td>
