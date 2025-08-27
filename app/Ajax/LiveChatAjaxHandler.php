@@ -1,7 +1,4 @@
 <?php
-
-namespace App\Ajax;
-
 use App\Services\LiveChatService;
 use Exception;
 
@@ -11,378 +8,244 @@ class LiveChatAjaxHandler {
     
     public function __construct() {
         $this->liveChatService = new LiveChatService();
-        $this->registerHandlers();
+        $this->init();
     }
     
-    /**
-     * Register AJAX handlers
-     */
-    public function registerHandlers() {
-        // Public AJAX actions (available to logged in and non-logged in users)
-        add_action('wp_ajax_livechat_start_session', [$this, 'startSession']);
-        add_action('wp_ajax_nopriv_livechat_start_session', [$this, 'startSession']);
+    public function init() {
+        // Register AJAX handlers for logged in and non-logged in users
+        add_action('wp_ajax_livechat_start', [$this, 'start']);
+        add_action('wp_ajax_nopriv_livechat_start', [$this, 'start']);
         
-        add_action('wp_ajax_livechat_get_subcategories', [$this, 'getSubCategories']);
-        add_action('wp_ajax_nopriv_livechat_get_subcategories', [$this, 'getSubCategories']);
+        add_action('wp_ajax_livechat_subcategories', [$this, 'getSubcategories']);
+        add_action('wp_ajax_nopriv_livechat_subcategories', [$this, 'getSubcategories']);
         
-        add_action('wp_ajax_livechat_select_category', [$this, 'selectCategory']);
-        add_action('wp_ajax_nopriv_livechat_select_category', [$this, 'selectCategory']);
+        add_action('wp_ajax_livechat_begin', [$this, 'beginChat']);
+        add_action('wp_ajax_nopriv_livechat_begin', [$this, 'beginChat']);
         
-        add_action('wp_ajax_livechat_send_message', [$this, 'sendMessage']);
-        add_action('wp_ajax_nopriv_livechat_send_message', [$this, 'sendMessage']);
+        add_action('wp_ajax_livechat_send', [$this, 'sendMessage']);
+        add_action('wp_ajax_nopriv_livechat_send', [$this, 'sendMessage']);
         
-        add_action('wp_ajax_livechat_close_session', [$this, 'closeSession']);
-        add_action('wp_ajax_nopriv_livechat_close_session', [$this, 'closeSession']);
-        
-        add_action('wp_ajax_livechat_get_messages', [$this, 'getMessages']);
-        add_action('wp_ajax_nopriv_livechat_get_messages', [$this, 'getMessages']);
-        
-        add_action('wp_ajax_livechat_get_main_categories', [$this, 'getMainCategories']);
-        add_action('wp_ajax_nopriv_livechat_get_main_categories', [$this, 'getMainCategories']);
-        
-        // Admin only AJAX actions
-        add_action('wp_ajax_livechat_admin_send_message', [$this, 'adminSendMessage']);
-        add_action('wp_ajax_livechat_get_session_stats', [$this, 'getSessionStats']);
-        add_action('wp_ajax_livechat_get_active_sessions', [$this, 'getActiveSessions']);
+        add_action('wp_ajax_livechat_get_session', [$this, 'getSession']);
+        add_action('wp_ajax_nopriv_livechat_get_session', [$this, 'getSession']);
     }
     
-    /**
-     * Start new chat session
-     */
-    public function startSession() {
-        try {
-            // Verify nonce for security
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            // Get customer data if provided  
-            $customerData = [];
-            if (!empty($_POST['customer_name'])) {
-                $customerData['customer_name'] = $_POST['customer_name'];
-            }
-            if (!empty($_POST['customer_email'])) {
-                $customerData['customer_email'] = $_POST['customer_email'];
-            }
-            if (!empty($_POST['customer_phone'])) {
-                $customerData['customer_phone'] = $_POST['customer_phone'];
-            }
-            
-            $result = $this->liveChatService->createChatSession($customerData);
-            
-            if ($result['success']) {
-                wp_send_json_success([
-                    'session_id' => $result['session_id'],
-                    'stage' => $result['stage'],
-                    'main_categories' => $this->liveChatService->getMainCategories(),
-                    'message' => 'Chat session created successfully'
-                ]);
-            } else {
-                wp_send_json_error($result['error'], 500);
-            }
-            
-        } catch (Exception $e) {
-            error_log("LiveChatAjax: startSession failed - " . $e->getMessage());
-            wp_send_json_error('Failed to start chat session: ' . $e->getMessage(), 500);
+    private function verifyNonce() {
+        if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
+            wp_die('Security check failed');
         }
     }
     
     /**
-     * Get sub categories for selected main category
+     * Stage 1: Start chat session
+     * POST /chat/start → return session_id + main categories
      */
-    public function getSubCategories() {
+    public function start() {
+        $this->verifyNonce();
+        
         try {
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
+            // Create new session
+            $sessionId = $this->liveChatService->createSession();
             
-            $sessionId = $_POST['session_id'] ?? '';
-            $mainCategory = $_POST['main_category'] ?? '';
+            // Get main categories
+            $categories = include get_template_directory() . '/config/livechat_categories.php';
+            $mainCategories = array_keys($categories['main_categories']);
             
-            if (!$sessionId || !$mainCategory) {
-                throw new Exception('Missing required parameters');
-            }
-            
-            $result = $this->liveChatService->handleCategorySelection($sessionId, $mainCategory);
-            
-            if ($result['success']) {
-                wp_send_json_success($result);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
+            wp_send_json_success([
+                'session_id' => $sessionId,
+                'main_categories' => $mainCategories,
+                'message' => 'Chat session started'
+            ]);
             
         } catch (Exception $e) {
-            error_log("LiveChatAjax: getSubCategories failed - " . $e->getMessage());
-            wp_send_json_error('Failed to get subcategories: ' . $e->getMessage(), 500);
+            wp_send_json_error([
+                'message' => 'Failed to start chat session',
+                'error' => $e->getMessage()
+            ]);
         }
     }
     
     /**
-     * Select category and start chat if both main and sub are selected
+     * Stage 2: Get subcategories for selected main category
+     * POST /chat/subcategories → return sub categories
      */
-    public function selectCategory() {
+    public function getSubcategories() {
+        $this->verifyNonce();
+        
+        $sessionId = sanitize_text_field($_POST['session_id'] ?? '');
+        $mainCategory = sanitize_text_field($_POST['main_category'] ?? '');
+        
+        if (empty($sessionId) || empty($mainCategory)) {
+            wp_send_json_error(['message' => 'Missing required parameters']);
+        }
+        
         try {
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
+            // Update session with selected main category
+            $this->liveChatService->updateSession($sessionId, [
+                'category_main' => $mainCategory,
+                'chat_stage' => 'category_sub'
+            ]);
             
-            $sessionId = $_POST['session_id'] ?? '';
-            $mainCategory = $_POST['main_category'] ?? '';
-            $subCategory = $_POST['sub_category'] ?? '';
+            // Get subcategories
+            $categories = include get_template_directory() . '/config/livechat_categories.php';
+            $subCategories = $categories['main_categories'][$mainCategory] ?? [];
             
-            if (!$sessionId || !$mainCategory || !$subCategory) {
-                throw new Exception('Missing required parameters');
-            }
-            
-            $result = $this->liveChatService->handleCategorySelection($sessionId, $mainCategory, $subCategory);
-            
-            if ($result['success']) {
-                wp_send_json_success($result);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
+            wp_send_json_success([
+                'subcategories' => $subCategories,
+                'main_category' => $mainCategory
+            ]);
             
         } catch (Exception $e) {
-            error_log("LiveChatAjax: selectCategory failed - " . $e->getMessage());
-            wp_send_json_error('Failed to select category: ' . $e->getMessage(), 500);
+            wp_send_json_error([
+                'message' => 'Failed to get subcategories',
+                'error' => $e->getMessage()
+            ]);
         }
     }
     
     /**
-     * Send chat message
+     * Stage 3: Begin actual chat
+     * POST /chat/begin → send welcome message + activate chat
+     */
+    public function beginChat() {
+        $this->verifyNonce();
+        
+        $sessionId = sanitize_text_field($_POST['session_id'] ?? '');
+        $subCategory = sanitize_text_field($_POST['sub_category'] ?? '');
+        $customerName = sanitize_text_field($_POST['customer_name'] ?? '');
+        $customerEmail = sanitize_email($_POST['customer_email'] ?? '');
+        
+        if (empty($sessionId)) {
+            wp_send_json_error(['message' => 'Missing session_id parameter']);
+        }
+        
+        try {
+            // Update session with subcategory and customer info
+            // subCategory có thể empty nếu main category không có sub
+            $updateData = [
+                'customer_name' => $customerName,
+                'customer_email' => $customerEmail,
+                'chat_stage' => 'chat_active',
+                'status' => 'waiting'
+            ];
+            
+            // Chỉ update category_sub nếu có giá trị
+            if (!empty($subCategory)) {
+                $updateData['category_sub'] = $subCategory;
+            }
+            
+            $this->liveChatService->updateSession($sessionId, $updateData);
+            
+            // Send welcome message
+            $welcomeMessage = "안녕하세요! {$customerName}님, 문의해주셔서 감사합니다. 담당자가 확인 후 신속히 답변드리겠습니다.";
+            $this->liveChatService->saveMessage($sessionId, 'system', $welcomeMessage, 'welcome');
+            
+            wp_send_json_success([
+                'message' => 'Chat activated successfully',
+                'welcome_message' => $welcomeMessage
+            ]);
+            
+        } catch (Exception $e) {
+            wp_send_json_error([
+                'message' => 'Failed to begin chat',
+                'error' => $e->getMessage()
+            ]);
+        }
+    }
+    
+    /**
+     * Stage 4: Send message
+     * POST /chat/send → send message
      */
     public function sendMessage() {
-        try {
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            $sessionId = $_POST['session_id'] ?? '';
-            $message = $_POST['message'] ?? '';
-            $senderName = $_POST['sender_name'] ?? '';
-            
-            if (!$sessionId || !$message) {
-                throw new Exception('Missing required parameters');
-            }
-            
-            $result = $this->liveChatService->sendMessage($sessionId, $message, 'customer', $senderName);
-            
-            if ($result['success']) {
-                wp_send_json_success([
-                    'message_id' => $result['message_id'],
-                    'session_id' => $result['session_id'],
-                    'timestamp' => $result['timestamp'],
-                    'message' => 'Message sent successfully'
-                ]);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
-            
-        } catch (Exception $e) {
-            error_log("LiveChatAjax: sendMessage failed - " . $e->getMessage());
-            wp_send_json_error('Failed to send message: ' . $e->getMessage(), 500);
+        $this->verifyNonce();
+        
+        $sessionId = sanitize_text_field($_POST['session_id'] ?? '');
+        $message = sanitize_textarea_field($_POST['message'] ?? '');
+        $senderName = sanitize_text_field($_POST['sender_name'] ?? '');
+        
+        if (empty($sessionId) || empty($message)) {
+            wp_send_json_error(['message' => 'Missing required parameters']);
         }
-    }
-    
-    /**
-     * Close chat session
-     */
-    public function closeSession() {
+        
         try {
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            $sessionId = $_POST['session_id'] ?? '';
-            
-            if (!$sessionId) {
-                throw new Exception('Missing session ID');
-            }
-            
-            $result = $this->liveChatService->closeChatSession($sessionId);
-            
-            if ($result['success']) {
-                wp_send_json_success($result);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
-            
-        } catch (Exception $e) {
-            error_log("LiveChatAjax: closeSession failed - " . $e->getMessage());
-            wp_send_json_error('Failed to close session: ' . $e->getMessage(), 500);
-        }
-    }
-    
-    /**
-     * Get messages for session restoration
-     */
-    public function getMessages() {
-        try {
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            $sessionId = $_POST['session_id'] ?? '';
-            $sinceId = (int) ($_POST['since_id'] ?? 0);
-            $limit = (int) ($_POST['limit'] ?? 50);
-            
-            if (!$sessionId) {
-                throw new Exception('Missing session ID');
-            }
-            
-            $result = $this->liveChatService->getChatMessages($sessionId, $sinceId, $limit);
-            
-            if ($result['success']) {
-                wp_send_json_success([
-                    'messages' => $result['messages'],
-                    'count' => $result['count'],
-                    'session_id' => $result['session_id']
-                ]);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
-            
-        } catch (Exception $e) {
-            error_log("LiveChatAjax: getMessages failed - " . $e->getMessage());
-            wp_send_json_error('Failed to get messages: ' . $e->getMessage(), 500);
-        }
-    }
-    
-    /**
-     * Get main categories for session restoration
-     */
-    public function getMainCategories() {
-        try {
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            $categories = $this->liveChatService->getMainCategories();
+            // Save customer message
+            $messageId = $this->liveChatService->saveMessage($sessionId, 'customer', $message, 'text', $senderName);
             
             wp_send_json_success([
-                'categories' => $categories
+                'message_id' => $messageId,
+                'message' => 'Message sent successfully'
             ]);
             
         } catch (Exception $e) {
-            error_log("LiveChatAjax: getMainCategories failed - " . $e->getMessage());
-            wp_send_json_error('Failed to get main categories: ' . $e->getMessage(), 500);
+            wp_send_json_error([
+                'message' => 'Failed to send message',
+                'error' => $e->getMessage()
+            ]);
         }
     }
     
     /**
-     * Admin send message (requires admin privileges)
+     * Get session info from database
+     * POST /chat/get_session → return session info + messages
      */
-    public function adminSendMessage() {
-        try {
-            // Check if user is admin
-            if (!current_user_can('manage_options')) {
-                throw new Exception('Unauthorized access');
-            }
-            
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_admin_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            $sessionId = $_POST['session_id'] ?? '';
-            $message = $_POST['message'] ?? '';
-            $adminName = $_POST['admin_name'] ?? wp_get_current_user()->display_name;
-            
-            if (!$sessionId || !$message) {
-                throw new Exception('Missing required parameters');
-            }
-            
-            $result = $this->liveChatService->sendMessage($sessionId, $message, 'admin', $adminName);
-            
-            if ($result['success']) {
-                wp_send_json_success([
-                    'message_id' => $result['message_id'],
-                    'session_id' => $result['session_id'],
-                    'sender_name' => $adminName,
-                    'timestamp' => $result['timestamp'],
-                    'message' => 'Admin message sent successfully'
-                ]);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
-            
-        } catch (Exception $e) {
-            error_log("LiveChatAjax: adminSendMessage failed - " . $e->getMessage());
-            wp_send_json_error('Failed to send admin message: ' . $e->getMessage(), 500);
+    public function getSession() {
+        $this->verifyNonce();
+        
+        $sessionId = sanitize_text_field($_POST['session_id'] ?? '');
+        
+        if (empty($sessionId)) {
+            wp_send_json_error(['message' => 'Missing session_id parameter']);
         }
-    }
-    
-    /**
-     * Get session statistics (admin only)
-     */
-    public function getSessionStats() {
+        
         try {
-            if (!current_user_can('manage_options')) {
-                throw new Exception('Unauthorized access');
+            // Get session data
+            $session = $this->liveChatService->getSession($sessionId);
+            
+            if (!$session) {
+                wp_send_json_error(['message' => 'Session not found']);
+                return;
             }
             
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_admin_nonce')) {
-                throw new Exception('Invalid security token');
+            // Get messages for this session
+            $messages = $this->liveChatService->getNewMessages($sessionId, 0); // Get all messages
+            
+            // Get categories if needed
+            $categories = include get_template_directory() . '/config/livechat_categories.php';
+            $subcategories = [];
+            if (!empty($session->category_main)) {
+                $subcategories = $categories['main_categories'][$session->category_main] ?? [];
             }
-            
-            $sessionId = $_POST['session_id'] ?? '';
-            
-            if (!$sessionId) {
-                throw new Exception('Missing session ID');
-            }
-            
-            $result = $this->liveChatService->getSessionStats($sessionId);
-            
-            if ($result['success']) {
-                wp_send_json_success($result['stats']);
-            } else {
-                wp_send_json_error($result['error'], 400);
-            }
-            
-        } catch (Exception $e) {
-            error_log("LiveChatAjax: getSessionStats failed - " . $e->getMessage());
-            wp_send_json_error('Failed to get session stats: ' . $e->getMessage(), 500);
-        }
-    }
-    
-    /**
-     * Get active chat sessions (admin only)
-     */
-    public function getActiveSessions() {
-        try {
-            if (!current_user_can('manage_options')) {
-                throw new Exception('Unauthorized access');
-            }
-            
-            if (!wp_verify_nonce($_POST['nonce'] ?? '', 'livechat_admin_nonce')) {
-                throw new Exception('Invalid security token');
-            }
-            
-            $sessions = $this->liveChatService->getActiveSessions();
-            
-            // Format sessions for admin interface
-            $formattedSessions = array_map(function($session) {
-                return [
-                    'id' => $session['id'],
-                    'session_id' => $session['session_id'],
-                    'customer_name' => $session['customer_name'] ?? 'Anonymous',
-                    'category_main' => $session['category_main'],
-                    'category_sub' => $session['category_sub'],
-                    'status' => $session['status'],
-                    'chat_stage' => $session['chat_stage'],
-                    'created_at' => $session['created_at'],
-                    'updated_at' => $session['updated_at'],
-                    'unread_count' => $this->liveChatService->getUnreadCount($session['session_id'], 'admin')
-                ];
-            }, $sessions);
             
             wp_send_json_success([
-                'sessions' => $formattedSessions,
-                'total' => count($formattedSessions)
+                'session' => [
+                    'id' => $session->id,
+                    'session_id' => $session->session_id,
+                    'chat_stage' => $session->chat_stage,
+                    'category_main' => $session->category_main,
+                    'category_sub' => $session->category_sub,
+                    'customer_name' => $session->customer_name,
+                    'customer_email' => $session->customer_email,
+                    'status' => $session->status,
+                    'created_at' => $session->created_at
+                ],
+                'messages' => array_map(function($message) {
+                    return [
+                        'id' => $message->id,
+                        'sender_type' => $message->sender_type,
+                        'sender_name' => $message->sender_name,
+                        'message' => $message->message,
+                        'message_type' => $message->message_type,
+                        'created_at' => $message->created_at
+                    ];
+                }, $messages),
+                'subcategories' => $subcategories
             ]);
             
         } catch (Exception $e) {
-            error_log("LiveChatAjax: getActiveSessions failed - " . $e->getMessage());
-            wp_send_json_error('Failed to get active sessions: ' . $e->getMessage(), 500);
+            wp_send_json_error([
+                'message' => 'Failed to get session',
+                'error' => $e->getMessage()
+            ]);
         }
     }
 }

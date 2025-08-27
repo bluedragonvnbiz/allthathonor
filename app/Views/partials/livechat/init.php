@@ -1,7 +1,6 @@
 <?php
 /**
  * LiveChat Widget Initialization
- * Include this in footer to enable LiveChat widget
  */
 
 // Only load on frontend
@@ -9,20 +8,12 @@ if (is_admin()) {
     return;
 }
 
-// Enqueue CSS
-wp_enqueue_style(
-    'livechat-widget-css',
-    THEME_URL . '/assets/css/livechat-widget.css',
-    [],
-    '1.0.0'
-);
-
-// Enqueue JavaScript
+// Enqueue LiveChat JavaScript and initialize AJAX handler
 wp_enqueue_script(
-    'livechat-widget-js',
-    THEME_URL . '/assets/js/livechat-widget.js',
-    [],
-    '1.0.0',
+    'livechat-widget', 
+    THEME_URL . '/assets/js/livechat-widget.js', 
+    [], 
+    '1.0.0', 
     true
 );
 

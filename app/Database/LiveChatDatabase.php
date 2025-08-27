@@ -35,6 +35,7 @@ class LiveChatDatabase {
         $session_sql = "CREATE TABLE $session_table (
             id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             session_id varchar(64) NOT NULL,
+            client_connected tinyint(1) NOT NULL DEFAULT 0,
             customer_name varchar(100) DEFAULT NULL,
             customer_email varchar(100) DEFAULT NULL,
             customer_phone varchar(20) DEFAULT NULL,
