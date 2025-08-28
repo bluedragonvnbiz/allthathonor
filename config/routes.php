@@ -10,6 +10,7 @@ wp_route('inquiry')->action('index@InquiryController')->public()->register();
 wp_route('membership')->action('index@MembershipController')->public()->register();
 wp_route('login')->action('login@AccountController')->public()->register();
 wp_route('register')->action('register@AccountController')->public()->register();
+wp_route('register/payment-success')->action('payment_success@AccountController')->public()->register();
 wp_route('admin')->action('admin@AccountController')->public()->register();
 
 // LiveChat public routes
