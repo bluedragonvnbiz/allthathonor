@@ -60,3 +60,29 @@
 		.btn.btn-lg{font-weight: 600;font-size: 18px;line-height: 15px;letter-spacing: 2px;text-transform: uppercase;min-width: 173px;padding-top: 20px; padding-bottom: 16px;}
 	}
 }
+.user-payment-success-page{padding-top: 120px;padding-bottom: 120px;
+	.title-box{
+		strong{font-size: 36px;line-height: 80.5px;display: block;}
+		p{color: #878787;font-size: 18px;line-height: 30px;letter-spacing: 1.68px;}
+	}
+	.box{background-color: white;padding:32px;
+		.title{font-weight: 400;font-size: 20px;line-height: 20px;letter-spacing: 1.68px;margin-bottom: 32px}
+		ul{display: flex;flex-direction: column;row-gap: 32px;
+			li{display: flex;align-items: center;}
+		}
+		.item{line-height: 16px;letter-spacing: 1.68px;width: 100%;display: flex;column-gap: 15px;align-items: center;
+			strong{font-weight: 400;min-width: 120px}
+			span{color: #878787}
+		}
+	}
+	.table-box{
+		.table-title{border-top: 2px solid #1C1C1C;border-bottom: 1px solid #D0D0D0;padding-top: 14px;padding-bottom: 15px;
+			strong{font-weight: 600;font-size: 20px;line-height: 20px;letter-spacing: 1.68px;}
+			span{color: #878787;font-size: 14px;line-height: 20px;letter-spacing: 1.68px;}
+		}
+		table{--bs-border-color: #EEEEEE;
+			td{padding: 16px 0;font-size: 16px;line-height: 14px;letter-spacing: 1.68px;color: #1C1C1C;}
+			.password-box{display: flex;align-items: center;justify-content: space-between;}
+		}
+	}
+}

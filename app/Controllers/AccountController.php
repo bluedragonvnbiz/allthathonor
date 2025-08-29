@@ -68,6 +68,17 @@ class AccountController {
         $this->view->render('pages/user-register', [
             'page_title' => 'Register - All That Honors Club'
         ]);
+    } 
+
+    public function payment_success() {
+        // TODO: Implement register page
+         $this->view->addCSS([
+            'global-css','pages/user-account'
+        ]);
+                
+        $this->view->render('pages/user-register-payment-success', [
+            'page_title' => 'Register - All That Honors Club'
+        ]);
     }
     
     /**
